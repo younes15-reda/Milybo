@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Produit – Milybo DZ | ملابس أطفال</title>
+  <meta name="description" content="Découvrez nos vêtements bébés de qualité supérieure sur Milybo DZ. Coton doux et naturel pour votre bébé." />
+  <meta name="keywords" content="vêtements bébé Algérie, habits bébé DZ, ملابس أطفال, milybo dz, e-commerce algérie" />
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" type="image/png" href="images/milybo.jpg"/>
+  <style>
+    .product-detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:40px;max-width:1100px;margin:0 auto;align-items:start;}
+    .gallery-main{aspect-ratio:1;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:8rem;border:2px solid var(--cream);background:var(--off-white);margin-bottom:14px;transition:all .3s;}
+    .gallery-thumbs{display:flex;gap:10px;}
+    .gallery-thumb{width:72px;height:72px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:2rem;border:2px solid var(--cream);cursor:pointer;transition:all .3s;background:white;}
+    .gallery-thumb.active,.gallery-thumb:hover{border-color:var(--rose);background:var(--rose-pale);}
+    .detail-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:var(--radius-pill);font-size:.75rem;font-weight:800;margin-bottom:14px;}
+    .detail-name{font-size:1.7rem;font-weight:900;color:var(--text-dark);line-height:1.2;margin-bottom:6px;letter-spacing:-.3px;}
+    .detail-name-ar{font-family:var(--font-arabic);font-size:1.1rem;color:var(--text-mid);direction:rtl;margin-bottom:14px;}
+    .rating-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+    .stars{color:#F59E0B;font-size:1.1rem;letter-spacing:1px;}
+    .detail-price{font-size:2rem;font-weight:900;color:var(--text-dark);margin-bottom:4px;}
+    .detail-old-price{font-size:1rem;color:var(--text-soft);text-decoration:line-through;margin-bottom:18px;}
+    .detail-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+    .meta-chip{background:var(--off-white);border:1.5px solid var(--cream);border-radius:var(--radius-md);padding:10px 14px;font-size:.8rem;}
+    .meta-chip strong{display:block;color:var(--text-dark);font-weight:700;margin-bottom:2px;}
+    .meta-chip span{color:var(--text-soft);}
+    .size-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+    .size-btn{padding:8px 16px;border-radius:var(--radius-md);border:2px solid var(--cream-dark);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .3s;background:white;color:var(--text-mid);font-family:var(--font-main);}
+    .size-btn:hover,.size-btn.active{border-color:var(--rose);color:var(--rose);background:var(--rose-pale);}
+    .size-btn:disabled{opacity:.4;cursor:not-allowed;}
+    .stock-badge{padding:8px 16px;border-radius:var(--radius-md);font-size:.82rem;font-weight:700;margin-bottom:20px;display:inline-flex;align-items:center;gap:6px;}
+    .stock-ok{background:var(--mint-pale);border:1.5px solid var(--mint-light);color:var(--mint);}
+    .stock-low{background:#FFF3E0;border:1.5px solid #FFB74D;color:#E65100;}
+    .qty-row{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+    .qty-control{display:flex;align-items:center;border:2px solid var(--cream-dark);border-radius:var(--radius-lg);overflow:hidden;}
+    .qty-btn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background .2s;background:none;border:none;font-family:var(--font-main);}
+    .qty-btn:hover{background:var(--rose-pale);}
+    .qty-val{width:40px;text-align:center;font-weight:800;border:none;outline:none;font-size:.95rem;background:transparent;font-family:var(--font-main);}
+    .action-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+    .wishlist-btn{display:flex;align-items:center;gap:6px;padding:12px 20px;border-radius:var(--radius-pill);border:2px solid var(--rose-light);color:var(--rose);font-weight:700;font-size:.85rem;cursor:pointer;background:white;transition:all .3s;font-family:var(--font-main);}
+    .wishlist-btn:hover{background:var(--rose-pale);}
+    .delivery-info{background:var(--mint-pale);border:1.5px solid var(--mint-light);border-radius:var(--radius-md);padding:14px 16px;font-size:.82rem;color:var(--text-mid);display:flex;gap:12px;align-items:flex-start;}
+    /* Reviews */
+    .reviews-section{padding:0 40px 60px;max-width:1100px;margin:0 auto;}
+    .review-card{background:white;border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:20px;margin-bottom:14px;}
+    .review-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+    .reviewer-name{font-weight:700;color:var(--text-dark);font-size:.88rem;}
+    .review-date{font-size:.74rem;color:var(--text-soft);}
+    .review-stars{color:#F59E0B;font-size:.95rem;margin-bottom:6px;}
+    .review-comment{font-size:.85rem;color:var(--text-mid);line-height:1.6;}
+    .rating-summary{display:flex;align-items:center;gap:24px;background:var(--rose-pale);border:1.5px solid var(--rose-light);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;}
+    .rating-big{font-size:3.5rem;font-weight:900;color:var(--rose);line-height:1;}
+    .rating-stars-big{color:#F59E0B;font-size:1.4rem;display:block;margin-bottom:4px;}
+    .rating-bar-row{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--text-mid);margin-bottom:4px;}
+    .rating-bar{height:6px;border-radius:3px;background:var(--cream-dark);flex:1;}
+    .rating-bar-fill{height:100%;border-radius:3px;background:#F59E0B;}
+    @media(max-width:768px){.product-detail-layout{grid-template-columns:1fr;padding:20px;gap:24px;}.reviews-section{padding:0 20px 40px;}}
+  </style>
+</head>
+<body>
+
+<header class="header" id="main-header">
+  <div class="header-top">🚚 Livraison gratuite dès <span>5 000 DA</span> &nbsp;·&nbsp; 💵 Cash à la livraison</div>
+  <div class="header-main">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><img src="images/milybo.jpg" alt="Milybo DZ"/></div>
+      <div class="logo-text">
+        <div class="logo-name">Milybo <span class="dz">DZ</span></div>
+        <span class="logo-sub">Vêtements Bébé · ملابس أطفال · 0–36 mois</span>
+      </div>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Rechercher… / ابحث" id="search-input"/>
+      <button type="button">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="burger" id="burger-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="nav" id="main-nav">
+    <a href="index.html" class="nav-link">🏠 Accueil</a>
+    <a href="boutique.html" class="nav-link active">👗 Boutique</a>
+    <a href="boutique.html?ageGroup=nouveau-ne" class="nav-link">🍼 Nouveau-né</a>
+    <a href="boutique.html?ageGroup=nourrisson" class="nav-link">🌟 Nourrisson</a>
+    <a href="boutique.html?ageGroup=tout-petit" class="nav-link">🎈 Tout-petit</a>
+    <a href="contact.html" class="nav-link">📞 Contact</a>
+  </nav>
+</header>
+
+<div class="breadcrumb" id="breadcrumb-bar">
+  <a href="index.html">🏠 Accueil</a>
+  <span class="sep">›</span>
+  <a href="boutique.html">👗 Boutique</a>
+  <span class="sep">›</span>
+  <span class="current" id="breadcrumb-name">Produit</span>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div class="product-detail-layout" id="product-detail">
+  <div style="text-align:center;padding:80px;grid-column:1/-1;color:var(--text-soft);">Chargement du produit…</div>
+</div>
+
+<!-- REVIEWS -->
+<div class="reviews-section" id="reviews-section" style="display:none;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+    <div>
+      <h2 style="font-size:1.35rem;font-weight:900;color:var(--text-dark);">⭐ Avis Clients</h2>
+      <p style="font-family:var(--font-arabic);color:var(--text-soft);font-size:.82rem;margin-top:3px;">آراء الزبائن</p>
+    </div>
+    <button onclick="showReviewForm()" class="btn btn-outline btn-sm">✍️ Laisser un avis</button>
+  </div>
+  <div class="rating-summary" id="rating-summary"></div>
+  <div id="review-form-wrap" style="display:none;margin-bottom:20px;">
+    <div style="background:white;border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:24px;">
+      <h4 style="margin-bottom:16px;color:var(--text-dark);">Votre avis 💬</h4>
+      <div style="display:flex;gap:8px;margin-bottom:14px;" id="star-picker">
+        <span style="font-size:.85rem;color:var(--text-mid);align-self:center;">Note :</span>
+        <button onclick="setReviewStar(1)" class="star-pick" data-s="1">☆</button>
+        <button onclick="setReviewStar(2)" class="star-pick" data-s="2">☆</button>
+        <button onclick="setReviewStar(3)" class="star-pick" data-s="3">☆</button>
+        <button onclick="setReviewStar(4)" class="star-pick" data-s="4">☆</button>
+        <button onclick="setReviewStar(5)" class="star-pick" data-s="5">☆</button>
+      </div>
+      <input class="form-input" id="rev-name" placeholder="Votre prénom / اسمك" style="margin-bottom:10px;"/>
+      <textarea class="form-input" id="rev-comment" placeholder="Votre commentaire… / رأيك في المنتج" style="min-height:90px;margin-bottom:14px;"></textarea>
+      <button onclick="submitReview()" class="btn btn-primary btn-sm">📨 Envoyer l'avis</button>
+    </div>
+  </div>
+  <div id="reviews-list"></div>
+</div>
+
+<!-- RELATED PRODUCTS -->
+<section class="section section-rose" id="related-section" style="display:none;">
+  <div class="section-header">
+    <div class="section-tag">👗 Vous aimerez aussi</div>
+    <h2>Produits similaires</h2>
+  </div>
+  <div class="products-grid" id="related-grid"></div>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo-name">Milybo DZ 👶</div>
+      <p>La boutique algérienne de vêtements pour bébé de 0 à 36 mois.</p>
+      <div class="footer-tagline-ar">أجمل ملابس الأطفال بالجزائر</div>
+      <div class="social-links">
+        <a href="https://www.instagram.com/milybo_tlemcen?igsh=MXNlMnpzYnJheDdwcg==" class="social-link instagram" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/share/1BFJJEXAPN/" class="social-link facebook" target="_blank">Facebook</a>
+        <a href="https://wa.me/213559449995" class="social-link whatsapp" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+    <div><h4>Navigation<span class="ar">روابط</span></h4><div class="footer-links"><a href="index.html">🏠 Accueil</a><a href="boutique.html">👗 Boutique</a><a href="contact.html">📞 Contact</a></div></div>
+    <div><h4>Catégories<span class="ar">أقسام</span></h4><div class="footer-links"><a href="boutique.html?ageGroup=nouveau-ne">🍼 Nouveau-né</a><a href="boutique.html?ageGroup=nourrisson">🌟 Nourrisson</a><a href="boutique.html?ageGroup=tout-petit">🎈 Tout-petit</a></div></div>
+    <div><h4>Infos<span class="ar">معلومات</span></h4><div class="footer-links"><a href="#">📍 Alger 🇩🇿</a><a href="#">💵 Cash livraison</a></div></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">© 2025 Milybo DZ · ❤️ Algérie 🇩🇿</div>
+    <div class="footer-bottom-right"><a href="#">Mentions légales</a><span class="footer-bottom-sep">|</span><a href="#">CGV</a></div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container"></div>
+<script src="config.js"></script>
+<script type="module" src="js/firebase-db.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/marketing.js"></script>
+<script>
+let selectedSize = null;
+let selectedQty  = 1;
+let reviewStar   = 5;
+let currentProduct = null;
+
+async function initProductPage() {
+  const id = new URLSearchParams(window.location.search).get('id');
+  let p = null;
+  if (window.db) {
+    try { p = await window.db.getProductById(id); } catch(e) {}
+  }
+  if (!p) p = getProductById(id);
+  if (!p) {
+    document.getElementById('product-detail').innerHTML =
+      '<div style="grid-column:1/-1;text-align:center;padding:80px;"><h2>Produit introuvable 😔</h2><a href="boutique.html" class="btn btn-primary" style="margin-top:20px;">← Retour boutique</a></div>';
+    return;
+  }
+  currentProduct = p;
+  document.title = p.name + ' – Milybo DZ';
+  document.getElementById('breadcrumb-name').textContent = p.name;
+  renderProductDetail(p);
+  renderReviews(p);
+  renderRelated(p);
+}
+
+window.addEventListener('firebase-ready', initProductPage);
+window.addEventListener('load', () => {
+  if (window.db) {
+    initProductPage();
+  } else {
+    setTimeout(initProductPage, 2000);
+  }
+});
+
+function renderProductDetail(p) {
+  const badgeHTML = p.badge ? `<div class="detail-badge ${p.badge === 'promo' ? 'promo' : 'new'}" style="background:${p.badge === 'promo' ? 'var(--rose)' : 'var(--sky)'};color:white;">${p.badgeLabel}</div>` : '';
+  const oldHTML   = p.oldPrice ? `<div class="detail-old-price">${p.oldPrice.toLocaleString('fr-DZ')} DA</div>` : '';
+  const stockCls  = p.stock <= 5 ? 'stock-low' : 'stock-ok';
+  const stockTxt  = p.stock <= 5 ? `⚠️ Plus que ${p.stock} en stock` : `✅ En stock (${p.stock} disponibles)`;
+  const sizesHTML = p.sizes.map(s =>
+    `<button class="size-btn" onclick="selectSize(this,'${s}')">${s}</button>`
+  ).join('');
+  const thumbsHTML = p.photos.map((ph, i) =>
+    `<div class="gallery-thumb${i===0?' active':''}" onclick="changePhoto(this,'${ph}')">${ph}</div>`
+  ).join('');
+
+  document.getElementById('product-detail').innerHTML = `
+    <!-- Gallery -->
+    <div>
+      <div class="gallery-main" id="gallery-main" style="background:${p.color}25;">${p.photos[0]}</div>
+      <div class="gallery-thumbs">${thumbsHTML}</div>
+    </div>
+    <!-- Info -->
+    <div>
+      ${badgeHTML}
+      <h1 class="detail-name">${p.name}</h1>
+      <div class="detail-name-ar">${p.nameAr}</div>
+      <div class="rating-row">
+        <span class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}</span>
+        <strong style="color:var(--text-dark);">${p.rating}</strong>
+        <span style="color:var(--text-soft);font-size:.82rem;">(${p.reviewCount} avis)</span>
+      </div>
+      <div class="detail-price">${p.price.toLocaleString('fr-DZ')} <span style="font-size:1.1rem;color:var(--text-soft);">DA</span></div>
+      ${oldHTML}
+      <div class="detail-meta">
+        <div class="meta-chip"><strong>📦 Catégorie</strong><span>${p.categoryLabel}</span></div>
+        <div class="meta-chip"><strong>👶 Âge</strong><span>${p.ageGroupLabel}</span></div>
+        <div class="meta-chip"><strong>🌡️ Saison</strong><span>${p.saisonLabel}</span></div>
+        <div class="meta-chip"><strong>🎉 Occasion</strong><span>${p.occasionLabel}</span></div>
+        <div class="meta-chip" style="grid-column:1/-1;"><strong>🧶 Matière</strong><span>${p.matiereLabel}</span></div>
+      </div>
+      <div style="margin-bottom:10px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
+        Taille <span style="font-family:var(--font-arabic);color:var(--text-soft);font-weight:500;font-size:.78rem;"> · المقاس</span>
+        <a href="#" style="font-size:.76rem;color:var(--sky);margin-right:8px;">Guide des tailles</a>
+      </div>
+      <div class="size-grid">${sizesHTML}</div>
+      <div class="stock-badge ${stockCls}">${stockTxt}</div>
+      <div class="qty-row">
+        <span style="font-size:.85rem;font-weight:700;color:var(--text-dark);">Quantité :</span>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="${p.stock}" readonly/>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+      <div class="action-btns">
+        <button class="btn btn-primary" onclick="orderViaWhatsApp()" style="flex:1; background: #25D366; color: white; border: none;">📱 Commander via WhatsApp</button>
+        <button class="wishlist-btn" onclick="this.innerHTML='❤️ Sauvegardé';showToast('❤️ Ajouté aux favoris !','success');">🤍 Favoris</button>
+      </div>
+      <div class="delivery-info">
+        <span style="font-size:1.4rem;">🚚</span>
+        <div>
+          <strong style="display:block;color:var(--text-dark);margin-bottom:2px;">Livraison partout en Algérie</strong>
+          <span>Paiement cash à la livraison uniquement</span><br/>
+          <span style="font-family:var(--font-arabic);font-size:.78rem;color:var(--text-soft);">التوصيل لكل الولايات · الدفع عند الاستلام</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function changePhoto(el, emoji) {
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const main = document.getElementById('gallery-main');
+  main.style.opacity = '0';
+  setTimeout(() => { main.textContent = emoji; main.style.opacity = '1'; }, 150);
+}
+
+function selectSize(el, size) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedSize = size;
+}
+
+function changeQty(delta) {
+  const input = document.getElementById('qty-val');
+  let v = parseInt(input.value) + delta;
+  v = Math.max(1, Math.min(v, currentProduct?.stock || 10));
+  input.value = v;
+  selectedQty  = v;
+}
+
+async function orderViaWhatsApp() {
+  if (!selectedSize) { showToast('⚠️ Veuillez sélectionner une taille !', 'error'); return; }
+  const orderData = {
+    produit: currentProduct.name,
+    produitId: currentProduct.id,
+    taille: selectedSize,
+    quantite: selectedQty,
+    prixUnitaire: currentProduct.price,
+    prixTotal: currentProduct.price * selectedQty,
+    source: 'site_web'
+  };
+  // Enregistrer dans Firestore avant de rediriger
+  if (window.db) {
+    try { await window.db.createOrder(orderData); } catch(e) { console.warn('Firestore order save failed:', e); }
+  }
+  const msg = encodeURIComponent(`Bonjour Milybo DZ 👋\nJe souhaite commander :\n🛍️ ${currentProduct.name}\n📏 Taille: ${selectedSize}\n🔢 Quantité: ${selectedQty}\n💰 Prix total: ${(currentProduct.price * selectedQty).toLocaleString('fr-DZ')} DA\n\nMerci !`);
+  window.open(`https://wa.me/213559449995?text=${msg}`, '_blank');
+}
+
+function renderReviews(p) {
+  document.getElementById('reviews-section').style.display = 'block';
+  const avg = p.rating;
+  document.getElementById('rating-summary').innerHTML = `
+    <div style="text-align:center;flex-shrink:0;">
+      <div class="rating-big">${avg}</div>
+      <span class="rating-stars-big">${'★'.repeat(Math.floor(avg))}${'☆'.repeat(5-Math.floor(avg))}</span>
+      <div style="font-size:.78rem;color:var(--text-soft);">${p.reviewCount} avis</div>
+    </div>
+    <div style="flex:1;">
+      ${[5,4,3,2,1].map(s => {
+        const pct = s === Math.round(avg) ? 70 : s === Math.floor(avg) ? 50 : 10;
+        return `<div class="rating-bar-row"><span style="width:14px;">${s}★</span>
+          <div class="rating-bar"><div class="rating-bar-fill" style="width:${pct}%;"></div></div>
+          <span>${pct}%</span></div>`;
+      }).join('')}
+    </div>`;
+  const all = [...(p.reviews || [])];
+  document.getElementById('reviews-list').innerHTML = all.map(r => `
+    <div class="review-card">
+      <div class="review-header">
+        <div class="reviewer-name">👤 ${r.name}</div>
+        <div class="review-date">${r.date}</div>
+      </div>
+      <div class="review-stars">${'★'.repeat(r.note)}${'☆'.repeat(5-r.note)}</div>
+      <div class="review-comment">${r.comment}</div>
+    </div>`).join('');
+}
+
+function renderRelated(p) {
+  const related = PRODUCTS.filter(x => x.id !== p.id && (x.ageGroup === p.ageGroup || x.category === p.category)).slice(0, 4);
+  if (!related.length) return;
+  document.getElementById('related-section').style.display = 'block';
+  document.getElementById('related-grid').innerHTML = related.map(x => renderProductCard(x)).join('');
+}
+
+function showReviewForm() { document.getElementById('review-form-wrap').style.display = 'block'; }
+
+function setReviewStar(n) {
+  reviewStar = n;
+  document.querySelectorAll('.star-pick').forEach((b, i) => { b.textContent = i < n ? '★' : '☆'; b.style.color = i < n ? '#F59E0B' : '#ccc'; });
+}
+
+function submitReview() {
+  const name = document.getElementById('rev-name').value.trim();
+  const comment = document.getElementById('rev-comment').value.trim();
+  if (!name || !comment) { showToast('⚠️ Remplissez votre nom et commentaire.', 'error'); return; }
+  const review = { name, note: reviewStar, comment, date: new Date().toISOString().split('T')[0] };
+  // Ajouter l'avis en local pour affichage immédiat (pas de persistance Firestore pour les avis)
+  if (currentProduct && currentProduct.reviews) {
+    currentProduct.reviews.push(review);
+  } else if (currentProduct) {
+    currentProduct.reviews = [review];
+  }
+  showToast('✅ Merci pour votre avis !', 'success');
+  document.getElementById('review-form-wrap').style.display = 'none';
+  renderReviews(currentProduct);
+}
+</script>
+</body>
+</html>

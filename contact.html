@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Contact – Milybo DZ | تواصل معنا</title>
+  <meta name="description" content="Contactez Milybo DZ. Notre équipe répond sous 24h sur WhatsApp et par email pour toute question sur nos vêtements bébé." />
+  <meta name="keywords" content="vêtements bébé Algérie, habits bébé DZ, ملابس أطفال, milybo dz, e-commerce algérie" />
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" type="image/png" href="images/milybo.jpg"/>
+  <style>
+    .contact-layout{display:grid;grid-template-columns:1fr 380px;gap:32px;padding:40px;max-width:1100px;margin:0 auto;align-items:start;}
+    .contact-info-card{background:white;border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:28px;margin-bottom:16px;}
+    .contact-method{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--cream);}
+    .contact-method:last-child{border-bottom:none;}
+    .c-icon{width:44px;height:44px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+    .c-icon.rose{background:var(--rose-pale);}
+    .c-icon.green{background:var(--mint-pale);}
+    .c-icon.blue{background:var(--sky-pale);}
+    .c-label{font-size:.75rem;color:var(--text-soft);margin-bottom:2px;}
+    .c-value{font-size:.9rem;font-weight:700;color:var(--text-dark);}
+    .c-value a{color:var(--rose);text-decoration:none;}
+    .map-placeholder{background:linear-gradient(135deg,var(--rose-pale),var(--mint-pale));border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:40px 20px;text-align:center;margin-top:16px;}
+    .faq-item{border-bottom:1px solid var(--cream);padding:14px 0;cursor:pointer;}
+    .faq-q{font-weight:700;font-size:.88rem;color:var(--text-dark);display:flex;justify-content:space-between;align-items:center;}
+    .faq-a{font-size:.82rem;color:var(--text-mid);line-height:1.7;margin-top:10px;display:none;}
+    .faq-a.open{display:block;}
+    @media(max-width:900px){.contact-layout{grid-template-columns:1fr;padding:20px;}}
+  </style>
+</head>
+<body>
+<header class="header" id="main-header">
+  <div class="header-top">🚚 Livraison gratuite dès <span>5 000 DA</span> · 💵 Cash à la livraison</div>
+  <div class="header-main">
+    <a href="index.html" class="logo"><div class="logo-mark"><img src="images/milybo.jpg" alt="Milybo DZ"/></div><div class="logo-text"><div class="logo-name">Milybo <span class="dz">DZ</span></div><span class="logo-sub">Vêtements Bébé · ملابس أطفال</span></div></a>
+    <div class="search-bar"><input type="text" placeholder="Rechercher…" id="search-input"/><button type="button">🔍</button></div>
+    <div class="header-actions">
+      <button class="burger" id="burger-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="nav" id="main-nav">
+    <a href="index.html" class="nav-link">🏠 Accueil</a><a href="boutique.html" class="nav-link">👗 Boutique</a>
+    <a href="apropos.html" class="nav-link">💛 À propos</a><a href="contact.html" class="nav-link active">📞 Contact</a>
+  </nav>
+</header>
+<div class="breadcrumb"><a href="index.html">🏠 Accueil</a><span class="sep">›</span><span class="current">📞 Contact</span></div>
+
+<div style="background:linear-gradient(135deg,var(--rose-pale),var(--sky-pale));padding:50px 40px;text-align:center;">
+  <h1 style="font-size:1.9rem;font-weight:900;color:var(--text-dark);margin-bottom:8px;">📞 Contactez-nous</h1>
+  <p style="color:var(--text-mid);margin-bottom:4px;">Nous répondons dans les 24h · نرد عليكم خلال 24 ساعة</p>
+  <div style="font-family:var(--font-arabic);color:var(--text-soft);">تواصلي معنا بكل سهولة</div>
+</div>
+
+<div class="contact-layout">
+  <!-- FORMULAIRE -->
+  <div>
+    <div style="background:white;border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;">
+      <h2 style="font-size:1rem;font-weight:800;color:var(--text-dark);margin-bottom:20px;">✉️ Envoyer un message · <span style="font-family:var(--font-arabic);font-size:.82rem;color:var(--text-soft);">أرسل رسالة</span></h2>
+      <form id="contact-form">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" id="c-prenom" placeholder="Amira" required/></div>
+          <div class="form-group"><label class="form-label">Nom</label><input class="form-input" id="c-nom" placeholder="Benali" required/></div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Email</label><input class="form-input" id="c-email" type="email" placeholder="amira@email.com" required/></div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label">Téléphone (optionnel)</label>
+          <div class="phone-wrap"><span class="phone-prefix">+213</span><input class="form-input phone-input" id="c-phone" placeholder="0XXXXXXXXX"/></div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label">Sujet · <span style="font-family:var(--font-arabic);color:var(--text-soft);font-size:.75rem;">الموضوع</span></label>
+          <select class="form-input" id="c-sujet">
+            <option value="">Sélectionnez un sujet…</option>
+            <option>📦 Suivi de commande</option>
+            <option>🔄 Échange / Retour</option>
+            <option>💳 Paiement</option>
+            <option>👗 Question produit</option>
+            <option>🚚 Livraison</option>
+            <option>💬 Autre</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label class="form-label">Message · <span style="font-family:var(--font-arabic);color:var(--text-soft);font-size:.75rem;">رسالتك</span></label>
+          <textarea class="form-input" id="c-message" placeholder="Décrivez votre demande… / صفي طلبك" style="min-height:120px;" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">📨 Envoyer le message</button>
+        <div style="font-family:var(--font-arabic);text-align:center;font-size:.75rem;color:var(--text-soft);margin-top:8px;">إرسال الرسالة</div>
+      </form>
+    </div>
+
+    <!-- FAQ -->
+    <div style="background:white;border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:28px;">
+      <h2 style="font-size:1rem;font-weight:800;color:var(--text-dark);margin-bottom:16px;">❓ Questions fréquentes · <span style="font-family:var(--font-arabic);font-size:.8rem;color:var(--text-soft);">أسئلة شائعة</span></h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Comment passer une commande ? <span>+</span></div>
+        <div class="faq-a">Sélectionnez le vêtement de votre choix, choisissez la taille puis cliquez sur "Commander via WhatsApp". Votre commande sera enregistrée et vous serez redirigé pour finaliser avec nous. الطلب يتم بسهولة عبر واتساب بالضغط على زر الطلب.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Quel est le délai de livraison ? <span>+</span></div>
+        <div class="faq-a">Alger et environs : 24–48h. Nord Algérie : 2–3 jours. Sud Algérie : 3–5 jours. التوصيل لكل الولايات خلال 2-5 أيام.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Peut-on échanger un article ? <span>+</span></div>
+        <div class="faq-a">Oui ! Échange gratuit sous 7 jours si l'article est intact et non lavé. Contactez-nous sur WhatsApp. Estéchange مجاني خلال 7 أيام من الاستلام.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Quels modes de paiement acceptez-vous ? <span>+</span></div>
+        <div class="faq-a">Cash à la livraison (principal), virement CCP/Baridimob. BaridiPay disponible prochainement. الدفع نقداً عند الاستلام أو تحويل بريدي.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Comment suivre ma commande ? <span>+</span></div>
+        <div class="faq-a">Après confirmation sur WhatsApp, nous vous fournirons un numéro de suivi de colis Yalidine/Ecotrack/Maystro dès son expédition. نوفر لكم رقم التتبع مباشرة بعد الشحن.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFOS CONTACT -->
+  <div>
+    <div class="contact-info-card">
+      <h3 style="font-size:.95rem;font-weight:800;color:var(--text-dark);margin-bottom:14px;">📋 Nos coordonnées</h3>
+      <div class="contact-method">
+        <div class="c-icon green">💬</div>
+        <div><div class="c-label">WhatsApp (réponse rapide)</div><div class="c-value"><a href="https://wa.me/213559449995" target="_blank">+213 559 44 99 95</a></div><div style="font-size:.74rem;color:var(--text-soft);">7j/7 · 8h–20h</div></div>
+      </div>
+      <div class="contact-method">
+        <div class="c-icon rose">📧</div>
+        <div><div class="c-label">Email</div><div class="c-value"><a href="mailto:milybobebe@gmail.com">milybobebe@gmail.com</a></div><div style="font-size:.74rem;color:var(--text-soft);">Réponse sous 24h</div></div>
+      </div>
+      <div class="contact-method">
+        <div class="c-icon blue">📸</div>
+        <div><div class="c-label">Instagram</div><div class="c-value"><a href="https://www.instagram.com/milybo_tlemcen?igsh=MXNlMnpzYnJheDdwcg==" target="_blank">@milybo_tlemcen</a></div><div style="font-size:.74rem;color:var(--text-soft);">Messages directs</div></div>
+      </div>
+      <div class="contact-method">
+        <div class="c-icon rose">📘</div>
+        <div><div class="c-label">Facebook</div><div class="c-value"><a href="https://www.facebook.com/share/1BFJJEXAPN/" target="_blank">Milybo Bebe</a></div></div>
+      </div>
+      <div class="contact-method">
+        <div class="c-icon green">⏰</div>
+        <div><div class="c-label">Horaires</div><div class="c-value">Sam – Jeu · 8h – 20h</div><div style="font-size:.74rem;color:var(--text-soft);">GMT+1 (Alger)</div></div>
+      </div>
+    </div>
+
+    <!-- Localisation -->
+    <div class="contact-info-card">
+      <h3 style="font-size:.95rem;font-weight:800;color:var(--text-dark);margin-bottom:14px;">📍 Localisation · الموقع</h3>
+      <div class="map-placeholder">
+        <div style="font-size:3rem;margin-bottom:12px;">🗺️</div>
+        <strong style="color:var(--text-dark);display:block;margin-bottom:4px;">Alger, Algérie 🇩🇿</strong>
+        <div style="font-size:.8rem;color:var(--text-mid);margin-bottom:10px;">Livraison nationale · 58 wilayas couvertes</div>
+        <div style="font-family:var(--font-arabic);font-size:.78rem;color:var(--text-soft);">توصيل لكل الولايات الجزائرية</div>
+      </div>
+    </div>
+
+    <!-- WhatsApp CTA -->
+    <a href="https://wa.me/213559449995?text=Bonjour%20Milybo%20DZ%2C%20j'ai%20une%20question." target="_blank"
+       style="display:flex;align-items:center;gap:14px;background:#25D366;color:white;border-radius:var(--radius-lg);padding:18px 20px;text-decoration:none;font-weight:700;margin-top:8px;transition:opacity .2s;">
+      <span style="font-size:1.8rem;">💬</span>
+      <div>
+        <div style="font-size:.9rem;">Contacter sur WhatsApp</div>
+        <div style="font-family:var(--font-arabic);font-size:.78rem;opacity:.9;">تواصل عبر واتساب الآن</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="footer-logo-name">Milybo DZ 👶</div><p>Boutique algérienne de vêtements bébé.</p><div class="footer-tagline-ar">أجمل ملابس الأطفال بالجزائر</div><div class="social-links"><a href="https://www.instagram.com/milybo_tlemcen?igsh=MXNlMnpzYnJheDdwcg==" class="social-link instagram" target="_blank">Instagram</a><a href="https://www.facebook.com/share/1BFJJEXAPN/" class="social-link facebook" target="_blank">Facebook</a><a href="https://wa.me/213559449995" class="social-link whatsapp" target="_blank">WhatsApp</a></div></div>
+    <div><h4>Navigation<span class="ar">روابط</span></h4><div class="footer-links"><a href="index.html">🏠 Accueil</a><a href="boutique.html">👗 Boutique</a><a href="apropos.html">💛 À propos</a><a href="contact.html">📞 Contact</a></div></div>
+    <div><h4>Légal<span class="ar">قانوني</span></h4><div class="footer-links"><a href="cgv.html">📄 CGV</a><a href="retours.html">🔄 Retours</a></div></div>
+    <div><h4>Horaires<span class="ar">أوقات العمل</span></h4><div class="footer-links"><a href="#">⏰ Sam–Jeu 8h–20h</a><a href="#">📞 +213 XXX XXX XXX</a><a href="#">📧 contact@milybodz.dz</a></div></div>
+  </div>
+  <div class="footer-bottom"><div class="footer-bottom-left">© 2025 Milybo DZ · 🇩🇿</div><div class="footer-bottom-right"><a href="cgv.html">CGV</a><span class="footer-bottom-sep">|</span><a href="retours.html">Retours</a></div></div>
+</footer>
+<div id="toast-container" class="toast-container"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/marketing.js"></script>
+<script>
+document.getElementById('contact-form')?.addEventListener('submit', e => {
+  e.preventDefault();
+  showToast('✅ Message envoyé ! Nous répondrons sous 24h. شكراً لتواصلك معنا', 'success');
+  e.target.reset();
+});
+function toggleFaq(el) {
+  const ans = el.querySelector('.faq-a');
+  const icon = el.querySelector('.faq-q span');
+  const open = ans.classList.toggle('open');
+  icon.textContent = open ? '−' : '+';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Milybo DZ – Vêtements Bébé Algérie | ملابس أطفال</title>
+  <meta name="description" content="Milybo DZ – La boutique de vêtements pour bébé (0-36 mois) en Algérie. Qualité premium, livraison partout en Algérie. أجمل ملابس الأطفال بالجزائر."/>
+  <meta name="keywords" content="vêtements bébé Algérie, habits bébé DZ, ملابس أطفال, milybo dz, e-commerce algérie" />
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" type="image/png" href="images/logo.png"/>
+  <style>
+    /* ── Nouveautés / Meilleures ventes tabs ── */
+    .home-tabs{display:flex;gap:0;border-bottom:2px solid var(--cream-dark);margin-bottom:32px;}
+    .home-tab{padding:12px 28px;font-weight:700;font-size:.9rem;cursor:pointer;border:none;background:none;font-family:var(--font-main);color:var(--text-soft);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+    .home-tab.active{color:var(--rose);border-bottom-color:var(--rose);}
+    /* ── Garanties ── */
+    .garanties-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:0 40px 60px;}
+    .garantie-card{background:white;border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;transition:transform .3s,box-shadow .3s;}
+    .garantie-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+    .garantie-icon{font-size:2.8rem;margin-bottom:14px;}
+    .garantie-title{font-weight:800;font-size:.95rem;color:var(--text-dark);margin-bottom:6px;}
+    .garantie-desc{font-size:.8rem;color:var(--text-soft);line-height:1.6;}
+    .garantie-desc-ar{font-family:var(--font-arabic);font-size:.75rem;color:var(--text-soft);direction:rtl;margin-top:4px;}
+    /* ── Trust bar ── */
+    .trust-bar{background:linear-gradient(135deg,var(--rose-pale),var(--sky-pale),var(--mint-pale));border-top:1.5px solid var(--cream-dark);border-bottom:1.5px solid var(--cream-dark);padding:20px 40px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:32px;}
+    .trust-item{display:flex;align-items:center;gap:10px;font-size:.84rem;font-weight:600;color:var(--text-dark);}
+    .trust-item span{font-size:1.4rem;}
+    /* ── Stats ── */
+    .stats-bar{background:var(--rose);padding:28px 40px;display:flex;justify-content:center;gap:60px;flex-wrap:wrap;}
+    .stat-item{text-align:center;color:white;}
+    .stat-num{font-size:2rem;font-weight:900;display:block;line-height:1;}
+    .stat-lbl{font-size:.78rem;opacity:.85;margin-top:4px;}
+    @media(max-width:768px){.garanties-grid{padding:0 16px 40px;}.trust-bar{padding:16px;gap:16px;}.stats-bar{gap:24px;padding:20px;}}
+  </style>
+</head>
+<body>
+
+<header class="header" id="main-header">
+  <div class="header-top">🚚 Livraison rapide partout en Algérie &nbsp;·&nbsp; توصيل سريع لكل الولايات &nbsp;·&nbsp; 💵 Cash à la livraison</div>
+  <div class="header-main">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><img src="images/milybo.jpg" alt="Milybo DZ"/></div>
+      <div class="logo-text">
+        <div class="logo-name">Milybo <span class="dz">DZ</span></div>
+        <span class="logo-sub">Vêtements Bébé · ملابس أطفال · 0–36 mois</span>
+      </div>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Rechercher un article… / ابحث عن منتج" id="search-input"/>
+      <button type="button" aria-label="Rechercher">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="burger" aria-label="Menu" id="burger-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="nav" id="main-nav">
+    <a href="index.html" class="nav-link active">🏠 Accueil<span class="ar-label">الرئيسية</span></a>
+    <a href="boutique.html" class="nav-link">👗 Boutique<span class="ar-label">المتجر</span></a>
+    <a href="boutique.html?ageGroup=nouveau-ne" class="nav-link">🍼 Nouveau-né</a>
+    <a href="boutique.html?ageGroup=nourrisson" class="nav-link">🌟 Nourrisson</a>
+    <a href="boutique.html?ageGroup=tout-petit" class="nav-link">🎈 Tout-petit</a>
+    <a href="apropos.html" class="nav-link">💛 À propos</a>
+    <a href="contact.html" class="nav-link">📞 Contact<span class="ar-label">تواصل</span></a>
+  </nav>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <img src="images/hero-banner.jpg" alt="Milybo DZ – Collection Bébé" class="hero-bg"/>
+  <div class="hero-content">
+    <div class="hero-badge">✨ Nouvelle Collection Printemps–Été 2025</div>
+    <h1>Habille ton<br/><span class="accent-rose">petit</span> <span class="accent-sky">chéri</span> <span class="accent-mint">💕</span></h1>
+    <div class="hero-ar">البسي بيبيك بأحلى الألبسة<br/>جودة راقية من الجزائر 🇩🇿</div>
+    <p class="hero-desc">Vêtements doux, confortables et de qualité premium pour bébés de 0 à 36 mois. Livraison partout en Algérie.</p>
+    <div class="hero-actions">
+      <a href="boutique.html" class="btn btn-primary">🛍️ Voir la collection</a>
+      <a href="apropos.html" class="btn btn-cream">Notre histoire ↓</a>
+    </div>
+  </div>
+  <div class="hero-deco">
+    <div class="hero-deco-card rose">🍼<span>Nouveau-né</span></div>
+    <div class="hero-deco-card blue">🌟<span>Nourrisson</span></div>
+    <div class="hero-deco-card cream">👣<span>Premiers pas</span></div>
+    <div class="hero-deco-card mint">🎈<span>Tout-petit</span></div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-num">2 500+</span><div class="stat-lbl">Mamans satisfaites · أمهات سعيدات</div></div>
+  <div class="stat-item"><span class="stat-num">58</span><div class="stat-lbl">Wilayas livrées · ولاية</div></div>
+  <div class="stat-item"><span class="stat-num">16</span><div class="stat-lbl">Articles disponibles · منتج</div></div>
+  <div class="stat-item"><span class="stat-num">4.8★</span><div class="stat-lbl">Note moyenne · تقييم</div></div>
+</div>
+
+<!-- ═══ TRUST BAR ═══ -->
+<div class="trust-bar">
+  <div class="trust-item"><span>🔒</span> Commande 100% sécurisée</div>
+  <div class="trust-item"><span>💵</span> Cash à la livraison uniquement</div>
+  <div class="trust-item"><span>🚚</span> Livraison partout en Algérie</div>
+  <div class="trust-item"><span>🌿</span> Coton naturel certifié</div>
+  <div class="trust-item"><span>🔄</span> Échange sous 7 jours</div>
+  <div class="trust-item"><span>🇩🇿</span> Marque 100% algérienne</div>
+</div>
+
+<!-- ═══ FEATURES STRIP ═══ -->
+<div class="features-strip">
+  <div class="feature-item"><div class="feature-icon-wrap fi-rose">🚚</div><div><h4>Livraison rapide</h4><p>24–72h · Partout en Algérie</p></div></div>
+  <div class="feature-item"><div class="feature-icon-wrap fi-mint">💵</div><div><h4>Cash à la livraison</h4><p>الدفع عند الاستلام</p></div></div>
+  <div class="feature-item"><div class="feature-icon-wrap fi-sky">🌿</div><div><h4>Coton 100% naturel</h4><p>Doux pour la peau bébé</p></div></div>
+  <div class="feature-item"><div class="feature-icon-wrap fi-cream">🔄</div><div><h4>Échange gratuit</h4><p>استبدال مجاني · 7 jours</p></div></div>
+</div>
+
+<!-- ═══ CATEGORIES ═══ -->
+<section class="section" id="categories">
+  <div class="section-header">
+    <div class="section-tag">📦 Par tranche d'âge</div>
+    <h2>Trouvez la taille parfaite</h2>
+    <p>Sélectionnez la tranche d'âge de votre bébé · اختاري عمر بيبيك</p>
+  </div>
+  <div class="categories-grid">
+    <div class="category-card" onclick="location.href='boutique.html?ageGroup=nouveau-ne'">
+      <div class="cat-bg cat-bg-rose"></div><div class="cat-emoji">🍼</div>
+      <div class="cat-info"><h3>Nouveau-né</h3><div class="age">0–3 mois</div><span class="ar-label">من 0 إلى 3 أشهر</span></div>
+    </div>
+    <div class="category-card" onclick="location.href='boutique.html?ageGroup=nourrisson'">
+      <div class="cat-bg cat-bg-sky"></div><div class="cat-emoji">🌟</div>
+      <div class="cat-info"><h3>Nourrisson</h3><div class="age">3–12 mois</div><span class="ar-label">من 3 إلى 12 شهرا</span></div>
+    </div>
+    <div class="category-card" onclick="location.href='boutique.html?ageGroup=tout-petit'">
+      <div class="cat-bg cat-bg-cream"></div><div class="cat-emoji">👣</div>
+      <div class="cat-info"><h3>Tout-petit</h3><div class="age">12–36 mois</div><span class="ar-label">من 12 إلى 36 شهرا</span></div>
+    </div>
+    <div class="category-card" onclick="location.href='boutique.html?occasion=fete'">
+      <div class="cat-bg cat-bg-mint"></div><div class="cat-emoji">🎉</div>
+      <div class="cat-info"><h3>Fête & Cérémonie</h3><div class="age">0–36 mois</div><span class="ar-label">ملابس المناسبات</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NOUVEAUTÉS + MEILLEURES VENTES ═══ -->
+<section class="section section-rose" id="products-home">
+  <div class="section-header">
+    <div class="home-tabs">
+      <button class="home-tab active" id="tab-new" onclick="switchTab('new')">🆕 Nouveautés</button>
+      <button class="home-tab" id="tab-best" onclick="switchTab('best')">🏆 Meilleures ventes</button>
+      <button class="home-tab" id="tab-promo" onclick="switchTab('promo')">🔥 Promotions</button>
+    </div>
+  </div>
+  <div class="products-grid" id="home-products-grid"></div>
+  <div style="text-align:center;margin-top:40px;">
+    <a href="boutique.html" class="btn btn-primary">Voir tout le catalogue →</a>
+  </div>
+</section>
+
+<!-- ═══ NOS GARANTIES ═══ -->
+<section class="section" style="padding-bottom:0;">
+  <div class="section-header">
+    <div class="section-tag">🛡️ Notre engagement</div>
+    <h2>Nos garanties Milybo DZ</h2>
+    <p>Votre satisfaction est notre priorité · رضاكم أولويتنا</p>
+  </div>
+</section>
+<div class="garanties-grid">
+  <div class="garantie-card">
+    <div class="garantie-icon">🌿</div>
+    <div class="garantie-title">Qualité Premium</div>
+    <div class="garantie-desc">Matières certifiées 100% naturelles, douces pour la peau sensible de bébé.</div>
+    <div class="garantie-desc-ar">خامات طبيعية 100% ناعمة على بشرة البيبي</div>
+  </div>
+  <div class="garantie-card">
+    <div class="garantie-icon">🔄</div>
+    <div class="garantie-title">Échange sous 7 jours</div>
+    <div class="garantie-desc">Article ne convient pas ? Échangez-le gratuitement dans les 7 jours.</div>
+    <div class="garantie-desc-ar">استبدال مجاني خلال 7 أيام من الاستلام</div>
+  </div>
+  <div class="garantie-card">
+    <div class="garantie-icon">🚚</div>
+    <div class="garantie-title">Livraison Express</div>
+    <div class="garantie-desc">Livraison 24–72h via Yalidine, Maystro, Procolis, Ecotrack.</div>
+    <div class="garantie-desc-ar">توصيل سريع لكل ولايات الجزائر</div>
+  </div>
+  <div class="garantie-card">
+    <div class="garantie-icon">💵</div>
+    <div class="garantie-title">Paiement à la livraison</div>
+    <div class="garantie-desc">Payez uniquement à la réception. Aucun risque, aucun prépaiement.</div>
+    <div class="garantie-desc-ar">الدفع فقط عند استلام الطلب. بدون مخاطر</div>
+  </div>
+  <div class="garantie-card">
+    <div class="garantie-icon">🇩🇿</div>
+    <div class="garantie-title">Marque algérienne</div>
+    <div class="garantie-desc">Conçu et sélectionné en Algérie pour les bébés algériens.</div>
+    <div class="garantie-desc-ar">علامة جزائرية 100% تخدم الأسرة الجزائرية</div>
+  </div>
+  <div class="garantie-card">
+    <div class="garantie-icon">📞</div>
+    <div class="garantie-title">Service client</div>
+    <div class="garantie-desc">Notre équipe répond 7j/7 de 8h à 20h sur WhatsApp et téléphone.</div>
+    <div class="garantie-desc-ar">فريقنا متاح 7 أيام/7 من 8ص إلى 8م</div>
+  </div>
+</div>
+
+<!-- ═══ PROMO BANNER ═══ -->
+<div class="promo-banner">
+  <h2>Livraison <span>GRATUITE</span> dès 5 000 DA 🎀</h2>
+  <div class="promo-ar">توصيل مجاني من 5000 دج لكل ولايات الجزائر 🇩🇿</div>
+  <p>Commandez maintenant – Paiement cash uniquement à la livraison · الدفع نقداً عند الوصول</p>
+  <a href="boutique.html" class="btn btn-sky" style="display:inline-flex;">🛍️ Commander maintenant</a>
+</div>
+
+<!-- ═══ À PROPOS TEASER ═══ -->
+<section class="section">
+  <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:0 40px;">
+    <div>
+      <div class="section-tag" style="margin-bottom:12px;">💛 Notre histoire</div>
+      <h2 style="font-size:1.6rem;font-weight:900;color:var(--text-dark);margin-bottom:14px;">Née d'un amour de maman 👶</h2>
+      <p style="color:var(--text-mid);line-height:1.8;margin-bottom:14px;">Milybo DZ est née de la passion d'une maman algérienne pour habiller son bébé avec douceur et style. Chaque article est choisi avec amour pour votre petit trésor.</p>
+      <p style="font-family:var(--font-arabic);direction:rtl;color:var(--text-soft);font-size:.88rem;line-height:1.8;margin-bottom:20px;">ميليبو دي زاد من حب أم جزائرية لبيبيها · كل قطعة مختارة بعناية وحب</p>
+      <a href="apropos.html" class="btn btn-primary btn-sm">Découvrir notre histoire →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:var(--rose-pale);border:1.5px solid var(--rose-light);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">👶</div>
+        <div style="font-weight:800;color:var(--rose);font-size:1.1rem;">2022</div>
+        <div style="font-size:.75rem;color:var(--text-soft);">Année de création</div>
+      </div>
+      <div style="background:var(--sky-pale);border:1.5px solid var(--sky-light);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">🌍</div>
+        <div style="font-weight:800;color:var(--sky);font-size:1.1rem;">58</div>
+        <div style="font-size:.75rem;color:var(--text-soft);">Wilayas couvertes</div>
+      </div>
+      <div style="background:var(--mint-pale);border:1.5px solid var(--mint-light);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">❤️</div>
+        <div style="font-weight:800;color:var(--mint);font-size:1.1rem;">2500+</div>
+        <div style="font-size:.75rem;color:var(--text-soft);">Familles heureuses</div>
+      </div>
+      <div style="background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">⭐</div>
+        <div style="font-weight:800;color:var(--text-dark);font-size:1.1rem;">4.8/5</div>
+        <div style="font-size:.75rem;color:var(--text-soft);">Note moyenne</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo-name">Milybo DZ 👶</div>
+      <p>La boutique algérienne de vêtements pour bébé de 0 à 36 mois. Qualité, confort et style.</p>
+      <div class="footer-tagline-ar">أجمل ملابس الأطفال بالجزائر · جودة راقية وأسعار مناسبة</div>
+      <div class="social-links">
+        <a href="https://www.instagram.com/milybo_tlemcen?igsh=MXNlMnpzYnJheDdwcg==" class="social-link instagram" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/share/1BFJJEXAPN/" class="social-link facebook" target="_blank">Facebook</a>
+        <a href="https://wa.me/213559449995" class="social-link whatsapp" target="_blank">WhatsApp</a>
+        <a href="https://www.tiktok.com/@milybo.tlemcen?_r=1&_t=ZS-97eDjbJXBu4" class="social-link tiktok" target="_blank">TikTok</a>
+      </div>
+    </div>
+    <div>
+      <h4>Liens utiles <span class="ar">روابط مفيدة</span></h4>
+      <div class="footer-links">
+        <a href="index.html">🏠 Accueil</a>
+        <a href="boutique.html">👗 Boutique</a>
+        <a href="apropos.html">💛 À propos</a>
+        <a href="contact.html">📞 Contact</a>
+      </div>
+    </div>
+    <div><h4>Catégories<span class="ar">أقسام</span></h4><div class="footer-links">
+      <a href="boutique.html?ageGroup=nouveau-ne">🍼 Nouveau-né</a>
+      <a href="boutique.html?ageGroup=nourrisson">🌟 Nourrisson</a>
+      <a href="boutique.html?ageGroup=tout-petit">🎈 Tout-petit</a>
+      <a href="boutique.html?occasion=fete">🎉 Articles Fête</a>
+      <a href="boutique.html?category=coffret">🎁 Coffrets Cadeaux</a>
+    </div></div>
+    <div><h4>Aide<span class="ar">المساعدة</span></h4><div class="footer-links">
+      <a href="contact.html">📞 Nous contacter</a>
+      <a href="retours.html">🔄 Politique retours</a>
+      <a href="cgv.html">📄 CGV</a>
+      <a href="#">📍 Alger 🇩🇿</a>
+      <a href="#">💵 Cash à la livraison</a>
+    </div></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">© 2025 Milybo DZ · Tous droits réservés · 🇩🇿 Fabriqué avec ❤️ en Algérie</div>
+    <div class="footer-bottom-right">
+      <a href="cgv.html">CGV</a><span class="footer-bottom-sep">|</span>
+      <a href="retours.html">Retours</a><span class="footer-bottom-sep">|</span>
+      <a href="#">Confidentialité</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container"></div>
+<!-- ═══ SCRIPTS ═══ -->
+<script src="config.js"></script>
+<script type="module" src="js/firebase-db.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/marketing.js"></script>
+<script>
+let currentTab = 'new';
+let loadedProducts = [];
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.home-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  
+  const sourceList = loadedProducts.length ? loadedProducts : (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
+  let list = [];
+  if (tab === 'new')   list = sourceList.filter(p => p.badge === 'new').slice(0,8);
+  if (tab === 'best')  list = [...sourceList].sort((a,b) => b.rating - a.rating).slice(0,8);
+  if (tab === 'promo') list = sourceList.filter(p => p.oldPrice).slice(0,8);
+  if (!list.length)    list = sourceList.slice(0,8);
+  
+  const grid = document.getElementById('home-products-grid');
+  if (grid) {
+    grid.innerHTML = list.map(p => renderProductCard(p)).join('');
+  }
+  setTimeout(() => initAnimations(), 50);
+}
+
+async function loadFirebaseData() {
+  if (window.db) {
+    loadedProducts = await window.db.getProducts();
+    switchTab(currentTab);
+  }
+}
+
+window.addEventListener("firebase-ready", loadFirebaseData);
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.db) {
+    loadFirebaseData();
+  } else {
+    switchTab('new');
+  }
+});
+</script>
+</body>
+</html>
