@@ -6,6 +6,13 @@
   <title>Produit – Milybo DZ | ملابس أطفال</title>
   <meta name="description" content="Découvrez nos vêtements bébés de qualité supérieure sur Milybo DZ. Coton doux et naturel pour votre bébé." />
   <meta name="keywords" content="vêtements bébé Algérie, habits bébé DZ, ملابس أطفال, milybo dz, e-commerce algérie" />
+  
+  <!-- Open Graph Meta Tags (SEO) -->
+  <meta property="og:title" id="og-title" content="Milybo DZ – Boutique Vêtements Bébé" />
+  <meta property="og:description" id="og-desc" content="Vêtements doux et de qualité premium pour bébés de 0 à 36 mois. Livraison partout en Algérie." />
+  <meta property="og:image" id="og-image" content="https://younes15-reda.github.io/Milybo/images/milybo.jpg" />
+  <meta property="og:type" content="product" />
+  <meta property="og:site_name" content="Milybo DZ" />
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="icon" type="image/png" href="images/milybo.jpg"/>
   <style>
@@ -165,6 +172,7 @@
 <script src="config.js"></script>
 <script type="module" src="js/firebase-db.js"></script>
 <script src="js/data.js"></script>
+<script src="js/livraison.js"></script>
 <script src="js/main.js"></script>
 <script src="js/marketing.js"></script>
 <script>
@@ -191,6 +199,14 @@ async function initProductPage() {
   renderProductDetail(p);
   renderReviews(p);
   renderRelated(p);
+  
+  // Mettre à jour les balises Open Graph
+  document.getElementById('og-title')?.setAttribute('content', p.name);
+  document.getElementById('og-desc')?.setAttribute('content', p.nameAr || `${p.categoryLabel} de qualité supérieure`);
+  
+  // Remplir le sélecteur de Wilayas
+  populateWilayaSelect('order-wilaya');
+  document.getElementById('order-wilaya')?.addEventListener('change', updateOrderSummary);
 }
 
 window.addEventListener('firebase-ready', initProductPage);
@@ -253,9 +269,41 @@ function renderProductDetail(p) {
           <button class="qty-btn" onclick="changeQty(1)">+</button>
         </div>
       </div>
-      <div class="action-btns">
-        <button class="btn btn-primary" onclick="orderViaWhatsApp()" style="flex:1; background: #25D366; color: white; border: none;">📱 Commander via WhatsApp</button>
-        <button class="wishlist-btn" onclick="this.innerHTML='❤️ Sauvegardé';showToast('❤️ Ajouté aux favoris !','success');">🤍 Favoris</button>
+      <!-- Formulaire de commande express -->
+      <div style="background:var(--off-white); border:2px solid var(--cream); border-radius:var(--radius-lg); padding:24px; margin-top:20px; margin-bottom:20px;">
+        <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-dark); margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+          <span>⚡</span> Commande Rapide / طلب سريع
+        </h3>
+        <div style="font-size:.78rem; color:var(--text-soft); margin-bottom:16px;">Veuillez remplir vos informations pour valider votre commande !</div>
+        
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:.82rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Nom Complet / الاسم الكامل *</label>
+          <input type="text" id="order-fullname" placeholder="Ex: Amira Benali" style="width:100%; padding:10px 14px; border:2px solid var(--cream-dark); border-radius:var(--radius-md); font-family:inherit; font-size:.88rem; outline:none;" required/>
+        </div>
+        
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:.82rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Numéro de Téléphone / رقم الهاتف *</label>
+          <div style="display:flex; align-items:center;">
+            <span style="background:var(--cream); padding:10px 12px; border:2px solid var(--cream-dark); border-right:none; border-radius:var(--radius-md) 0 0 var(--radius-md); font-size:.88rem; font-weight:700; color:var(--text-dark);">+213</span>
+            <input type="tel" id="order-phone" placeholder="05XXXXXXXX ou 06XXXXXXXX" style="width:100%; padding:10px 14px; border:2px solid var(--cream-dark); border-radius: 0 var(--radius-md) var(--radius-md) 0; font-family:inherit; font-size:.88rem; outline:none;" required/>
+          </div>
+        </div>
+        
+        <div style="margin-bottom:16px;">
+          <label style="display:block; font-size:.82rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Wilaya / الولاية *</label>
+          <select id="order-wilaya" style="width:100%; padding:10px 14px; border:2px solid var(--cream-dark); border-radius:var(--radius-md); font-family:inherit; font-size:.88rem; outline:none;" required>
+            <option value="">Sélectionnez votre wilaya… / اختاري ولايتك</option>
+          </select>
+        </div>
+        
+        <div id="order-shipping-info" style="font-size:.82rem; font-weight:600; color:var(--text-dark); background:white; padding:12px; border-radius:var(--radius-md); margin-bottom:16px; border:1.5px solid var(--cream); display:none; line-height:1.6;">
+          <div>🚚 Livraison : <span id="order-shipping-cost" style="font-weight:800; color:var(--sky);">0 DA</span> (⏱️ <span id="order-shipping-delay">-</span>)</div>
+          <div style="margin-top:4px; font-size:.92rem; font-weight:800; color:var(--rose);">Total à payer : <span id="order-total-price">0 DA</span></div>
+        </div>
+
+        <button class="btn btn-primary" onclick="confirmExpressOrder()" style="width:100%; background:#25D366; color:white; border:none; padding:14px; font-size:.95rem; font-weight:800; border-radius:var(--radius-pill); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(37,211,102,.35);">
+          <span>📱</span> Confirmer ma Commande via WhatsApp
+        </button>
       </div>
       <div class="delivery-info">
         <span style="font-size:1.4rem;">🚚</span>
@@ -288,25 +336,85 @@ function changeQty(delta) {
   v = Math.max(1, Math.min(v, currentProduct?.stock || 10));
   input.value = v;
   selectedQty  = v;
+  updateOrderSummary();
 }
 
-async function orderViaWhatsApp() {
+function updateOrderSummary() {
+  const wilayaSelect = document.getElementById('order-wilaya');
+  if (!wilayaSelect) return;
+  const wilayaCode = wilayaSelect.value;
+  const shippingInfo = document.getElementById('order-shipping-info');
+  if (!shippingInfo) return;
+  
+  if (!wilayaCode) {
+    shippingInfo.style.display = 'none';
+    return;
+  }
+  
+  const subtotal = currentProduct.price * selectedQty;
+  const shippingCost = getDeliveryPrice(wilayaCode, subtotal);
+  const zoneInfo = getZoneInfo(wilayaCode);
+  
+  document.getElementById('order-shipping-cost').textContent = shippingCost === 0 ? 'Gratuite' : `${shippingCost} DA`;
+  document.getElementById('order-shipping-delay').textContent = zoneInfo.delay;
+  document.getElementById('order-total-price').textContent = `${(subtotal + shippingCost).toLocaleString('fr-DZ')} DA`;
+  shippingInfo.style.display = 'block';
+}
+
+async function confirmExpressOrder() {
   if (!selectedSize) { showToast('⚠️ Veuillez sélectionner une taille !', 'error'); return; }
+  
+  const fullname = document.getElementById('order-fullname').value.trim();
+  const phone = document.getElementById('order-phone').value.trim();
+  const wilayaSelect = document.getElementById('order-wilaya');
+  const wilayaCode = wilayaSelect ? wilayaSelect.value : '';
+  
+  if (!fullname) { showToast('⚠️ Veuillez entrer votre Nom Complet !', 'error'); return; }
+  if (!phone || phone.length < 9) { showToast('⚠️ Veuillez entrer un Numéro de Téléphone valide !', 'error'); return; }
+  if (!wilayaCode) { showToast('⚠️ Veuillez sélectionner votre Wilaya !', 'error'); return; }
+  
+  const wilayaName = wilayaSelect.options[wilayaSelect.selectedIndex].text.split('–')[1].split('(')[0].trim();
+  const subtotal = currentProduct.price * selectedQty;
+  const shippingCost = getDeliveryPrice(wilayaCode, subtotal);
+  const total = subtotal + shippingCost;
+  
+  const trackingNumber = generateTrackingNumber();
+  
   const orderData = {
+    tracking: trackingNumber,
+    nomClient: fullname,
+    telephone: phone,
+    wilaya: wilayaName,
+    wilayaCode: wilayaCode,
     produit: currentProduct.name,
     produitId: currentProduct.id,
     taille: selectedSize,
     quantite: selectedQty,
     prixUnitaire: currentProduct.price,
-    prixTotal: currentProduct.price * selectedQty,
-    source: 'site_web'
+    fraisLivraison: shippingCost,
+    prixTotal: total,
+    source: 'publicite_sponsorisee',
+    status: 'confirmed'
   };
-  // Enregistrer dans Firestore avant de rediriger
+  
+  showToast('⏳ Enregistrement de votre commande...', 'info');
+  
+  // Enregistrer dans Firestore
   if (window.db) {
-    try { await window.db.createOrder(orderData); } catch(e) { console.warn('Firestore order save failed:', e); }
+    try { 
+      await window.db.createOrder(orderData);
+      showToast('✅ Commande enregistrée ! Ouverture de WhatsApp...', 'success');
+    } catch(e) { 
+      console.warn('Firestore order save failed:', e);
+      showToast('⚠️ Erreur réseau, envoi direct via WhatsApp...', 'error');
+    }
   }
-  const msg = encodeURIComponent(`Bonjour Milybo DZ 👋\nJe souhaite commander :\n🛍️ ${currentProduct.name}\n📏 Taille: ${selectedSize}\n🔢 Quantité: ${selectedQty}\n💰 Prix total: ${(currentProduct.price * selectedQty).toLocaleString('fr-DZ')} DA\n\nMerci !`);
-  window.open(`https://wa.me/213559449995?text=${msg}`, '_blank');
+  
+  const msg = encodeURIComponent(`Bonjour Milybo DZ 👋\nNouvelle commande express :\n\n👤 Client: ${fullname}\n📞 Tél: 0${phone}\n📍 Wilaya: ${wilayaName}\n\n🛍️ Article: ${currentProduct.name}\n📏 Taille: ${selectedSize}\n🔢 Quantité: ${selectedQty}\n💵 Livraison: ${shippingCost === 0 ? 'Gratuite' : shippingCost + ' DA'}\n💰 Total à payer: ${total.toLocaleString('fr-DZ')} DA\n\nMerci de confirmer ma commande !`);
+  
+  setTimeout(() => {
+    window.open(`https://wa.me/213559449995?text=${msg}`, '_blank');
+  }, 1000);
 }
 
 function renderReviews(p) {
