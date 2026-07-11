@@ -12,6 +12,10 @@ import {
   doc, 
   addDoc, 
   setDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
@@ -73,6 +77,30 @@ window.db = {
     }
   },
 
+  // Ajouter ou modifier un produit
+  saveProduct: async (id, productData) => {
+    try {
+      const docRef = doc(firestore, "produits", String(id));
+      await setDoc(docRef, productData, { merge: true });
+      return true;
+    } catch (e) {
+      console.error("Erreur lors de la sauvegarde du produit:", e);
+      throw e;
+    }
+  },
+
+  // Supprimer un produit
+  deleteProduct: async (id) => {
+    try {
+      const docRef = doc(firestore, "produits", String(id));
+      await deleteDoc(docRef);
+      return true;
+    } catch (e) {
+      console.error("Erreur lors de la suppression du produit:", e);
+      throw e;
+    }
+  },
+
   // Récupérer les catégories/types
   getTypes: async () => {
     try {
@@ -90,7 +118,7 @@ window.db = {
           { key: "pyjama", label: "Pyjama", labelAr: "بيجامة" },
           { key: "body", label: "Body", labelAr: "بودي" },
           { key: "ensemble", label: "Ensemble", labelAr: "طقم" },
-          { key: "coffret", label: "Coffret Cadeau", labelAr: "طقم مولود كامل" }
+          { key: "coffret", label: "Coffret Cadeau", labelAr: "طقم" }
         ];
         for (const t of defaultTypes) {
           await setDoc(doc(firestore, "types", t.key), t);
@@ -110,13 +138,37 @@ window.db = {
     }
   },
 
+  // Ajouter ou modifier un type
+  saveType: async (id, typeData) => {
+    try {
+      const docRef = doc(firestore, "types", String(id));
+      await setDoc(docRef, typeData, { merge: true });
+      return true;
+    } catch (e) {
+      console.error("Erreur lors de la sauvegarde du type:", e);
+      throw e;
+    }
+  },
+
+  // Supprimer un type
+  deleteType: async (id) => {
+    try {
+      const docRef = doc(firestore, "types", String(id));
+      await deleteDoc(docRef);
+      return true;
+    } catch (e) {
+      console.error("Erreur lors de la suppression du type:", e);
+      throw e;
+    }
+  },
+
   // Enregistrer une commande
   createOrder: async (orderData) => {
     try {
       const docRef = await addDoc(collection(firestore, "commandes"), {
         ...orderData,
         createdAt: serverTimestamp(),
-        status: "pending"
+        status: "en_attente" // statut par défaut conforme aux consignes
       });
       console.log("Commande enregistrée Firestore ID:", docRef.id);
       return docRef.id;
@@ -124,8 +176,52 @@ window.db = {
       console.error("Erreur lors de l'enregistrement de la commande:", e);
       throw e;
     }
+  },
+
+  // Récupérer toutes les commandes triées par date (récentes en premier)
+  getOrders: async () => {
+    try {
+      const q = query(collection(firestore, "commandes"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const orders = [];
+      querySnapshot.forEach((doc) => {
+        orders.push({ id: doc.id, ...doc.data() });
+      });
+      return orders;
+    } catch (e) {
+      console.error("Erreur de récupération des commandes, tentative sans tri:", e);
+      // Fallback si l'index sur createdAt n'est pas encore créé
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "commandes"));
+        const orders = [];
+        querySnapshot.forEach((doc) => {
+          orders.push({ id: doc.id, ...doc.data() });
+        });
+        return orders.sort((a, b) => {
+          const tA = a.createdAt?.seconds || 0;
+          const tB = b.createdAt?.seconds || 0;
+          return tB - tA;
+        });
+      } catch (e2) {
+        console.error("Erreur de fallback commandes:", e2);
+        return [];
+      }
+    }
+  },
+
+  // Mettre à jour le statut d'une commande
+  updateOrderStatus: async (orderId, newStatus) => {
+    try {
+      const docRef = doc(firestore, "commandes", orderId);
+      await updateDoc(docRef, { status: newStatus });
+      return true;
+    } catch (e) {
+      console.error("Erreur mise à jour statut commande:", e);
+      throw e;
+    }
   }
 };
 
 // Dispatch un event custom pour signaler que Firebase est prêt
 window.dispatchEvent(new CustomEvent("firebase-ready"));
+

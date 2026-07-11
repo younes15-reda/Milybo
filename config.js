@@ -11,3 +11,5 @@ const firebaseConfig = {
 
 // Export pour utilisation globale
 window.firebaseConfig = firebaseConfig;
+window.adminPassword = "admin2024bebechic";
+
