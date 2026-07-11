@@ -219,6 +219,33 @@ window.db = {
       console.error("Erreur mise à jour statut commande:", e);
       throw e;
     }
+  },
+
+  // Récupérer le mot de passe admin personnalisé
+  getAdminPassword: async () => {
+    try {
+      const docRef = doc(firestore, "settings", "admin");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists() && docSnap.data().password) {
+        return docSnap.data().password;
+      }
+      return window.adminPassword;
+    } catch (e) {
+      console.warn("Erreur récupération mot de passe Firestore, fallback config:", e);
+      return window.adminPassword;
+    }
+  },
+
+  // Sauvegarder le mot de passe admin personnalisé
+  saveAdminPassword: async (newPassword) => {
+    try {
+      const docRef = doc(firestore, "settings", "admin");
+      await setDoc(docRef, { password: newPassword }, { merge: true });
+      return true;
+    } catch (e) {
+      console.error("Erreur sauvegarde mot de passe Firestore:", e);
+      throw e;
+    }
   }
 };
 

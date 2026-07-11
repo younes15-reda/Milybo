@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
   btn.id = 'wa-float-btn';
   btn.setAttribute('aria-label', 'Contacter sur WhatsApp');
   btn.innerHTML = `
-    <div style="position:fixed;bottom:24px;right:24px;z-index:8000;display:flex;align-items:center;gap:10px;cursor:pointer;">
+    <div style="position:fixed;bottom:90px;right:24px;z-index:8000;display:flex;align-items:center;gap:10px;cursor:pointer;">
       <div id="wa-tooltip" style="background:white;border:1.5px solid #E5E7EB;border-radius:12px;padding:10px 16px;font-size:.82rem;font-weight:600;color:#374151;box-shadow:0 4px 20px rgba(0,0,0,.12);white-space:nowrap;opacity:0;transform:translateX(10px);transition:all .3s;pointer-events:none;">
         Besoin d'aide ? 💬<br/>
         <span style="font-family:'Noto Sans Arabic',sans-serif;font-size:.75rem;color:#9CA3AF;">نحن هنا للمساعدة</span>

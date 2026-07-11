@@ -14,864 +14,905 @@
       --admin-text-dark: #0f172a;
       --admin-text-light: #64748b;
       --admin-primary: #ec4899;
-      --admin-primary-hover: #db2777;
     }
-    body.admin-body {
-      background: var(--admin-bg);
-      color: var(--admin-text-dark);
-      font-family: var(--font-main), system-ui, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    
-    /* Login overlay styles */
-    .login-container {
-      max-width: 400px;
-      margin: 100px auto;
-      background: white;
-      padding: 32px;
-      border-radius: var(--radius-lg);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-      border: 1px solid var(--admin-border);
-      text-align: center;
-    }
-    .login-logo {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      margin-bottom: 16px;
-    }
+    body.admin-body { background:var(--admin-bg); color:var(--admin-text-dark); font-family:var(--font-main),system-ui,sans-serif; margin:0; padding:0; }
 
-    /* Admin layout styles */
-    .admin-header {
-      background: white;
-      border-bottom: 1px solid var(--admin-border);
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .admin-nav {
-      display: flex;
-      gap: 12px;
-      background: white;
-      padding: 12px 24px;
-      border-bottom: 1px solid var(--admin-border);
-    }
-    .admin-nav-btn {
-      padding: 8px 16px;
-      border: none;
-      background: none;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      color: var(--admin-text-light);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .admin-nav-btn.active {
-      background: var(--rose-pale);
-      color: var(--admin-primary);
-    }
-    .admin-content {
-      padding: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .admin-card {
-      background: white;
-      border: 1px solid var(--admin-border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-    
-    /* Table styles */
-    .admin-table-wrap {
-      overflow-x: auto;
-    }
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.88rem;
-    }
-    .admin-table th, .admin-table td {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--admin-border);
-    }
-    .admin-table th {
-      background: var(--admin-bg);
-      font-weight: 700;
-      color: var(--admin-text-light);
-    }
-    .admin-table tr:hover {
-      background: #f8fafc;
-    }
-    
-    /* Status Badge Selects */
-    .status-select {
-      padding: 6px 12px;
-      border-radius: var(--radius-pill);
-      font-size: 0.75rem;
-      font-weight: 800;
-      border: 1px solid transparent;
-      outline: none;
-      cursor: pointer;
-    }
-    .status-en_attente { background: #fef3c7; color: #d97706; border-color: #fde68a; }
-    .status-confirmee { background: #dbeafe; color: #2563eb; border-color: #bfdbfe; }
-    .status-expediee { background: #fae8ff; color: #c026d3; border-color: #f5d0fe; }
-    .status-livree { background: #d1fae5; color: #059669; border-color: #a7f3d0; }
-    
+    /* Login */
+    .login-container { max-width:400px; margin:100px auto; background:white; padding:32px; border-radius:var(--radius-lg); box-shadow:0 10px 25px rgba(0,0,0,0.06); border:1px solid var(--admin-border); text-align:center; }
+    .login-logo { width:70px; height:70px; border-radius:50%; margin-bottom:16px; }
+
+    /* Layout */
+    .admin-header { background:white; border-bottom:1px solid var(--admin-border); padding:14px 24px; display:flex; justify-content:space-between; align-items:center; }
+    .admin-nav { display:flex; gap:8px; background:white; padding:10px 24px; border-bottom:1px solid var(--admin-border); flex-wrap:wrap; }
+    .admin-nav-btn { padding:8px 14px; border:none; background:none; border-radius:var(--radius-md); font-weight:700; color:var(--admin-text-light); cursor:pointer; font-size:.88rem; transition:all .2s; }
+    .admin-nav-btn.active { background:var(--rose-pale); color:var(--admin-primary); }
+    .admin-content { padding:24px; max-width:1200px; margin:0 auto; }
+    .admin-card { background:white; border:1px solid var(--admin-border); border-radius:var(--radius-lg); padding:24px; margin-bottom:24px; box-shadow:0 2px 4px rgba(0,0,0,.02); }
+
+    /* Tables */
+    .admin-table-wrap { overflow-x:auto; }
+    .admin-table { width:100%; border-collapse:collapse; text-align:left; font-size:.87rem; }
+    .admin-table th, .admin-table td { padding:11px 14px; border-bottom:1px solid var(--admin-border); }
+    .admin-table th { background:var(--admin-bg); font-weight:700; color:var(--admin-text-light); white-space:nowrap; }
+    .admin-table tr:hover { background:#f8fafc; }
+
+    /* Status selects */
+    .status-select { padding:5px 10px; border-radius:var(--radius-pill); font-size:.75rem; font-weight:800; border:1px solid transparent; outline:none; cursor:pointer; }
+    .status-en_attente { background:#fef3c7; color:#d97706; border-color:#fde68a; }
+    .status-confirmee { background:#dbeafe; color:#2563eb; border-color:#bfdbfe; }
+    .status-expediee { background:#fae8ff; color:#c026d3; border-color:#f5d0fe; }
+    .status-livree { background:#d1fae5; color:#059669; border-color:#a7f3d0; }
+
     /* Forms */
-    .admin-form-group {
-      margin-bottom: 16px;
-    }
-    .admin-form-label {
-      display: block;
-      font-weight: 700;
-      font-size: 0.82rem;
-      color: var(--admin-text-dark);
-      margin-bottom: 6px;
-    }
-    .admin-form-input {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--admin-border);
-      border-radius: var(--radius-md);
-      font-family: inherit;
-      font-size: 0.88rem;
-      box-sizing: border-box;
-      outline: none;
-    }
-    .admin-form-input:focus {
-      border-color: var(--admin-primary);
-    }
-    .admin-form-checkboxes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 8px 0;
-    }
-    .admin-form-checkbox {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
+    .admin-form-group { margin-bottom:14px; }
+    .admin-form-label { display:block; font-weight:700; font-size:.82rem; color:var(--admin-text-dark); margin-bottom:5px; }
+    .admin-form-input { width:100%; padding:9px 13px; border:1px solid var(--admin-border); border-radius:var(--radius-md); font-family:inherit; font-size:.88rem; box-sizing:border-box; outline:none; background:white; }
+    .admin-form-input:focus { border-color:var(--admin-primary); }
+    .admin-form-checkboxes { display:flex; flex-wrap:wrap; gap:10px; padding:6px 0; }
+    .admin-form-checkbox { display:flex; align-items:center; gap:5px; font-size:.85rem; cursor:pointer; }
 
-    /* Modal dialog */
-    .admin-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-    }
-    .admin-modal-content {
-      background: white;
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      max-width: 500px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-    }
-    
-    /* Action Buttons */
-    .btn-admin-action {
-      padding: 6px 12px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      border: 1px solid var(--admin-border);
-      background: white;
-      color: var(--admin-text-light);
-      margin-right: 4px;
-    }
-    .btn-admin-action:hover {
-      background: #f1f5f9;
-      color: var(--admin-text-dark);
-    }
-    .btn-admin-danger {
-      color: #ef4444;
-      border-color: #fee2e2;
-    }
-    .btn-admin-danger:hover {
-      background: #fef2f2;
-      color: #dc2626;
-    }
+    /* Photo upload preview */
+    .photo-upload-area { border:2px dashed var(--admin-border); border-radius:var(--radius-md); padding:16px; text-align:center; cursor:pointer; transition:border-color .2s; }
+    .photo-upload-area:hover { border-color:var(--admin-primary); }
+    #product-photo-preview { max-width:120px; max-height:120px; border-radius:8px; display:none; margin:8px auto 0; }
+
+    /* Modal */
+    .admin-modal { display:none; position:fixed; inset:0; z-index:2000; background:rgba(15,23,42,.45); backdrop-filter:blur(4px); align-items:center; justify-content:center; }
+    .admin-modal-content { background:white; border-radius:var(--radius-lg); padding:28px; max-width:520px; width:92%; max-height:92vh; overflow-y:auto; box-shadow:0 20px 40px rgba(0,0,0,.12); }
+
+    /* Action buttons */
+    .btn-admin-action { padding:5px 10px; font-size:.75rem; font-weight:700; border-radius:var(--radius-md); cursor:pointer; border:1px solid var(--admin-border); background:white; color:var(--admin-text-light); margin-right:4px; }
+    .btn-admin-action:hover { background:#f1f5f9; color:var(--admin-text-dark); }
+    .btn-admin-danger { color:#ef4444; border-color:#fee2e2; }
+    .btn-admin-danger:hover { background:#fef2f2; color:#dc2626; }
+
+    /* CSV export bar */
+    .csv-export-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:16px; background:#f8fafc; border:1px solid var(--admin-border); border-radius:var(--radius-md); padding:12px 16px; }
+    .csv-export-bar label { font-size:.82rem; font-weight:700; color:var(--admin-text-dark); }
+
+    /* Settings section */
+    .settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    @media(max-width:640px) { .settings-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body class="admin-body">
 
-  <!-- LOGIN SECTION -->
-  <div id="login-section">
-    <div class="login-container">
-      <img src="images/milybo.jpg" alt="Logo Milybo" class="login-logo"/>
-      <h2 style="font-weight:900; margin-bottom:6px;">Administration</h2>
-      <p style="color:var(--admin-text-light); font-size:0.85rem; margin-bottom:24px;">Veuillez entrer le code d'accès administrateur.</p>
-      <div id="login-error" style="color:#ef4444; font-size:0.85rem; margin-bottom:12px; display:none;">❌ Mot de passe incorrect !</div>
-      <div class="admin-form-group">
-        <input type="password" id="admin-pass-input" class="admin-form-input" placeholder="Mot de passe..." onkeydown="if(event.key==='Enter') verifyPassword()"/>
-      </div>
-      <button class="btn btn-primary" onclick="verifyPassword()" style="width:100%;">Se connecter</button>
+<!-- ====== LOGIN ====== -->
+<div id="login-section">
+  <div class="login-container">
+    <img src="images/milybo.jpg" alt="Logo" class="login-logo"/>
+    <h2 style="font-weight:900;margin-bottom:6px;">Administration</h2>
+    <p style="color:var(--admin-text-light);font-size:.85rem;margin-bottom:22px;">Entrez votre code d'accès administrateur</p>
+    <div id="login-error" style="color:#ef4444;font-size:.85rem;margin-bottom:12px;display:none;">❌ Mot de passe incorrect !</div>
+    <div class="admin-form-group">
+      <input type="password" id="admin-pass-input" class="admin-form-input" placeholder="Mot de passe..." onkeydown="if(event.key==='Enter') verifyPassword()"/>
     </div>
+    <button class="btn btn-primary" onclick="verifyPassword()" style="width:100%;">🔑 Se connecter</button>
   </div>
+</div>
 
-  <!-- MAIN ADMIN PANEL (hidden by default) -->
-  <div id="admin-panel" style="display:none;">
-    <header class="admin-header">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="images/milybo.jpg" alt="Logo Milybo" style="width:38px; height:38px; border-radius:50%;"/>
-        <div>
-          <h1 style="font-size:1.1rem; font-weight:900; margin:0;">Milybo DZ Admin</h1>
-          <span style="font-size:0.75rem; color:var(--admin-text-light);">Gestion de la boutique</span>
-        </div>
+<!-- ====== ADMIN PANEL ====== -->
+<div id="admin-panel" style="display:none;">
+  <header class="admin-header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <img src="images/milybo.jpg" alt="Logo" style="width:36px;height:36px;border-radius:50%;"/>
+      <div>
+        <h1 style="font-size:1.05rem;font-weight:900;margin:0;">Milybo DZ Admin</h1>
+        <span style="font-size:.72rem;color:var(--admin-text-light);">Tableau de bord</span>
       </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <a href="index.html" target="_blank" class="btn btn-outline btn-sm">🌐 Voir le site</a>
       <button class="btn btn-outline btn-sm" onclick="logoutAdmin()">🚪 Déconnexion</button>
-    </header>
+    </div>
+  </header>
 
-    <nav class="admin-nav">
-      <button class="admin-nav-btn active" id="tab-types-btn" onclick="switchTab('types')">📁 Catégories / Types</button>
-      <button class="admin-nav-btn" id="tab-products-btn" onclick="switchTab('products')">👗 Produits</button>
-      <button class="admin-nav-btn" id="tab-orders-btn" onclick="switchTab('orders')">📦 Commandes</button>
-    </nav>
+  <nav class="admin-nav">
+    <button class="admin-nav-btn active" id="tab-types-btn" onclick="switchTab('types')">📁 Catégories</button>
+    <button class="admin-nav-btn" id="tab-products-btn" onclick="switchTab('products')">👗 Produits</button>
+    <button class="admin-nav-btn" id="tab-orders-btn" onclick="switchTab('orders')">📦 Commandes</button>
+    <button class="admin-nav-btn" id="tab-settings-btn" onclick="switchTab('settings')">⚙️ Paramètres</button>
+  </nav>
 
-    <main class="admin-content">
-      <!-- ================== TAB: TYPES ================== -->
-      <section id="tab-types" class="admin-tab-content">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-          <h2 style="font-size:1.25rem; font-weight:800;">Catégories de vêtements (/types)</h2>
-          <button class="btn btn-primary btn-sm" onclick="openTypeModal()">➕ Ajouter une catégorie</button>
+  <main class="admin-content">
+
+    <!-- ===== TAB: TYPES ===== -->
+    <section id="tab-types" class="admin-tab-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <h2 style="font-size:1.2rem;font-weight:800;">Catégories de vêtements</h2>
+        <button class="btn btn-primary btn-sm" onclick="openTypeModal()">➕ Ajouter</button>
+      </div>
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Clé</th><th>Nom (FR)</th><th>Nom (AR)</th><th>Image</th><th>Actions</th></tr></thead>
+            <tbody id="types-table-body"><tr><td colspan="5" style="text-align:center;">Chargement…</td></tr></tbody>
+          </table>
         </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: PRODUCTS ===== -->
+    <section id="tab-products" class="admin-tab-content" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:6px;">Catalogue produits</h2>
+          <select id="filter-product-type" onchange="loadProducts()" class="admin-form-input" style="width:200px;padding:6px 12px;font-size:.85rem;">
+            <option value="">Toutes les catégories</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openProductModal()">➕ Ajouter un produit</button>
+      </div>
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Photo</th><th>Nom</th><th>Catégorie</th><th>Prix</th><th>Tailles</th><th>Couleurs</th><th>Actions</th></tr></thead>
+            <tbody id="products-table-body"><tr><td colspan="7" style="text-align:center;">Chargement…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: ORDERS ===== -->
+    <section id="tab-orders" class="admin-tab-content" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+        <h2 style="font-size:1.2rem;font-weight:800;">Commandes clients</h2>
+      </div>
+
+      <!-- CSV Export Bar -->
+      <div class="csv-export-bar">
+        <span>📥</span>
+        <label>Statut à exporter :</label>
+        <select id="csv-status-filter" class="admin-form-input" style="width:160px;padding:6px 10px;font-size:.85rem;">
+          <option value="confirmee">✅ Confirmée (défaut)</option>
+          <option value="en_attente">⏳ En attente</option>
+          <option value="expediee">🚀 Expédiée</option>
+          <option value="livree">📦 Livrée</option>
+          <option value="">Toutes</option>
+        </select>
+        <label>Depuis :</label>
+        <input type="date" id="csv-date-from" class="admin-form-input" style="width:150px;padding:6px 10px;font-size:.85rem;"/>
+        <label>Jusqu'au :</label>
+        <input type="date" id="csv-date-to" class="admin-form-input" style="width:150px;padding:6px 10px;font-size:.85rem;"/>
+        <button class="btn btn-primary btn-sm" onclick="exportZRExpressCSV()" style="white-space:nowrap;">📥 Exporter CSV ZR Express</button>
+      </div>
+
+      <!-- Orders filter for display -->
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+        <span style="font-size:.82rem;font-weight:700;color:var(--admin-text-light);">Afficher :</span>
+        <select id="orders-display-filter" onchange="applyOrdersFilter()" class="admin-form-input" style="width:180px;padding:6px 10px;font-size:.85rem;">
+          <option value="">Toutes les commandes</option>
+          <option value="en_attente">⏳ En attente</option>
+          <option value="confirmee">✅ Confirmée</option>
+          <option value="expediee">🚀 Expédiée</option>
+          <option value="livree">📦 Livrée</option>
+        </select>
+        <button class="btn-admin-action" onclick="loadOrders()">🔄 Rafraîchir</button>
+        <span id="orders-count" style="font-size:.82rem;color:var(--admin-text-light);"></span>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>N° Commande</th><th>Date</th><th>Client</th><th>Téléphone</th>
+                <th>Wilaya</th><th>Produit</th><th>Taille</th><th>Couleur</th>
+                <th>Qté</th><th>Total</th><th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body"><tr><td colspan="11" style="text-align:center;">Chargement…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: SETTINGS ===== -->
+    <section id="tab-settings" class="admin-tab-content" style="display:none;">
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:20px;">⚙️ Paramètres</h2>
+      <div class="settings-grid">
+
+        <!-- Change Password Card -->
         <div class="admin-card">
-          <div class="admin-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Code (Clé)</th>
-                  <th>Nom (FR)</th>
-                  <th>Nom (AR)</th>
-                  <th>Image / Icone</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="types-table-body">
-                <tr><td colspan="5" style="text-align:center;">Chargement...</td></tr>
-              </tbody>
-            </table>
+          <h3 style="font-size:1rem;font-weight:800;margin-bottom:16px;">🔐 Changer le mot de passe admin</h3>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Mot de passe actuel *</label>
+            <input type="password" id="settings-old-pass" class="admin-form-input" placeholder="Mot de passe actuel…"/>
           </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Nouveau mot de passe *</label>
+            <input type="password" id="settings-new-pass" class="admin-form-input" placeholder="Nouveau mot de passe…"/>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Confirmer le nouveau mot de passe *</label>
+            <input type="password" id="settings-confirm-pass" class="admin-form-input" placeholder="Confirmer…"/>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="changeAdminPassword()" style="width:100%;">💾 Sauvegarder le mot de passe</button>
         </div>
-      </section>
 
-      <!-- ================== TAB: PRODUCTS ================== -->
-      <section id="tab-products" class="admin-tab-content" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
-          <div>
-            <h2 style="font-size:1.25rem; font-weight:800; margin-bottom:4px;">Articles de vêtements (/produits)</h2>
-            <select id="filter-product-type" onchange="loadProducts()" class="admin-form-input" style="width:200px; padding:6px 12px; font-size:0.85rem;">
-              <option value="">Toutes les catégories</option>
-            </select>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="openProductModal()">➕ Ajouter un produit</button>
-        </div>
+        <!-- Shop Info Card -->
         <div class="admin-card">
-          <div class="admin-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Photo</th>
-                  <th>Nom</th>
-                  <th>Catégorie</th>
-                  <th>Prix</th>
-                  <th>Tailles</th>
-                  <th>Couleurs</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="products-table-body">
-                <tr><td colspan="7" style="text-align:center;">Chargement...</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <h3 style="font-size:1rem;font-weight:800;margin-bottom:16px;">📊 Statistiques rapides</h3>
+          <div id="stats-content" style="font-size:.88rem;color:var(--admin-text-light);">Chargement…</div>
         </div>
-      </section>
 
-      <!-- ================== TAB: ORDERS ================== -->
-      <section id="tab-orders" class="admin-tab-content" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-          <h2 style="font-size:1.25rem; font-weight:800;">Commandes clients (/commandes)</h2>
-          <button class="btn btn-outline btn-sm" onclick="exportOrdersToCSV()">📥 Exporter en CSV</button>
-        </div>
-        <div class="admin-card">
-          <div class="admin-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>N° Commande</th>
-                  <th>Date</th>
-                  <th>Client</th>
-                  <th>Téléphone</th>
-                  <th>Wilaya</th>
-                  <th>Produit</th>
-                  <th>Taille</th>
-                  <th>Couleur</th>
-                  <th>Qté</th>
-                  <th>Total</th>
-                  <th>Statut</th>
-                </tr>
-              </thead>
-              <tbody id="orders-table-body">
-                <tr><td colspan="11" style="text-align:center;">Chargement...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
+      </div>
 
-  <!-- TYPE MODAL -->
-  <div id="type-modal" class="admin-modal">
-    <div class="admin-modal-content">
-      <h3 style="font-weight:900; margin-bottom:20px;" id="type-modal-title">Ajouter une catégorie</h3>
-      <input type="hidden" id="type-edit-id"/>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Code / Clé unique * (Ex: barboteuse)</label>
-        <input type="text" id="type-key" class="admin-form-input" placeholder="Ex: pyjama"/>
+      <!-- WhatsApp Number Card -->
+      <div class="admin-card" style="margin-top:0;">
+        <h3 style="font-size:1rem;font-weight:800;margin-bottom:16px;">📱 Numéro WhatsApp de commande</h3>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Numéro WhatsApp (format international, ex: 213559449995)</label>
+          <input type="text" id="settings-wa-number" class="admin-form-input" placeholder="213559449995" value="213559449995"/>
+        </div>
+        <p style="font-size:.78rem;color:var(--admin-text-light);margin:0 0 12px;">Ce numéro est utilisé pour recevoir les commandes express via WhatsApp.</p>
+        <button class="btn btn-primary btn-sm" onclick="showToast('ℹ️ Pour changer le numéro WhatsApp, modifiez le fichier js/marketing.js et produit.html', 'default')">ℹ️ Info</button>
       </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Nom en Français *</label>
-        <input type="text" id="type-label" class="admin-form-input" placeholder="Ex: Pyjama"/>
+    </section>
+
+  </main>
+</div>
+
+<!-- ====== TYPE MODAL ====== -->
+<div id="type-modal" class="admin-modal">
+  <div class="admin-modal-content">
+    <h3 style="font-weight:900;margin-bottom:18px;" id="type-modal-title">Ajouter une catégorie</h3>
+    <input type="hidden" id="type-edit-id"/>
+    <div class="admin-form-group">
+      <label class="admin-form-label">Code / Clé unique * (ex: barboteuse)</label>
+      <input type="text" id="type-key" class="admin-form-input" placeholder="Ex: pyjama"/>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label">Nom en Français *</label>
+      <input type="text" id="type-label" class="admin-form-input" placeholder="Ex: Pyjama"/>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label">Nom en Arabe</label>
+      <input type="text" id="type-label-ar" class="admin-form-input" placeholder="Ex: بيجامة"/>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label">Image (URL externe)</label>
+      <input type="text" id="type-image" class="admin-form-input" placeholder="https://…"/>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label">— OU — Parcourir une image locale</label>
+      <div class="photo-upload-area" onclick="document.getElementById('type-photo-file').click()">
+        <span style="font-size:1.5rem;">🖼️</span>
+        <div style="font-size:.8rem;color:var(--admin-text-light);margin-top:4px;">Cliquez pour choisir une photo</div>
+        <input type="file" id="type-photo-file" accept="image/*" style="display:none;" onchange="handleTypePhotoUpload(this)"/>
       </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Nom en Arabe</label>
-        <input type="text" id="type-label-ar" class="admin-form-input" placeholder="Ex: بيجامة"/>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">URL de l'image / Icône</label>
-        <input type="text" id="type-image" class="admin-form-input" placeholder="https://..."/>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:24px;">
-        <button class="btn btn-outline btn-sm" onclick="closeTypeModal()">Annuler</button>
-        <button class="btn btn-primary btn-sm" onclick="submitTypeForm()">Enregistrer</button>
-      </div>
+      <img id="type-photo-preview" style="max-width:100px;max-height:100px;border-radius:8px;display:none;margin-top:8px;"/>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px;">
+      <button class="btn btn-outline btn-sm" onclick="closeTypeModal()">Annuler</button>
+      <button class="btn btn-primary btn-sm" onclick="submitTypeForm()">💾 Enregistrer</button>
     </div>
   </div>
+</div>
 
-  <!-- PRODUCT MODAL -->
-  <div id="product-modal" class="admin-modal">
-    <div class="admin-modal-content">
-      <h3 style="font-weight:900; margin-bottom:20px;" id="product-modal-title">Ajouter un produit</h3>
-      <input type="hidden" id="product-edit-id"/>
+<!-- ====== PRODUCT MODAL ====== -->
+<div id="product-modal" class="admin-modal">
+  <div class="admin-modal-content">
+    <h3 style="font-weight:900;margin-bottom:18px;" id="product-modal-title">Ajouter un produit</h3>
+    <input type="hidden" id="product-edit-id"/>
+
+    <div class="admin-form-group">
+      <label class="admin-form-label">Identifiant unique * (ex: 101)</label>
+      <input type="text" id="product-id" class="admin-form-input" placeholder="Ex: 101"/>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div class="admin-form-group">
-        <label class="admin-form-label">Identifiant unique * (Ex: 101, 102 ou texte)</label>
-        <input type="text" id="product-id" class="admin-form-input" placeholder="Ex: 101"/>
+        <label class="admin-form-label">Nom (FR) *</label>
+        <input type="text" id="product-name" class="admin-form-input" placeholder="Ex: Barboteuse Ours"/>
       </div>
       <div class="admin-form-group">
-        <label class="admin-form-label">Nom du Produit (FR) *</label>
-        <input type="text" id="product-name" class="admin-form-input" placeholder="Ex: Barboteuse Coton Ours"/>
+        <label class="admin-form-label">Nom (AR)</label>
+        <input type="text" id="product-name-ar" class="admin-form-input" placeholder="Ex: بربوتيز دب"/>
       </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Nom du Produit (AR)</label>
-        <input type="text" id="product-name-ar" class="admin-form-input" placeholder="Ex: بربوتيز قطن دب"/>
-      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div class="admin-form-group">
         <label class="admin-form-label">Catégorie *</label>
         <select id="product-type" class="admin-form-input"></select>
       </div>
       <div class="admin-form-group">
-        <label class="admin-form-label">Prix (DA) *</label>
-        <input type="number" id="product-price" class="admin-form-input" placeholder="Ex: 1950"/>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Ancien Prix (DA) (optionnel)</label>
-        <input type="number" id="product-oldprice" class="admin-form-input" placeholder="Ex: 2400"/>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Stock disponible *</label>
-        <input type="number" id="product-stock" class="admin-form-input" value="10"/>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Tailles disponibles</label>
-        <div class="admin-form-checkboxes">
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="NB"/> NB</label>
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="3M"/> 3M</label>
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="6M"/> 6M</label>
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="9M"/> 9M</label>
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="12M"/> 12M</label>
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="18M"/> 18M</label>
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="24M"/> 24M</label>
-          <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="36M"/> 36M</label>
-        </div>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Couleurs (Ex: #FFB5BA, #B5D5FF ou noms de couleurs, séparés par virgules)</label>
-        <input type="text" id="product-colors" class="admin-form-input" placeholder="#FFB5BA, #B5D5FF"/>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Emojis / Photos (URLs ou Emojis séparés par des virgules) *</label>
-        <input type="text" id="product-photos" class="admin-form-input" placeholder="🐻, 🐼"/>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Description du produit</label>
-        <textarea id="product-description" class="admin-form-input" placeholder="Coton biologique très doux..." style="min-height:80px;"></textarea>
-      </div>
-      <div class="admin-form-group">
-        <label class="admin-form-label">Groupe d'âge (clé)</label>
-        <input type="text" id="product-age-group" class="admin-form-input" placeholder="nouveau-ne ou nourrisson ou tout-petit"/>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:24px;">
-        <button class="btn btn-outline btn-sm" onclick="closeProductModal()">Annuler</button>
-        <button class="btn btn-primary btn-sm" onclick="submitProductForm()">Enregistrer</button>
+        <label class="admin-form-label">Groupe d'âge</label>
+        <select id="product-age-group" class="admin-form-input">
+          <option value="nouveau-ne">Nouveau-né (0–1 mois)</option>
+          <option value="nourrisson">Nourrisson (1–12 mois)</option>
+          <option value="tout-petit">Tout-petit (1–3 ans)</option>
+        </select>
       </div>
     </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+      <div class="admin-form-group">
+        <label class="admin-form-label">Prix (DA) *</label>
+        <input type="number" id="product-price" class="admin-form-input" placeholder="1950"/>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Ancien Prix (DA)</label>
+        <input type="number" id="product-oldprice" class="admin-form-input" placeholder="2400"/>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Stock</label>
+        <input type="number" id="product-stock" class="admin-form-input" value="10"/>
+      </div>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-form-label">Tailles disponibles</label>
+      <div class="admin-form-checkboxes">
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="NB"/> NB</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="3M"/> 3M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="6M"/> 6M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="9M"/> 9M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="12M"/> 12M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="18M"/> 18M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="24M"/> 24M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="36M"/> 36M</label>
+      </div>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-form-label">Couleurs disponibles (codes hex ou noms, séparés par virgule)</label>
+      <input type="text" id="product-colors" class="admin-form-input" placeholder="#FFB5BA, #B5D5FF, rose"/>
+    </div>
+
+    <!-- Photo Upload -->
+    <div class="admin-form-group">
+      <label class="admin-form-label">📸 Photos du produit</label>
+      <div class="photo-upload-area" onclick="document.getElementById('product-photo-file').click()">
+        <span style="font-size:1.5rem;">📁</span>
+        <div style="font-size:.8rem;color:var(--admin-text-light);margin-top:4px;">Cliquez pour choisir une photo depuis votre ordinateur</div>
+        <input type="file" id="product-photo-file" accept="image/*" style="display:none;" onchange="handleProductPhotoUpload(this)" multiple/>
+      </div>
+      <div id="product-photo-previews" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label">— OU — URL(s) de photo(s) / Émojis (séparés par virgule)</label>
+      <input type="text" id="product-photos" class="admin-form-input" placeholder="https://…/photo.jpg, 🐻"/>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-form-label">Description</label>
+      <textarea id="product-description" class="admin-form-input" placeholder="Coton biologique très doux…" style="min-height:70px;"></textarea>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px;">
+      <button class="btn btn-outline btn-sm" onclick="closeProductModal()">Annuler</button>
+      <button class="btn btn-primary btn-sm" onclick="submitProductForm()">💾 Enregistrer</button>
+    </div>
   </div>
+</div>
 
-  <div id="toast-container" class="toast-container"></div>
+<div id="toast-container" class="toast-container"></div>
 
-  <!-- SCRIPT INTEGRATION -->
-  <script src="config.js"></script>
-  <script type="module" src="js/firebase-db.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
-  <script>
-    // --- AUTHENTICATION ---
-    function isLogged() {
-      return sessionStorage.getItem('admin_session') === window.adminPassword;
+<!-- SCRIPTS -->
+<script src="config.js"></script>
+<script type="module" src="js/firebase-db.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+// ============================================================
+// MILYBO ADMIN – Logic
+// ============================================================
+
+let adminPassword = null; // chargé depuis Firestore ou config.js
+
+// ── AUTH ──────────────────────────────────────────────────────
+async function loadEffectivePassword() {
+  if (window.db && window.db.getAdminPassword) {
+    adminPassword = await window.db.getAdminPassword();
+  } else {
+    adminPassword = window.adminPassword;
+  }
+}
+
+function isLogged() {
+  return sessionStorage.getItem('admin_session_v2') === (adminPassword || window.adminPassword);
+}
+
+async function verifyPassword() {
+  const val = document.getElementById('admin-pass-input').value;
+  if (!adminPassword) await loadEffectivePassword();
+  if (val === adminPassword) {
+    sessionStorage.setItem('admin_session_v2', val);
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    document.getElementById('login-error').style.display = 'none';
+    initAdminPanel();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('admin-pass-input').value = '';
+  }
+}
+
+function logoutAdmin() {
+  sessionStorage.removeItem('admin_session_v2');
+  window.location.reload();
+}
+
+// On Load
+window.addEventListener('firebase-ready', async () => {
+  await loadEffectivePassword();
+  if (isLogged()) {
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    initAdminPanel();
+  }
+});
+
+window.addEventListener('load', async () => {
+  if (!window.db) {
+    // Firebase pas encore chargé, attendre l'event
+    adminPassword = window.adminPassword;
+    if (isLogged()) {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      initAdminPanel();
     }
+  }
+});
 
-    function verifyPassword() {
-      const val = document.getElementById('admin-pass-input').value;
-      if (val === window.adminPassword) {
-        sessionStorage.setItem('admin_session', val);
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        document.getElementById('login-error').style.display = 'none';
-        initAdminPanel();
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-      }
+// ── TAB SWITCHER ──────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).style.display = 'block';
+  document.getElementById('tab-' + name + '-btn').classList.add('active');
+  if (name === 'types') loadTypes();
+  else if (name === 'products') loadProducts();
+  else if (name === 'orders') loadOrders();
+  else if (name === 'settings') loadSettings();
+}
+
+// ── DATA STORES ───────────────────────────────────────────────
+let typesList = [], productsList = [], ordersList = [];
+
+function initAdminPanel() {
+  if (window.db) {
+    loadTypes();
+  } else {
+    window.addEventListener('firebase-ready', loadTypes);
+  }
+}
+
+// ============================================================
+// CATEGORIES (TYPES)
+// ============================================================
+async function loadTypes() {
+  const tbody = document.getElementById('types-table-body');
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;">Chargement…</td></tr>';
+  try {
+    typesList = await window.db.getTypes();
+    tbody.innerHTML = '';
+    // Populate selects
+    const pSelect = document.getElementById('product-type');
+    const fSelect = document.getElementById('filter-product-type');
+    if (pSelect) pSelect.innerHTML = typesList.map(t => `<option value="${t.key||t.id}">${t.label}</option>`).join('');
+    if (fSelect) {
+      const cur = fSelect.value;
+      fSelect.innerHTML = '<option value="">Toutes les catégories</option>' + typesList.map(t => `<option value="${t.key||t.id}">${t.label}</option>`).join('');
+      fSelect.value = cur;
     }
-
-    function logoutAdmin() {
-      sessionStorage.removeItem('admin_session');
-      window.location.reload();
-    }
-
-    // On Load Check
-    window.addEventListener('load', () => {
-      if (isLogged()) {
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        initAdminPanel();
-      }
+    if (!typesList.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;">Aucune catégorie.</td></tr>'; return; }
+    typesList.forEach(t => {
+      const img = t.image ? `<img src="${t.image}" style="height:30px;border-radius:4px;object-fit:cover;"/>` : '—';
+      tbody.innerHTML += `<tr>
+        <td><strong>${t.key||t.id}</strong></td>
+        <td>${t.label||'—'}</td>
+        <td>${t.labelAr||'—'}</td>
+        <td>${img}</td>
+        <td>
+          <button class="btn-admin-action" onclick="editType('${t.id}')">✏️ Modifier</button>
+          <button class="btn-admin-action btn-admin-danger" onclick="deleteType('${t.id}')">🗑️ Supprimer</button>
+        </td>
+      </tr>`;
     });
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#ef4444;">Erreur de chargement.</td></tr>';
+  }
+}
 
-    // --- TAB SWITCHER ---
-    function switchTab(tabName) {
-      document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
-      document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
-      
-      document.getElementById('tab-' + tabName).style.display = 'block';
-      document.getElementById('tab-' + tabName + '-btn').classList.add('active');
+function openTypeModal(isEdit=false) {
+  document.getElementById('type-modal-title').textContent = isEdit ? 'Modifier la catégorie' : 'Ajouter une catégorie';
+  document.getElementById('type-key').disabled = isEdit;
+  document.getElementById('type-modal').style.display = 'flex';
+}
 
-      if (tabName === 'types') loadTypes();
-      else if (tabName === 'products') loadProducts();
-      else if (tabName === 'orders') loadOrders();
-    }
+function closeTypeModal() {
+  document.getElementById('type-modal').style.display = 'none';
+  ['type-edit-id','type-key','type-label','type-label-ar','type-image'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('type-photo-preview').style.display = 'none';
+}
 
-    // --- GLOBAL DATA STORAGE ---
-    let typesList = [];
-    let productsList = [];
-    let ordersList = [];
+function editType(id) {
+  const t = typesList.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('type-edit-id').value = t.id;
+  document.getElementById('type-key').value = t.key||t.id;
+  document.getElementById('type-label').value = t.label||'';
+  document.getElementById('type-label-ar').value = t.labelAr||'';
+  document.getElementById('type-image').value = t.image||'';
+  if (t.image) { const prev = document.getElementById('type-photo-preview'); prev.src=t.image; prev.style.display='block'; }
+  openTypeModal(true);
+}
 
-    // --- PANEL INIT ---
-    function initAdminPanel() {
-      if (window.db) {
-        loadTypes();
-      } else {
-        window.addEventListener('firebase-ready', () => {
-          loadTypes();
-        });
+function handleTypePhotoUpload(input) {
+  const file = input.files[0]; if(!file) return;
+  if(file.size > 500*1024) { alert('Image trop grande (max 500 Ko). Utilisez une URL externe pour les grandes images.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('type-image').value = e.target.result;
+    const prev = document.getElementById('type-photo-preview');
+    prev.src = e.target.result; prev.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function submitTypeForm() {
+  const id = document.getElementById('type-edit-id').value;
+  const key = document.getElementById('type-key').value.trim();
+  const label = document.getElementById('type-label').value.trim();
+  const labelAr = document.getElementById('type-label-ar').value.trim();
+  const image = document.getElementById('type-image').value.trim();
+  if (!key||!label) { alert('La clé et le nom FR sont requis.'); return; }
+  try {
+    await window.db.saveType(id||key, { key, label, labelAr, image });
+    closeTypeModal(); showToast('✅ Catégorie sauvegardée !', 'success'); loadTypes();
+  } catch(e) { alert('Erreur: '+e.message); }
+}
+
+async function deleteType(id) {
+  if(!confirm('Supprimer cette catégorie ? (Les produits ne seront PAS supprimés)')) return;
+  try { await window.db.deleteType(id); showToast('🗑️ Catégorie supprimée !', 'success'); loadTypes(); }
+  catch(e) { alert('Erreur: '+e.message); }
+}
+
+// ============================================================
+// PRODUCTS
+// ============================================================
+let uploadedPhotoBase64 = null;
+
+function handleProductPhotoUpload(input) {
+  uploadedPhotoBase64 = null;
+  const previews = document.getElementById('product-photo-previews');
+  previews.innerHTML = '';
+  const files = Array.from(input.files).slice(0,5);
+  const base64List = [];
+  let loaded = 0;
+  files.forEach((file, idx) => {
+    if(file.size > 500*1024) { alert(`Image ${file.name} trop grande (max 500 Ko). Ignorée.`); loaded++; return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+      base64List[idx] = e.target.result;
+      loaded++;
+      // Preview img
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;';
+      previews.appendChild(img);
+      if(loaded === files.length) {
+        const valid = base64List.filter(Boolean);
+        if(valid.length) document.getElementById('product-photos').value = valid.join(', ');
       }
-    }
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
-    // --- CATEGORIES (TYPES) MANAGEMENT ---
-    async function loadTypes() {
-      const tbody = document.getElementById('types-table-body');
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Chargement...</td></tr>';
-      
-      try {
-        typesList = await window.db.getTypes();
-        tbody.innerHTML = '';
-        
-        // Populate selectors
-        const productSelect = document.getElementById('product-type');
-        const filterSelect = document.getElementById('filter-product-type');
-        
-        if (productSelect) {
-          productSelect.innerHTML = typesList.map(t => `<option value="${t.key}">${t.label}</option>`).join('');
+async function loadProducts() {
+  const tbody = document.getElementById('products-table-body');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;">Chargement…</td></tr>';
+  const filter = document.getElementById('filter-product-type')?.value;
+  try {
+    productsList = await window.db.getProducts();
+    let list = productsList;
+    if(filter) list = list.filter(p => p.category === filter);
+    tbody.innerHTML = '';
+    if(!list.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;">Aucun produit trouvé.</td></tr>'; return; }
+    list.forEach(p => {
+      const photo = p.photos?.[0] || '';
+      const photoHTML = photo.startsWith('data:') || photo.startsWith('http')
+        ? `<img src="${photo}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;"/>`
+        : `<span style="font-size:1.6rem;">${photo||'👶'}</span>`;
+      tbody.innerHTML += `<tr>
+        <td>${photoHTML}</td>
+        <td><strong>${p.name||'—'}</strong><br/><span style="font-size:.75rem;color:var(--admin-text-light);">${p.nameAr||''}</span></td>
+        <td><span style="background:#f1f5f9;padding:2px 8px;border-radius:20px;font-size:.8rem;">${p.category||'—'}</span></td>
+        <td><strong>${(p.price||0).toLocaleString('fr-DZ')} DA</strong></td>
+        <td style="font-size:.8rem;">${(p.sizes||[]).join(', ')||'—'}</td>
+        <td style="font-size:.8rem;">${(p.colors||[]).slice(0,3).map(c=>`<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c};border:1px solid #ddd;vertical-align:middle;" title="${c}"></span>`).join(' ')||'—'}</td>
+        <td>
+          <button class="btn-admin-action" onclick="editProduct('${p.id}')">✏️</button>
+          <button class="btn-admin-action btn-admin-danger" onclick="deleteProduct('${p.id}')">🗑️</button>
+        </td>
+      </tr>`;
+    });
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;">Erreur de chargement.</td></tr>';
+  }
+}
+
+function openProductModal(isEdit=false) {
+  document.getElementById('product-modal-title').textContent = isEdit ? 'Modifier le produit' : 'Ajouter un produit';
+  document.getElementById('product-id').disabled = isEdit;
+  document.getElementById('product-modal').style.display = 'flex';
+}
+
+function closeProductModal() {
+  document.getElementById('product-modal').style.display = 'none';
+  ['product-edit-id','product-id','product-name','product-name-ar','product-price',
+   'product-oldprice','product-colors','product-photos','product-description'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('product-stock').value = '10';
+  document.getElementById('product-photo-previews').innerHTML = '';
+  document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=false);
+}
+
+function editProduct(id) {
+  const p = productsList.find(x => String(x.id)===String(id)); if(!p) return;
+  document.getElementById('product-edit-id').value = p.id;
+  document.getElementById('product-id').value = p.id;
+  document.getElementById('product-name').value = p.name||'';
+  document.getElementById('product-name-ar').value = p.nameAr||'';
+  document.getElementById('product-type').value = p.category||'';
+  document.getElementById('product-age-group').value = p.ageGroup||'nourrisson';
+  document.getElementById('product-price').value = p.price||'';
+  document.getElementById('product-oldprice').value = p.oldPrice||'';
+  document.getElementById('product-stock').value = p.stock??10;
+  document.getElementById('product-colors').value = (p.colors||[]).join(', ');
+  document.getElementById('product-photos').value = (p.photos||[]).join(', ');
+  document.getElementById('product-description').value = p.description||'';
+  // Sizes
+  const sizes = p.sizes||[];
+  document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=sizes.includes(cb.value));
+  // Photo preview
+  const previews = document.getElementById('product-photo-previews');
+  previews.innerHTML = '';
+  (p.photos||[]).slice(0,3).forEach(ph => {
+    if(ph.startsWith('data:')||ph.startsWith('http')) {
+      const img = document.createElement('img');
+      img.src=ph; img.style.cssText='width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;';
+      previews.appendChild(img);
+    }
+  });
+  openProductModal(true);
+}
+
+async function submitProductForm() {
+  const editId = document.getElementById('product-edit-id').value;
+  const id = document.getElementById('product-id').value.trim();
+  const name = document.getElementById('product-name').value.trim();
+  const nameAr = document.getElementById('product-name-ar').value.trim();
+  const category = document.getElementById('product-type').value;
+  const ageGroup = document.getElementById('product-age-group').value;
+  const price = parseFloat(document.getElementById('product-price').value);
+  const oldPriceVal = document.getElementById('product-oldprice').value.trim();
+  const stock = parseInt(document.getElementById('product-stock').value)||0;
+  const colorsStr = document.getElementById('product-colors').value.trim();
+  const photosStr = document.getElementById('product-photos').value.trim();
+  const description = document.getElementById('product-description').value.trim();
+  if (!id||!name||!category||isNaN(price)) { alert('ID, Nom, Catégorie et Prix sont obligatoires.'); return; }
+  const sizes = [];
+  document.querySelectorAll('input[name="product-sizes"]:checked').forEach(cb => sizes.push(cb.value));
+  const colors = colorsStr ? colorsStr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+  const photos = photosStr ? photosStr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+  const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
+  try {
+    await window.db.saveProduct(editId||id, { name, nameAr, category, ageGroup, price, oldPrice, stock, sizes, colors, photos, description });
+    closeProductModal(); showToast('✅ Produit sauvegardé !', 'success'); loadProducts();
+  } catch(e) { alert('Erreur: '+e.message); }
+}
+
+async function deleteProduct(id) {
+  if(!confirm('Supprimer ce produit définitivement ?')) return;
+  try { await window.db.deleteProduct(id); showToast('🗑️ Produit supprimé !', 'success'); loadProducts(); }
+  catch(e) { alert('Erreur: '+e.message); }
+}
+
+// ============================================================
+// ORDERS
+// ============================================================
+async function loadOrders() {
+  const tbody = document.getElementById('orders-table-body');
+  tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:20px;">Chargement…</td></tr>';
+  try {
+    ordersList = await window.db.getOrders();
+    applyOrdersFilter();
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#ef4444;">Erreur de chargement.</td></tr>';
+  }
+}
+
+function applyOrdersFilter() {
+  const filter = document.getElementById('orders-display-filter')?.value || '';
+  const tbody = document.getElementById('orders-table-body');
+  const list = filter ? ordersList.filter(o => (o.status||o.statut||'en_attente')===filter) : ordersList;
+  document.getElementById('orders-count').textContent = `${list.length} commande(s)`;
+  tbody.innerHTML = '';
+  if(!list.length) { tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:20px;">Aucune commande.</td></tr>'; return; }
+  list.forEach(o => {
+    const dateStr = o.createdAt ? new Date(o.createdAt.seconds*1000).toLocaleDateString('fr-DZ') : (o.date||'—');
+    const status = o.status||o.statut||'en_attente';
+    const colorDot = o.couleur ? `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${o.couleur};border:1px solid #ddd;vertical-align:middle;" title="${o.couleur}"></span>` : (o.couleur||'—');
+    tbody.innerHTML += `<tr>
+      <td style="font-size:.78rem;"><strong>${(o.id_commande||o.tracking||o.id||'').slice(0,12)}</strong></td>
+      <td style="font-size:.78rem;">${dateStr}</td>
+      <td>${o.nom||o.nomClient||'—'}</td>
+      <td style="font-size:.82rem;">${o.telephone||o.telephoneClient||'—'}</td>
+      <td style="font-size:.82rem;">${o.wilaya||'—'}</td>
+      <td style="font-size:.82rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${o.produit_nom||o.produit||'—'}</td>
+      <td>${o.taille||'—'}</td>
+      <td>${colorDot}</td>
+      <td>${o.quantite||1}</td>
+      <td style="font-size:.82rem;"><strong>${((o.prix_total||o.prixTotal||0)).toLocaleString('fr-DZ')} DA</strong></td>
+      <td>
+        <select class="status-select status-${status}" onchange="changeOrderStatus('${o.id}', this)">
+          <option value="en_attente" ${status==='en_attente'?'selected':''}>⏳ En attente</option>
+          <option value="confirmee" ${status==='confirmee'?'selected':''}>✅ Confirmée</option>
+          <option value="expediee" ${status==='expediee'?'selected':''}>🚀 Expédiée</option>
+          <option value="livree" ${status==='livree'?'selected':''}>📦 Livrée</option>
+        </select>
+      </td>
+    </tr>`;
+  });
+}
+
+async function changeOrderStatus(orderId, selectEl) {
+  const newStatus = selectEl.value;
+  selectEl.className = `status-select status-${newStatus}`;
+  try {
+    await window.db.updateOrderStatus(orderId, newStatus);
+    // Update local cache
+    const o = ordersList.find(x=>x.id===orderId);
+    if(o) o.status = newStatus;
+    showToast('✅ Statut mis à jour !', 'success');
+  } catch(e) {
+    alert('Erreur mise à jour: '+e.message);
+  }
+}
+
+// ============================================================
+// CSV EXPORT ZR EXPRESS (ÉTAPE 5)
+// ============================================================
+async function exportZRExpressCSV() {
+  const statusFilter = document.getElementById('csv-status-filter').value;
+  const dateFrom = document.getElementById('csv-date-from').value;
+  const dateTo = document.getElementById('csv-date-to').value;
+
+  // Filter orders
+  let toExport = [...ordersList];
+  if (statusFilter) {
+    toExport = toExport.filter(o => (o.status||o.statut||'en_attente') === statusFilter);
+  }
+  if (dateFrom) {
+    const from = new Date(dateFrom).getTime();
+    toExport = toExport.filter(o => {
+      const t = o.createdAt?.seconds ? o.createdAt.seconds*1000 : (o.date ? new Date(o.date).getTime() : 0);
+      return t >= from;
+    });
+  }
+  if (dateTo) {
+    const to = new Date(dateTo).getTime() + 86400000; // include full day
+    toExport = toExport.filter(o => {
+      const t = o.createdAt?.seconds ? o.createdAt.seconds*1000 : (o.date ? new Date(o.date).getTime() : Infinity);
+      return t <= to;
+    });
+  }
+
+  if (!toExport.length) {
+    alert(`Aucune commande "${statusFilter||'toutes'}" à exporter pour cette période !`);
+    return;
+  }
+
+  // Build CSV – Format ZR Express exact
+  // Colonnes: Nom,Téléphone,Wilaya,Adresse,Produit,Taille,Couleur,Quantité,Prix,Note
+  let csv = '\uFEFF'; // UTF-8 BOM
+  csv += 'Nom,Téléphone,Wilaya,Adresse,Produit,Taille,Couleur,Quantité,Prix,Note\n';
+
+  toExport.forEach(o => {
+    const esc = s => `"${String(s||'').replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+    const nom = o.nom || o.nomClient || '';
+    const tel = o.telephone || o.telephoneClient || '';
+    const wilaya = o.wilaya || '';  // toujours en toutes lettres depuis Firestore
+    const adresse = o.adresse || '';
+    const produit = o.produit_nom || o.produit || '';
+    const taille = o.taille || '';
+    const couleur = o.couleur || '';
+    const qte = o.quantite || 1;
+    const prix = o.prix_total || o.prixTotal || 0;
+    const note = o.note || '';
+    csv += `${esc(nom)},${esc(tel)},${esc(wilaya)},${esc(adresse)},${esc(produit)},${esc(taille)},${esc(couleur)},${esc(qte)},${esc(prix)},${esc(note)}\n`;
+  });
+
+  // Trigger download
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const today = new Date().toISOString().slice(0, 10);
+  link.href = url;
+  link.download = `commandes_ZR_${today}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  showToast(`✅ ${toExport.length} commande(s) exportée(s) !`, 'success');
+
+  // Propose marking as "expediee"
+  if (statusFilter === 'confirmee' || statusFilter === '') {
+    const confirmed = confirm(`📦 Marquer ces ${toExport.length} commande(s) comme "Expédiée" maintenant ?`);
+    if (confirmed) {
+      let updated = 0;
+      for (const o of toExport) {
+        if ((o.status||o.statut) !== 'expediee' && (o.status||o.statut) !== 'livree') {
+          try {
+            await window.db.updateOrderStatus(o.id, 'expediee');
+            o.status = 'expediee';
+            updated++;
+          } catch(e) { console.warn('Erreur maj statut', o.id, e); }
         }
-        if (filterSelect) {
-          const currentVal = filterSelect.value;
-          filterSelect.innerHTML = '<option value="">Toutes les catégories</option>' + 
-            typesList.map(t => `<option value="${t.key}">${t.label}</option>`).join('');
-          filterSelect.value = currentVal;
-        }
-
-        if (typesList.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Aucune catégorie enregistrée.</td></tr>';
-          return;
-        }
-
-        typesList.forEach(t => {
-          tbody.innerHTML += `
-            <tr>
-              <td><strong>${t.key || t.id}</strong></td>
-              <td>${t.label || '-'}</td>
-              <td>${t.labelAr || '-'}</td>
-              <td>${t.image ? `<img src="${t.image}" style="height:32px; border-radius:4px;"/>` : '-'}</td>
-              <td>
-                <button class="btn-admin-action" onclick="editType('${t.id}')">✏️ Modifier</button>
-                <button class="btn-admin-action btn-admin-danger" onclick="deleteType('${t.id}')">🗑️ Supprimer</button>
-              </td>
-            </tr>
-          `;
-        });
-      } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#ef4444;">Erreur lors du chargement des catégories.</td></tr>';
       }
+      showToast(`🚀 ${updated} commande(s) marquée(s) comme expédiée(s) !`, 'success');
+      applyOrdersFilter();
     }
+  }
+}
 
-    function openTypeModal(isEdit = false) {
-      document.getElementById('type-modal-title').textContent = isEdit ? "Modifier la catégorie" : "Ajouter une catégorie";
-      document.getElementById('type-key').disabled = isEdit;
-      document.getElementById('type-modal').style.display = 'flex';
-    }
+// ============================================================
+// SETTINGS
+// ============================================================
+async function loadSettings() {
+  const statsEl = document.getElementById('stats-content');
+  try {
+    const [orders, products, types] = await Promise.all([
+      window.db.getOrders(),
+      window.db.getProducts(),
+      window.db.getTypes()
+    ]);
+    const nbAttente = orders.filter(o=>(o.status||o.statut)==='en_attente').length;
+    const nbConfirmees = orders.filter(o=>(o.status||o.statut)==='confirmee').length;
+    const nbExpediees = orders.filter(o=>(o.status||o.statut)==='expediee').length;
+    const nbLivrees = orders.filter(o=>(o.status||o.statut)==='livree').length;
+    statsEl.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#fef3c7;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:900;color:#d97706;">${nbAttente}</div><div>En attente</div></div>
+        <div style="background:#dbeafe;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:900;color:#2563eb;">${nbConfirmees}</div><div>Confirmées</div></div>
+        <div style="background:#fae8ff;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:900;color:#c026d3;">${nbExpediees}</div><div>Expédiées</div></div>
+        <div style="background:#d1fae5;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:900;color:#059669;">${nbLivrees}</div><div>Livrées</div></div>
+      </div>
+      <div style="margin-top:12px;font-size:.85rem;color:var(--admin-text-light);">
+        📦 ${products.length} produits · 📁 ${types.length} catégories · 🛍️ ${orders.length} commandes total
+      </div>`;
+  } catch(e) {
+    statsEl.textContent = 'Erreur de chargement des statistiques.';
+  }
+}
 
-    function closeTypeModal() {
-      document.getElementById('type-modal').style.display = 'none';
-      document.getElementById('type-edit-id').value = '';
-      document.getElementById('type-key').value = '';
-      document.getElementById('type-label').value = '';
-      document.getElementById('type-label-ar').value = '';
-      document.getElementById('type-image').value = '';
-    }
+async function changeAdminPassword() {
+  const oldPass = document.getElementById('settings-old-pass').value;
+  const newPass = document.getElementById('settings-new-pass').value;
+  const confirmPass = document.getElementById('settings-confirm-pass').value;
 
-    function editType(id) {
-      const t = typesList.find(x => x.id === id);
-      if (!t) return;
-      document.getElementById('type-edit-id').value = t.id;
-      document.getElementById('type-key').value = t.key || t.id;
-      document.getElementById('type-label').value = t.label || '';
-      document.getElementById('type-label-ar').value = t.labelAr || '';
-      document.getElementById('type-image').value = t.image || '';
-      openTypeModal(true);
-    }
+  const currentPwd = adminPassword || window.adminPassword;
+  if (oldPass !== currentPwd) { showToast('❌ Mot de passe actuel incorrect !', 'error'); return; }
+  if (!newPass || newPass.length < 8) { showToast('⚠️ Nouveau mot de passe trop court (min 8 caractères) !', 'error'); return; }
+  if (newPass !== confirmPass) { showToast('⚠️ Les deux mots de passe ne correspondent pas !', 'error'); return; }
 
-    async function submitTypeForm() {
-      const id = document.getElementById('type-edit-id').value;
-      const key = document.getElementById('type-key').value.trim();
-      const label = document.getElementById('type-label').value.trim();
-      const labelAr = document.getElementById('type-label-ar').value.trim();
-      const image = document.getElementById('type-image').value.trim();
-
-      if (!key || !label) {
-        alert("Le code et le nom en Français sont requis !");
-        return;
-      }
-
-      const typeData = { key, label, labelAr, image };
-      const docId = id || key;
-
-      try {
-        await window.db.saveType(docId, typeData);
-        closeTypeModal();
-        showToast("✅ Catégorie sauvegardée avec succès !", "success");
-        loadTypes();
-      } catch (e) {
-        alert("Erreur lors de la sauvegarde: " + e.message);
-      }
-    }
-
-    async function deleteType(id) {
-      if (!confirm("Voulez-vous vraiment supprimer cette catégorie ? (Les produits associés ne seront pas supprimés)")) return;
-      try {
-        await window.db.deleteType(id);
-        showToast("🗑️ Catégorie supprimée !", "success");
-        loadTypes();
-      } catch (e) {
-        alert("Erreur suppression: " + e.message);
-      }
-    }
-
-    // --- PRODUCTS MANAGEMENT ---
-    async function loadProducts() {
-      const tbody = document.getElementById('products-table-body');
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Chargement...</td></tr>';
-      
-      const filterType = document.getElementById('filter-product-type')?.value;
-
-      try {
-        productsList = await window.db.getProducts();
-        tbody.innerHTML = '';
-        
-        let filtered = productsList;
-        if (filterType) {
-          filtered = productsList.filter(p => p.category === filterType);
-        }
-
-        if (filtered.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Aucun produit trouvé.</td></tr>';
-          return;
-        }
-
-        filtered.forEach(p => {
-          const photoPreview = p.photos?.[0] || p.emoji || '👶';
-          tbody.innerHTML += `
-            <tr>
-              <td style="font-size:1.5rem;">${photoPreview}</td>
-              <td>
-                <strong>${p.name || '-'}</strong><br/>
-                <span style="font-size:0.75rem; color:var(--admin-text-light);">${p.nameAr || ''}</span>
-              </td>
-              <td><span class="badge" style="background:#f1f5f9; color:var(--admin-text-dark);">${p.category || '-'}</span></td>
-              <td><strong>${p.price?.toLocaleString('fr-DZ')} DA</strong></td>
-              <td>${p.sizes?.join(', ') || '-'}</td>
-              <td>${p.colors?.join(', ') || '-'}</td>
-              <td>
-                <button class="btn-admin-action" onclick="editProduct('${p.id}')">✏️ Modifier</button>
-                <button class="btn-admin-action btn-admin-danger" onclick="deleteProduct('${p.id}')">🗑️ Supprimer</button>
-              </td>
-            </tr>
-          `;
-        });
-      } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#ef4444;">Erreur lors du chargement des produits.</td></tr>';
-      }
-    }
-
-    function openProductModal(isEdit = false) {
-      document.getElementById('product-modal-title').textContent = isEdit ? "Modifier le produit" : "Ajouter un produit";
-      document.getElementById('product-id').disabled = isEdit;
-      document.getElementById('product-modal').style.display = 'flex';
-    }
-
-    function closeProductModal() {
-      document.getElementById('product-modal').style.display = 'none';
-      document.getElementById('product-edit-id').value = '';
-      document.getElementById('product-id').value = '';
-      document.getElementById('product-name').value = '';
-      document.getElementById('product-name-ar').value = '';
-      document.getElementById('product-price').value = '';
-      document.getElementById('product-oldprice').value = '';
-      document.getElementById('product-stock').value = '10';
-      document.getElementById('product-colors').value = '';
-      document.getElementById('product-photos').value = '';
-      document.getElementById('product-description').value = '';
-      document.getElementById('product-age-group').value = '';
-      
-      document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked = false);
-    }
-
-    function editProduct(id) {
-      // Find correctly by matching either string or number
-      const p = productsList.find(x => String(x.id) === String(id));
-      if (!p) return;
-      
-      document.getElementById('product-edit-id').value = p.id;
-      document.getElementById('product-id').value = p.id;
-      document.getElementById('product-name').value = p.name || '';
-      document.getElementById('product-name-ar').value = p.nameAr || '';
-      document.getElementById('product-type').value = p.category || '';
-      document.getElementById('product-price').value = p.price || '';
-      document.getElementById('product-oldprice').value = p.oldPrice || '';
-      document.getElementById('product-stock').value = p.stock !== undefined ? p.stock : 10;
-      document.getElementById('product-colors').value = p.colors?.join(', ') || '';
-      document.getElementById('product-photos').value = p.photos?.join(', ') || p.emoji || '';
-      document.getElementById('product-description').value = p.description || '';
-      document.getElementById('product-age-group').value = p.ageGroup || '';
-
-      // Sizes checkbox
-      const sizes = p.sizes || [];
-      document.querySelectorAll('input[name="product-sizes"]').forEach(cb => {
-        cb.checked = sizes.includes(cb.value);
-      });
-
-      openProductModal(true);
-    }
-
-    async function submitProductForm() {
-      const editId = document.getElementById('product-edit-id').value;
-      const id = document.getElementById('product-id').value.trim();
-      const name = document.getElementById('product-name').value.trim();
-      const nameAr = document.getElementById('product-name-ar').value.trim();
-      const category = document.getElementById('product-type').value;
-      const price = parseFloat(document.getElementById('product-price').value);
-      const oldPriceVal = document.getElementById('product-oldprice').value.trim();
-      const stock = parseInt(document.getElementById('product-stock').value) || 0;
-      const colorsStr = document.getElementById('product-colors').value.trim();
-      const photosStr = document.getElementById('product-photos').value.trim();
-      const description = document.getElementById('product-description').value.trim();
-      const ageGroup = document.getElementById('product-age-group').value.trim();
-
-      if (!id || !name || !category || isNaN(price)) {
-        alert("L'identifiant, le nom, la catégorie et le prix sont obligatoires !");
-        return;
-      }
-
-      // Sizes Array
-      const checkedSizes = [];
-      document.querySelectorAll('input[name="product-sizes"]:checked').forEach(cb => {
-        checkedSizes.push(cb.value);
-      });
-
-      // Colors Array
-      const colors = colorsStr ? colorsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-      
-      // Photos Array
-      const photos = photosStr ? photosStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-
-      const docId = editId || id;
-      const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
-
-      const productData = {
-        name,
-        nameAr,
-        category,
-        price,
-        oldPrice,
-        stock,
-        sizes: checkedSizes,
-        colors,
-        photos,
-        description,
-        ageGroup
-      };
-
-      try {
-        await window.db.saveProduct(docId, productData);
-        closeProductModal();
-        showToast("✅ Produit sauvegardé avec succès !", "success");
-        loadProducts();
-      } catch (e) {
-        alert("Erreur lors de la sauvegarde: " + e.message);
-      }
-    }
-
-    async function deleteProduct(id) {
-      if (!confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
-      try {
-        await window.db.deleteProduct(id);
-        showToast("🗑️ Produit supprimé !", "success");
-        loadProducts();
-      } catch (e) {
-        alert("Erreur suppression: " + e.message);
-      }
-    }
-
-    // --- ORDERS MANAGEMENT ---
-    async function loadOrders() {
-      const tbody = document.getElementById('orders-table-body');
-      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">Chargement...</td></tr>';
-
-      try {
-        ordersList = await window.db.getOrders();
-        tbody.innerHTML = '';
-
-        if (ordersList.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">Aucune commande pour le moment.</td></tr>';
-          return;
-        }
-
-        ordersList.forEach(o => {
-          const dateStr = o.createdAt ? new Date(o.createdAt.seconds * 1000).toLocaleString('fr-DZ') : (o.date ? new Date(o.date).toLocaleString('fr-DZ') : '-');
-          tbody.innerHTML += `
-            <tr>
-              <td><strong>${o.id_commande || o.tracking || o.id}</strong></td>
-              <td>${dateStr}</td>
-              <td>${o.nom || o.nomClient || '-'}</td>
-              <td>${o.telephone || o.telephoneClient || '-'}</td>
-              <td>${o.wilaya || '-'}</td>
-              <td>${o.produit_nom || o.produit || '-'}</td>
-              <td>${o.taille || '-'}</td>
-              <td><span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:${o.couleur || '#ccc'}; vertical-align:middle; border:1px solid #ddd;" title="${o.couleur}"></span></td>
-              <td>${o.quantite || 1}</td>
-              <td><strong>${(o.prix_total || o.prixTotal || 0).toLocaleString('fr-DZ')} DA</strong></td>
-              <td>
-                <select class="status-select status-${o.status || o.statut || 'en_attente'}" onchange="changeOrderStatus('${o.id}', this.value)">
-                  <option value="en_attente" ${o.status === 'en_attente' || o.statut === 'en_attente' ? 'selected' : ''}>⏳ En attente</option>
-                  <option value="confirmee" ${o.status === 'confirmee' || o.statut === 'confirmee' ? 'selected' : ''}>✅ Confirmée</option>
-                  <option value="expediee" ${o.status === 'expediee' || o.statut === 'expediee' ? 'selected' : ''}>🚀 Expédiée</option>
-                  <option value="livree" ${o.status === 'livree' || o.statut === 'livree' ? 'selected' : ''}>📦 Livrée</option>
-                </select>
-              </td>
-            </tr>
-          `;
-        });
-      } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#ef4444;">Erreur lors du chargement des commandes.</td></tr>';
-      }
-    }
-
-    async function changeOrderStatus(orderId, newStatus) {
-      try {
-        await window.db.updateOrderStatus(orderId, newStatus);
-        showToast("✅ Statut de commande mis à jour !", "success");
-        loadOrders();
-      } catch (e) {
-        alert("Erreur mise à jour statut: " + e.message);
-      }
-    }
-
-    // --- CSV EXPORTER (Étape 5) ---
-    function exportOrdersToCSV() {
-      if (ordersList.length === 0) {
-        alert("Aucune commande à exporter !");
-        return;
-      }
-
-      // CSV Header
-      let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // BOM pour encodage UTF-8 Excel
-      csvContent += "ID Commande,Date,Client,Telephone,Wilaya,Adresse,Produit,Taille,Couleur,Quantite,Total,Statut,Note\n";
-
-      // Row mapping
-      ordersList.forEach(o => {
-        const dateStr = o.createdAt ? new Date(o.createdAt.seconds * 1000).toLocaleString('fr-DZ').replace(/,/g, ' ') : (o.date ? new Date(o.date).toLocaleString('fr-DZ') : '-');
-        const id = o.id_commande || o.tracking || o.id || '';
-        const client = (o.nom || o.nomClient || '').replace(/,/g, ' ');
-        const phone = o.telephone || o.telephoneClient || '';
-        const wilaya = (o.wilaya || '').replace(/,/g, ' ');
-        const adresse = (o.adresse || '').replace(/,/g, ' ');
-        const produit = (o.produit_nom || o.produit || '').replace(/,/g, ' ');
-        const taille = o.taille || '';
-        const couleur = o.couleur || '';
-        const qte = o.quantite || 1;
-        const total = o.prix_total || o.prixTotal || 0;
-        const status = o.status || o.statut || '';
-        const note = (o.note || '').replace(/,/g, ' ').replace(/\n/g, ' ');
-
-        csvContent += `"${id}","${dateStr}","${client}","${phone}","${wilaya}","${adresse}","${produit}","${taille}","${couleur}","${qte}","${total}","${status}","${note}"\n`;
-      });
-
-      // Download trigger
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `milybo_commandes_${new Date().toISOString().slice(0, 10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
+  try {
+    await window.db.saveAdminPassword(newPass);
+    adminPassword = newPass;
+    sessionStorage.setItem('admin_session_v2', newPass);
+    document.getElementById('settings-old-pass').value = '';
+    document.getElementById('settings-new-pass').value = '';
+    document.getElementById('settings-confirm-pass').value = '';
+    showToast('✅ Mot de passe changé avec succès ! Sauvegardé dans Firebase.', 'success');
+  } catch(e) {
+    alert('Erreur: '+e.message);
+  }
+}
+</script>
 </body>
 </html>
