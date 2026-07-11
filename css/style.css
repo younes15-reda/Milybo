@@ -4,49 +4,56 @@
    ============================================================ */
 
 /* Round fonts: Nunito (Latin) + Noto Sans Arabic */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&family=Cairo:wght@300;400;600;700&display=swap');
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 :root {
-    /* Brand Palette (Milybo) */
-    --rose: #D82C2C;       /* Rouge Milybo (remplace rose poudré) */
-    --rose-light: #F4A6A6;
-    --rose-pale: #FDE8E8;
-    --rose-bg: #FFF5F5;
+    /* ═══ PALETTE MATERNELLE MILYBO (v3) ═══ */
+    /* Rose doux – couleur principale */
+    --rose: #E8889A;           /* rose doux maternel */
+    --rose-dark: #C96478;      /* rose foncé pour hover */
+    --rose-light: #F9C5D0;     /* rose pâle exact demandé */
+    --rose-pale: #FEF0F3;      /* rose très pâle bg */
+    --rose-bg: #FFF5F7;
 
-    --sky: #1B4A8E;        /* Bleu Milybo (remplace bleu ciel) */
-    --sky-light: #90B2DF;
-    --sky-pale: #EBF1F8;
+    /* Bleu ciel – couleur secondaire */
+    --sky: #6AAAD4;            /* bleu ciel maternel */
+    --sky-dark: #4A8CB8;       /* bleu foncé hover */
+    --sky-light: #C3DCF5;      /* bleu ciel exact demandé */
+    --sky-pale: #EBF5FF;       /* bleu très pâle bg */
 
-    --mint: #F4C542;       /* Jaune Milybo (remplace menthe) */
-    --mint-light: #FBE6A4;
-    --mint-pale: #FEF9EB;
+    /* Menthe douce */
+    --mint: #7DCCB4;           /* menthe douce */
+    --mint-light: #B8E8DB;
+    --mint-pale: #EAF9F5;
 
-    --cream: #E27D26;      /* Orange Milybo (remplace beige crème pour les accents forts) */
-    --cream-dark: #C66A1D;
-    
-    --text-dark: #1E293B;  /* Bleu très foncé pour le texte au lieu du brun */
-    --text-mid: #64748B;
-    --text-soft: #94A3B8;
+    /* Crème / beige */
+    --cream: #F0E6D8;          /* beige crème doux */
+    --cream-dark: #D8C9B4;     /* beige foncé */
+
+    /* Texte */
+    --text-dark: #1A1A2E;      /* texte foncé exact demandé */
+    --text-mid: #4A4A6A;
+    --text-soft: #8A8AAA;
     --white: #FFFFFF;
-    --off-white: #F8FAFC;
+    --off-white: #FAFAF8;      /* blanc cassé exact demandé */
 
-    /* Typography */
-    --font-main: 'Nunito', sans-serif;
-    --font-arabic: 'Noto Sans Arabic', sans-serif;
+    /* Typographie */
+    --font-main: 'Poppins', 'Nunito', sans-serif;
+    --font-arabic: 'Tajawal', 'Cairo', sans-serif;
 
-    /* Spacing & Shape */
-    --radius-sm: 10px;
-    --radius-md: 18px;
-    --radius-lg: 28px;
+    /* Formes arrondies et chaleureuses */
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
     --radius-xl: 50px;
     --radius-pill: 100px;
 
-    /* Shadows – very soft */
-    --shadow-xs: 0 2px 8px rgba(168, 140, 130, .08);
-    --shadow-sm: 0 4px 16px rgba(168, 140, 130, .10);
-    --shadow-md: 0 8px 32px rgba(168, 140, 130, .14);
-    --shadow-lg: 0 16px 48px rgba(168, 140, 130, .18);
+    /* Ombres douces maternelles */
+    --shadow-xs: 0 2px 10px rgba(232, 136, 154, .08);
+    --shadow-sm: 0 4px 18px rgba(232, 136, 154, .11);
+    --shadow-md: 0 8px 32px rgba(232, 136, 154, .15);
+    --shadow-lg: 0 16px 48px rgba(232, 136, 154, .20);
 
     --transition: .3s cubic-bezier(.4, 0, .2, 1);
 }
@@ -2138,3 +2145,133 @@ textarea.form-input {
         border-bottom: 1px solid var(--cream);
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   SCROLL ANIMATIONS (gérées par perf.js)
+══════════════════════════════════════════════════════════ */
+.anim-ready {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .5s ease, transform .5s ease;
+}
+
+.anim-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════════════════════
+   LOGO avec logo2.png (rectangulaire)
+══════════════════════════════════════════════════════════ */
+.logo-mark {
+    background: transparent !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+
+.logo-mark img {
+    object-fit: contain !important;
+    border-radius: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER RIBBON – palette douce
+══════════════════════════════════════════════════════════ */
+.header-top {
+    background: linear-gradient(90deg, #FEF0F3 0%, #EBF5FF 50%, #EAF9F5 100%) !important;
+    color: var(--text-dark) !important;
+    border-bottom: 1px solid var(--cream);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOUTONS – chaleureux & ronds
+══════════════════════════════════════════════════════════ */
+.btn-primary {
+    background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%) !important;
+    box-shadow: 0 5px 18px rgba(232, 136, 154, .32) !important;
+    border-radius: var(--radius-pill) !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--rose-dark) 0%, #B0506A 100%) !important;
+    box-shadow: 0 8px 26px rgba(232, 136, 154, .44) !important;
+    transform: translateY(-2px) !important;
+}
+
+.btn-sky {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--sky-dark) 100%) !important;
+    box-shadow: 0 5px 18px rgba(106, 170, 212, .30) !important;
+}
+
+.btn-sky:hover {
+    background: linear-gradient(135deg, var(--sky-dark) 0%, #3A7298 100%) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION CREAM override – couleur douce
+══════════════════════════════════════════════════════════ */
+.section-cream {
+    background: var(--cream) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER BORDER override
+══════════════════════════════════════════════════════════ */
+.header-main {
+    border-bottom: 1px solid var(--cream) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   NAV background override
+══════════════════════════════════════════════════════════ */
+.nav {
+    background: white !important;
+    border-bottom: 1px solid var(--cream) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PRODUCT CARD – hover chaleureux
+══════════════════════════════════════════════════════════ */
+.product-card {
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden;
+    transition: transform .3s ease, box-shadow .3s ease;
+    border: 1.5px solid var(--cream);
+}
+
+.product-img-wrap {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: linear-gradient(135deg, #FEF0F3 0%, #EBF5FF 100%);
+}
+
+.product-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.product-card:hover .product-img-wrap img {
+    transform: scale(1.05);
+}
+
+/* ══════════════════════════════════════════════════════════
+   FOOTER – background doux
+══════════════════════════════════════════════════════════ */
+.footer-section {
+    background: linear-gradient(160deg, #1A1A2E 0%, #2A2A4E 100%) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SEARCH BAR – palette douce
+══════════════════════════════════════════════════════════ */
+.search-bar input {
+    border-color: var(--cream) !important;
+}
+
+.search-bar input:focus {
+    border-color: var(--rose-light) !important;
+    box-shadow: 0 0 0 3px var(--rose-pale) !important;
+}

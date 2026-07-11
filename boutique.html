@@ -7,9 +7,20 @@
   <meta name="description" content="Boutique Milybo DZ – Vêtements bébé 0 à 36 mois, filtrés par âge, saison et occasion." />
   <meta name="keywords" content="vêtements bébé Algérie, habits bébé DZ, ملابس أطفال, milybo dz, e-commerce algérie" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="images/milybo.jpg" />
+  <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="icon" type="image/png" href="images/logo2.png" />
 </head>
 <body>
+<!-- ── Firebase Loader ── -->
+<div id="firebase-loader">
+  <img src="images/logo2.png" alt="Milybo DZ" class="loader-logo"/>
+  <div class="loader-dots">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+  </div>
+  <span class="loader-text">Chargement boutique...</span>
+</div>
 <header class="header" id="main-header">
   <div class="header-top">🚚 Livraison rapide partout en Algérie &nbsp;·&nbsp; توصيل سريع لكل الولايات &nbsp;·&nbsp; 💵 Cash à la livraison</div>
   <div class="header-main">
@@ -187,5 +198,6 @@ function quickFilter(type, value) {
   if (cb) { cb.checked = true; toggleFilter(type, value); }
 }
 </script>
+<script src="js/perf.js"></script>
 </body>
 </html>
