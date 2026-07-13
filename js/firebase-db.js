@@ -113,13 +113,7 @@ window.db = {
       return types;
     } catch (e) {
       console.error("Erreur récupération types:", e);
-      return [
-        { key: "barboteuse", label: "Barboteuse", labelAr: "بربوتيز" },
-        { key: "pyjama", label: "Pyjama", labelAr: "بيجامة" },
-        { key: "body", label: "Body", labelAr: "بودي" },
-        { key: "ensemble", label: "Ensemble", labelAr: "طقم" },
-        { key: "coffret", label: "Coffret Cadeau", labelAr: "طقم" }
-      ];
+      return [];
     }
   },
 
