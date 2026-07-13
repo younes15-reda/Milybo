@@ -219,7 +219,10 @@ async function initProductPage() {
   const id = new URLSearchParams(window.location.search).get('id');
   let p = null;
   if (window.db) {
-    try { p = await window.db.getProductById(id); } catch(e) {}
+    try { 
+      p = await window.db.getProductById(id); 
+      if (p) window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
+    } catch(e) {}
   }
   if (!p) p = getProductById(id);
   if (!p) {

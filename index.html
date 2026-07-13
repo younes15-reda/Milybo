@@ -332,6 +332,7 @@ async function loadFirebaseData() {
       if (firestoreProducts && firestoreProducts.length) {
         loadedProducts = firestoreProducts;
         PRODUCTS = firestoreProducts; // keep global in sync too
+        window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
       }
     } catch(e) {
       console.warn('Home Firebase load failed, using local data:', e);

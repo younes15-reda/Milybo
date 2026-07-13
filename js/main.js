@@ -128,6 +128,7 @@ async function loadBoutique() {
             const firestoreProducts = await window.db.getProducts();
             if (firestoreProducts && firestoreProducts.length) {
                 PRODUCTS = firestoreProducts; // override local hardcoded data
+                window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
             }
         } catch (e) {
             console.warn('Firebase fallback to local PRODUCTS:', e);
@@ -151,6 +152,7 @@ async function reloadBoutiqueFromFirebase() {
         const firestoreProducts = await window.db.getProducts();
         if (firestoreProducts && firestoreProducts.length) {
             PRODUCTS = firestoreProducts;
+            window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
             // Re-render the shop grid with fresh Firestore data
             if (typeof renderShopGrid === 'function') renderShopGrid(PRODUCTS);
             if (typeof updateResultsCount === 'function') updateResultsCount(PRODUCTS.length);

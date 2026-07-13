@@ -21,10 +21,10 @@
     }
   }
 
-  // Hide after Firebase is ready or after 3s max
-  window.addEventListener('firebase-ready', hideLoader);
-  // Fallback: hide after 3 seconds even if Firebase fails
-  setTimeout(hideLoader, 3000);
+  // Hide after products are actually loaded from Firestore
+  window.addEventListener('products-loaded-from-firestore', hideLoader);
+  // Fallback: hide after 4 seconds even if Firebase fails / is too slow
+  setTimeout(hideLoader, 4000);
 
   /* ── 2. LAZY LOADING (IntersectionObserver) ─────────────── */
   function initLazyImages() {
