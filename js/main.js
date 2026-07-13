@@ -117,19 +117,23 @@ function goToCategory(age) {
 
 // ── Async Boutique Loader (Firebase + fallback) ───────────────
 let dbBoutiqueLoaded = false;
+
 async function loadBoutique() {
     if (dbBoutiqueLoaded) return;
     dbBoutiqueLoaded = true;
+
+    // Always try to load from Firestore first
     if (window.db) {
         try {
             const firestoreProducts = await window.db.getProducts();
             if (firestoreProducts && firestoreProducts.length) {
-                PRODUCTS = firestoreProducts;
+                PRODUCTS = firestoreProducts; // override local hardcoded data
             }
         } catch (e) {
             console.warn('Firebase fallback to local PRODUCTS:', e);
         }
     }
+
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
     if (q) {
@@ -140,14 +144,39 @@ async function loadBoutique() {
     if (q) searchProducts(q);
 }
 
+// Force re-render boutique after Firebase is ready (even if late)
+async function reloadBoutiqueFromFirebase() {
+    if (!window.db) return;
+    try {
+        const firestoreProducts = await window.db.getProducts();
+        if (firestoreProducts && firestoreProducts.length) {
+            PRODUCTS = firestoreProducts;
+            // Re-render the shop grid with fresh Firestore data
+            if (typeof renderShopGrid === 'function') renderShopGrid(PRODUCTS);
+            if (typeof updateResultsCount === 'function') updateResultsCount(PRODUCTS.length);
+        }
+    } catch(e) {
+        console.warn('Boutique reload from Firebase failed:', e);
+    }
+}
+
 window.addEventListener('load', () => {
     const path = window.location.pathname;
     if (path.includes('boutique')) {
         if (window.db) {
             loadBoutique();
         } else {
-            window.addEventListener('firebase-ready', loadBoutique);
-            setTimeout(loadBoutique, 2000); // fallback si Firebase lent
+            window.addEventListener('firebase-ready', () => {
+                if (!dbBoutiqueLoaded) {
+                    loadBoutique();
+                } else {
+                    // Firebase ready after shop already rendered with local data — force reload
+                    reloadBoutiqueFromFirebase();
+                }
+            });
+            // Show local data immediately, then replace with Firestore data
+            initShop();
+            dbBoutiqueLoaded = true;
         }
     }
     if (path.includes('contact')) {

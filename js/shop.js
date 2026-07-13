@@ -7,7 +7,9 @@ let currentFilters = { ageGroup: [], category: [], saison: [], occasion: [], max
 let currentSort = 'default';
 
 function initShop() {
+  // PRODUCTS is set by main.js after Firestore load - render whatever we have
   renderShopGrid(PRODUCTS);
+  updateResultsCount(PRODUCTS.length);
   document.getElementById('sort-select')?.addEventListener('change', e => {
     currentSort = e.target.value;
     applyFilters();

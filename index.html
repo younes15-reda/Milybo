@@ -327,7 +327,16 @@ function switchTab(tab) {
 
 async function loadFirebaseData() {
   if (window.db) {
-    loadedProducts = await window.db.getProducts();
+    try {
+      const firestoreProducts = await window.db.getProducts();
+      if (firestoreProducts && firestoreProducts.length) {
+        loadedProducts = firestoreProducts;
+        PRODUCTS = firestoreProducts; // keep global in sync too
+      }
+    } catch(e) {
+      console.warn('Home Firebase load failed, using local data:', e);
+      loadedProducts = typeof PRODUCTS !== 'undefined' ? PRODUCTS : [];
+    }
     switchTab(currentTab);
   }
 }
@@ -335,10 +344,13 @@ async function loadFirebaseData() {
 window.addEventListener("firebase-ready", loadFirebaseData);
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Show local data immediately for fast render
+  switchTab('new');
+  // Then override with Firestore data once available
   if (window.db) {
     loadFirebaseData();
   } else {
-    switchTab('new');
+    window.addEventListener('firebase-ready', loadFirebaseData);
   }
 });
 </script>
