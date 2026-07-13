@@ -44,16 +44,6 @@ window.db = {
         products.push({ id: doc.id, ...doc.data() });
       });
       
-      // Auto-seeding si Firestore est vide (confort développeur)
-      if (products.length === 0 && typeof PRODUCTS !== 'undefined') {
-        console.log("Firestore 'produits' est vide. Seeding des données initiales...");
-        for (const p of PRODUCTS) {
-          const { id, ...dataWithoutId } = p;
-          await setDoc(doc(firestore, "produits", String(p.id)), dataWithoutId);
-        }
-        return PRODUCTS;
-      }
-      
       // Convertir l'id en nombre si c'est un entier numérique
       return products.map(p => ({
         ...p,
@@ -120,21 +110,6 @@ window.db = {
         types.push({ id: doc.id, ...doc.data() });
       });
 
-      // Auto-seeding pour les types de vêtements
-      if (types.length === 0) {
-        console.log("Firestore 'types' est vide. Seeding...");
-        const defaultTypes = [
-          { key: "barboteuse", label: "Barboteuse", labelAr: "بربوتيز" },
-          { key: "pyjama", label: "Pyjama", labelAr: "بيجامة" },
-          { key: "body", label: "Body", labelAr: "بودي" },
-          { key: "ensemble", label: "Ensemble", labelAr: "طقم" },
-          { key: "coffret", label: "Coffret Cadeau", labelAr: "طقم" }
-        ];
-        for (const t of defaultTypes) {
-          await setDoc(doc(firestore, "types", t.key), t);
-        }
-        return defaultTypes;
-      }
       return types;
     } catch (e) {
       console.error("Erreur récupération types:", e);
