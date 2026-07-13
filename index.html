@@ -329,7 +329,7 @@ async function loadFirebaseData() {
   if (window.db) {
     try {
       const firestoreProducts = await window.db.getProducts();
-      if (firestoreProducts && firestoreProducts.length) {
+      if (firestoreProducts) { // Accept empty array too!
         loadedProducts = firestoreProducts;
         PRODUCTS = firestoreProducts; // keep global in sync too
         window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));

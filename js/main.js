@@ -126,7 +126,7 @@ async function loadBoutique() {
     if (window.db) {
         try {
             const firestoreProducts = await window.db.getProducts();
-            if (firestoreProducts && firestoreProducts.length) {
+            if (firestoreProducts) { // Accept empty array too!
                 PRODUCTS = firestoreProducts; // override local hardcoded data
                 window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
             }
@@ -150,7 +150,7 @@ async function reloadBoutiqueFromFirebase() {
     if (!window.db) return;
     try {
         const firestoreProducts = await window.db.getProducts();
-        if (firestoreProducts && firestoreProducts.length) {
+        if (firestoreProducts) { // Accept empty array too!
             PRODUCTS = firestoreProducts;
             window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
             // Re-render the shop grid with fresh Firestore data
