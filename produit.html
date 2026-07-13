@@ -271,14 +271,40 @@ function renderProductDetail(p) {
     `<div class="color-chip${i===0?' active':''}" style="background:${c};" onclick="selectColor(this,'${c}')" title="${c}"></div>`
   ).join('');
 
-  const thumbsHTML = (p.photos || [p.emoji || '👶']).map((ph, i) =>
-    `<div class="gallery-thumb${i===0?' active':''}" onclick="changePhoto(this,'${ph}')">${ph}</div>`
-  ).join('');
+  // Helper function to build beautiful visual HTML
+  const getMediaHTML = (photoItem) => {
+    if (photoItem.startsWith('http') || photoItem.startsWith('data:') || photoItem.includes('/') || photoItem.includes('.')) {
+      return `<img src="${photoItem}" width="600" height="600" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--radius-lg);"/>`;
+    } else {
+      return `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;width:100%;color:var(--text-dark);position:relative;">
+          <span style="font-size:5rem;z-index:2;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.15));">${photoItem || '🧸'}</span>
+          <svg viewBox="0 0 100 100" width="70%" height="70%" style="position:absolute;opacity:0.07;color:currentColor;fill:currentColor;">
+            <path d="M 50 15 C 45 15 42 12 40 12 C 38 12 35 15 30 15 C 24 15 20 22 20 30 C 20 45 25 50 30 55 C 32 57 34 65 34 75 C 34 85 40 90 50 90 C 60 90 66 85 66 75 C 66 65 68 57 70 55 C 75 50 80 45 80 30 C 80 22 76 15 70 15 C 65 15 62 12 60 12 C 58 12 55 15 50 15 Z"></path>
+          </svg>
+        </div>`;
+    }
+  };
+
+  const thumbsHTML = (p.photos || [p.emoji || '👶']).map((ph, i) => {
+    let thumbContent = '';
+    if (ph.startsWith('http') || ph.startsWith('data:') || ph.includes('/') || ph.includes('.')) {
+      thumbContent = `<img src="${ph}" style="width:100%;height:100%;object-fit:cover;display:block;"/>`;
+    } else {
+      thumbContent = `<span style="font-size:1.4rem;">${ph}</span>`;
+    }
+    // String escape backticks or quotes inside changePhoto argument
+    const safePh = ph.replace(/'/g, "\\'");
+    return `<div class="gallery-thumb${i===0?' active':''}" onclick="changePhoto(this,'${safePh}')" style="display:flex;align-items:center;justify-content:center;">${thumbContent}</div>`;
+  }).join('');
+
+  // Pre-generate main visual
+  const initialMediaHTML = getMediaHTML(p.photos?.[0] || p.emoji || '👶');
 
   document.getElementById('product-detail').innerHTML = `
     <!-- Gallery -->
     <div>
-      <div class="gallery-main" id="gallery-main" style="background:${p.color||'#fff'}25;">${p.photos?.[0] || p.emoji || '👶'}</div>
+      <div class="gallery-main" id="gallery-main" style="background:${p.color||'#fff'}25;overflow:hidden;position:relative;">${initialMediaHTML}</div>
       <div class="gallery-thumbs">${thumbsHTML}</div>
     </div>
     <!-- Info + Express Order Form -->
@@ -354,7 +380,21 @@ function renderProductDetail(p) {
         </div>
 
         <div class="order-form-group">
-          <label class="order-form-label">🏠 Adresse de livraison / عنوان التوصيل *</label>
+          <label class="order-form-label">🛵 Mode de livraison / طريقة التوصيل *</label>
+          <div style="display:flex;gap:12px;margin-top:6px;">
+            <label style="flex:1;display:flex;align-items:center;gap:8px;background:white;padding:12px;border:2px solid var(--cream-dark);border-radius:12px;cursor:pointer;font-weight:700;font-size:.82rem;">
+              <input type="radio" name="order-delivery-type" value="domicile" checked onchange="updateOrderSummary()"/>
+              🏠 A domicile
+            </label>
+            <label style="flex:1;display:flex;align-items:center;gap:8px;background:white;padding:12px;border:2px solid var(--cream-dark);border-radius:12px;cursor:pointer;font-weight:700;font-size:.82rem;">
+              <input type="radio" name="order-delivery-type" value="stopdesk" onchange="updateOrderSummary()"/>
+              📦 Point Relais
+            </label>
+          </div>
+        </div>
+
+        <div class="order-form-group">
+          <label class="order-form-label" id="order-address-label">🏠 Adresse de livraison / عنوان التوصيل *</label>
           <input type="text" id="order-address" class="order-form-input" placeholder="Rue, quartier, commune, code postal…" autocomplete="street-address"/>
         </div>
 
@@ -391,8 +431,26 @@ function changePhoto(el, val) {
   document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   const main = document.getElementById('gallery-main');
+  if (!main) return;
   main.style.opacity = '0';
-  setTimeout(() => { main.textContent = val; main.style.opacity = '1'; }, 150);
+  
+  let content = '';
+  if (val.startsWith('http') || val.startsWith('data:') || val.includes('/') || val.includes('.')) {
+    content = `<img src="${val}" alt="Produit" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--radius-lg);"/>`;
+  } else {
+    content = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;width:100%;color:var(--text-dark);position:relative;">
+        <span style="font-size:5rem;z-index:2;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.15));">${val || '🧸'}</span>
+        <svg viewBox="0 0 100 100" width="70%" height="70%" style="position:absolute;opacity:0.07;color:currentColor;fill:currentColor;">
+          <path d="M 50 15 C 45 15 42 12 40 12 C 38 12 35 15 30 15 C 24 15 20 22 20 30 C 20 45 25 50 30 55 C 32 57 34 65 34 75 C 34 85 40 90 50 90 C 60 90 66 85 66 75 C 66 65 68 57 70 55 C 75 50 80 45 80 30 C 80 22 76 15 70 15 C 65 15 62 12 60 12 C 58 12 55 15 50 15 Z"></path>
+        </svg>
+      </div>`;
+  }
+  
+  setTimeout(() => { 
+    main.innerHTML = content; 
+    main.style.opacity = '1'; 
+  }, 150);
 }
 
 function selectSize(el, size) {
@@ -421,14 +479,29 @@ function changeQty(delta) {
 function updateOrderSummary() {
   const wilayaCode = document.getElementById('order-wilaya')?.value;
   const info = document.getElementById('order-shipping-info');
+  const deliveryType = document.querySelector('input[name="order-delivery-type"]:checked')?.value || 'domicile';
+  
+  // Custom label based on delivery mode
+  const addrLabel = document.getElementById('order-address-label');
+  const addrInput = document.getElementById('order-address');
+  if (addrLabel && addrInput) {
+    if (deliveryType === 'stopdesk') {
+      addrLabel.innerHTML = '📦 Bureau Yalidine / Bureau de retrait *';
+      addrInput.placeholder = 'Indiquez le bureau ou la commune du bureau de retrait...';
+    } else {
+      addrLabel.innerHTML = '🏠 Adresse de livraison / عنوان التوصيل *';
+      addrInput.placeholder = 'Rue, quartier, commune, code postal...';
+    }
+  }
+
   if (!info || !currentProduct) return;
   if (!wilayaCode) { info.style.display = 'none'; return; }
 
-  const shipping = getZRDeliveryPrice(wilayaCode);
+  const shipping = deliveryType === 'stopdesk' ? getZRStopDeskPrice(wilayaCode) : getZRDeliveryPrice(wilayaCode);
   const subtotal = currentProduct.price * selectedQty;
   const total = subtotal + shipping;
 
-  document.getElementById('order-shipping-cost').textContent = `${shipping.toLocaleString('fr-DZ')} DA`;
+  document.getElementById('order-shipping-cost').textContent = `${shipping.toLocaleString('fr-DZ')} DA (${deliveryType === 'stopdesk' ? 'Point Relais' : 'A domicile'})`;
   document.getElementById('order-total-price').textContent = `${total.toLocaleString('fr-DZ')} DA`;
   info.style.display = 'block';
 }
@@ -447,15 +520,16 @@ async function submitExpressOrder() {
   const wilayaCode = wilayaSel?.value;
   const address  = document.getElementById('order-address').value.trim();
   const note     = document.getElementById('order-note')?.value.trim() || '';
+  const deliveryType = document.querySelector('input[name="order-delivery-type"]:checked')?.value || 'domicile';
 
   if (!selectedSize)   { showToast('⚠️ Choisissez une taille !', 'error'); return; }
   if (!fullname)        { showToast('⚠️ Entrez votre nom complet !', 'error'); return; }
   if (!validateAlgerianPhone(phone)) { showToast('⚠️ Numéro invalide (05/06/07XXXXXXXX) !', 'error'); return; }
   if (!wilayaCode)      { showToast('⚠️ Sélectionnez votre wilaya !', 'error'); return; }
-  if (!address)         { showToast('⚠️ Entrez votre adresse de livraison !', 'error'); return; }
+  if (!address)         { showToast(deliveryType === 'stopdesk' ? '⚠️ Indiquez le bureau de retrait !' : '⚠️ Entrez votre adresse de livraison !', 'error'); return; }
 
   const wilayaName = wilayaSel.options[wilayaSel.selectedIndex].text.split('–')[1]?.split('(')[0]?.trim() || '';
-  const shipping  = getZRDeliveryPrice(wilayaCode);
+  const shipping  = deliveryType === 'stopdesk' ? getZRStopDeskPrice(wilayaCode) : getZRDeliveryPrice(wilayaCode);
   const subtotal  = currentProduct.price * selectedQty;
   const total     = subtotal + shipping;
   const tracking  = generateTrackingNumber();
@@ -477,6 +551,7 @@ async function submitExpressOrder() {
     adresse:       address,
     note:          note,
     statut:        'en_attente',
+    mode_livraison: deliveryType,
     source:        'publicite',
     date:          new Date().toISOString()
   };
@@ -498,7 +573,7 @@ async function submitExpressOrder() {
   document.getElementById('order-confirm-details').innerHTML = `
     <div>📦 <strong>${currentProduct.name}</strong></div>
     <div>📏 Taille : <strong>${selectedSize}</strong> &nbsp;·&nbsp; 🔢 Qté : <strong>${selectedQty}</strong></div>
-    <div>📍 <strong>${wilayaName}</strong></div>
+    <div>📍 <strong>${wilayaName}</strong> (${deliveryType === 'stopdesk' ? 'Point Relais' : 'A domicile'})</div>
     <div>🚚 Livraison : <strong>${shipping.toLocaleString('fr-DZ')} DA</strong></div>
     <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--cream);">💰 <strong style="color:var(--rose);font-size:1rem;">Total : ${total.toLocaleString('fr-DZ')} DA</strong></div>
     <div style="font-size:.74rem;color:#9ca3af;margin-top:4px;">Réf : ${tracking}</div>
@@ -513,7 +588,8 @@ async function submitExpressOrder() {
     `👤 Nom : ${fullname}\n` +
     `📞 Tél : ${phone}\n` +
     `📍 Wilaya : ${wilayaName}\n` +
-    `🏠 Adresse : ${address}\n` +
+    `🛵 Mode : ${deliveryType === 'stopdesk' ? 'Point Relais (Retrait bureau)' : 'Livraison à domicile'}\n` +
+    `🏠 Adresse/Bureau : ${address}\n` +
     (note ? `📝 Note : ${note}\n` : '') +
     `\n🧸 Article : ${currentProduct.name}\n` +
     `📏 Taille : ${selectedSize}\n` +

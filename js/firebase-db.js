@@ -6,6 +6,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { 
   getFirestore, 
+  enableIndexedDbPersistence,
   collection, 
   getDocs, 
   getDoc,
@@ -22,6 +23,15 @@ import {
 // Initialisation Firebase
 const app = initializeApp(window.firebaseConfig);
 const firestore = getFirestore(app);
+
+// Activer le cache persistant natif de Firestore
+enableIndexedDbPersistence(firestore).catch((err) => {
+    if (err.code == 'failed-precondition') {
+        console.warn("La persistance Firestore a échoué (multiples onglets ouverts)");
+    } else if (err.code == 'unimplemented') {
+        console.warn("Le navigateur ne supporte pas la persistance Firestore");
+    }
+});
 
 // Exposer l'objet db globalement
 window.db = {
