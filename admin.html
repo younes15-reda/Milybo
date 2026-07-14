@@ -358,6 +358,11 @@
       <input type="text" id="product-colors" class="admin-form-input" placeholder="#FFB5BA, #B5D5FF, rose"/>
     </div>
 
+    <div class="admin-form-group">
+      <label class="admin-form-label">🧶 Matière / المادة</label>
+      <input type="text" id="product-matiere" class="admin-form-input" placeholder="Ex: Coton doux, Polyester, Lin..."/>
+    </div>
+
     <!-- Photo Upload -->
     <div class="admin-form-group">
       <label class="admin-form-label">📸 Photos du produit</label>
@@ -677,7 +682,7 @@ function openProductModal(isEdit=false) {
 function closeProductModal() {
   document.getElementById('product-modal').style.display = 'none';
   ['product-edit-id','product-id','product-name','product-name-ar','product-price',
-   'product-oldprice','product-colors','product-photos','product-description'].forEach(id => {
+   'product-oldprice','product-colors','product-matiere','product-photos','product-description'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
   document.getElementById('product-stock').value = '10';
@@ -698,6 +703,7 @@ function editProduct(id) {
   document.getElementById('product-oldprice').value = p.oldPrice||'';
   document.getElementById('product-stock').value = p.stock??10;
   document.getElementById('product-colors').value = (p.colors||[]).join(', ');
+  document.getElementById('product-matiere').value = p.matiere || p.matiereLabel || '';
   document.getElementById('product-photos').value = (p.photos||[]).join(', ');
   document.getElementById('product-description').value = p.description||'';
   // Sizes
@@ -727,6 +733,7 @@ async function submitProductForm() {
   const oldPriceVal = document.getElementById('product-oldprice').value.trim();
   const stock = parseInt(document.getElementById('product-stock').value)||0;
   const colorsStr = document.getElementById('product-colors').value.trim();
+  const matiere = document.getElementById('product-matiere').value.trim();
   const photosStr = document.getElementById('product-photos').value.trim();
   const description = document.getElementById('product-description').value.trim();
   if (!id||!name||!category||isNaN(price)) { alert('ID, Nom, Catégorie et Prix sont obligatoires.'); return; }
@@ -750,7 +757,7 @@ async function submitProductForm() {
 
   const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
   try {
-    await window.db.saveProduct(editId||id, { name, nameAr, category, ageGroup, price, oldPrice, stock, sizes, colors, photos, description });
+    await window.db.saveProduct(editId||id, { name, nameAr, category, ageGroup, price, oldPrice, stock, sizes, colors, photos, matiere, description });
     closeProductModal(); showToast('✅ Produit sauvegardé !', 'success'); loadProducts();
   } catch(e) {
     if (e.message && e.message.includes('exceeds')) {

@@ -320,10 +320,9 @@ function renderProductDetail(p) {
       <div class="detail-price">${p.price.toLocaleString('fr-DZ')} <span style="font-size:1.1rem;color:var(--text-soft);">DA</span></div>
       ${oldHTML}
       <div class="detail-meta">
-        <div class="meta-chip"><strong>📦 Catégorie</strong><span>${p.categoryLabel||'-'}</span></div>
-        <div class="meta-chip"><strong>👶 Âge</strong><span>${p.ageGroupLabel||'-'}</span></div>
-        <div class="meta-chip"><strong>🌡️ Saison</strong><span>${p.saisonLabel||'-'}</span></div>
-        <div class="meta-chip"><strong>🧶 Matière</strong><span>${p.matiereLabel||'Coton doux'}</span></div>
+        <div class="meta-chip"><strong>📦 Catégorie</strong><span>${p.categoryLabel || p.category || '-'}</span></div>
+        <div class="meta-chip"><strong>👶 Âge</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né (0–3 mois)','nourrisson':'Nourrisson (3–12 mois)','tout-petit':'Tout-petit (12–36 mois)'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
+        <div class="meta-chip"><strong>🧶 Matière</strong><span>${p.matiere || p.matiereLabel || 'Coton doux'}</span></div>
       </div>
 
       <!-- Size Selector -->
