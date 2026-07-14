@@ -53,18 +53,9 @@
 </div>
 
 <!-- Page title -->
-<div style="padding:24px 40px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-  <div>
-    <h1 style="font-size:1.6rem;font-weight:900;color:var(--text-dark);letter-spacing:-.3px;">Notre Catalogue</h1>
-    <p style="color:var(--text-soft);font-size:.84rem;margin-top:3px;font-family:var(--font-arabic);">تصفحي مجموعتنا الكاملة لملابس الأطفال</p>
-  </div>
-  <!-- Quick filter tabs -->
-  <div style="display:flex;gap:8px;flex-wrap:wrap;">
-    <button onclick="quickFilter('saison','ete')" class="btn btn-sm" style="background:var(--rose-pale);color:var(--rose);border:1.5px solid var(--rose-light);">☀️ Été</button>
-    <button onclick="quickFilter('saison','hiver')" class="btn btn-sm" style="background:var(--sky-pale);color:var(--sky);border:1.5px solid var(--sky-light);">❄️ Hiver</button>
-    <button onclick="quickFilter('saison','mi-saison')" class="btn btn-sm" style="background:var(--mint-pale);color:var(--mint);border:1.5px solid var(--mint-light);">🍃 Mi-saison</button>
-    <button onclick="quickFilter('occasion','fete')" class="btn btn-sm" style="background:var(--cream);color:var(--text-dark);border:1.5px solid var(--cream-dark);">🎉 Fête</button>
-  </div>
+<div style="padding:24px 40px 0;">
+  <h1 style="font-size:1.6rem;font-weight:900;color:var(--text-dark);letter-spacing:-.3px;">Notre Catalogue</h1>
+  <p style="color:var(--text-soft);font-size:.84rem;margin-top:3px;font-family:var(--font-arabic);">تصفحي مجموعتنا الكاملة لملابس الأطفال</p>
 </div>
 
 <div class="shop-layout">
@@ -81,53 +72,15 @@
       </div>
     </div>
 
-    <!-- Catégorie -->
+    <!-- Catégorie (dynamique depuis Firestore) -->
     <div class="filter-card">
       <div class="filter-head"><div><h4>Catégorie</h4><div style="font-family:var(--font-arabic);font-size:.72rem;color:var(--text-soft);">الصنف</div></div><span>▾</span></div>
-      <div class="filter-body">
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="barboteuse" onchange="toggleFilter('category','barboteuse')" /> Barboteuse</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="body" onchange="toggleFilter('category','body')" /> Body</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="pyjama" onchange="toggleFilter('category','pyjama')" /> Pyjama</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="ensemble" onchange="toggleFilter('category','ensemble')" /> Ensemble</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="robe" onchange="toggleFilter('category','robe')" /> Robe / Fustane</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="salopette" onchange="toggleFilter('category','salopette')" /> Salopette</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="manteau" onchange="toggleFilter('category','manteau')" /> Manteau</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="combinaison" onchange="toggleFilter('category','combinaison')" /> Combinaison</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="accessoire" onchange="toggleFilter('category','accessoire')" /> Accessoire</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="category" data-val="coffret" onchange="toggleFilter('category','coffret')" /> 🎁 Coffret Cadeau</label>
+      <div class="filter-body" id="category-filter-body">
+        <p style="color:var(--text-soft);font-size:.8rem;">Chargement…</p>
       </div>
     </div>
 
-    <!-- Saison -->
-    <div class="filter-card">
-      <div class="filter-head"><div><h4>Saison</h4><div style="font-family:var(--font-arabic);font-size:.72rem;color:var(--text-soft);">الموسم</div></div><span>▾</span></div>
-      <div class="filter-body">
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="saison" data-val="ete" onchange="toggleFilter('saison','ete')" /> ☀️ Été</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="saison" data-val="hiver" onchange="toggleFilter('saison','hiver')" /> ❄️ Hiver</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="saison" data-val="mi-saison" onchange="toggleFilter('saison','mi-saison')" /> 🍃 Mi-saison</label>
-      </div>
-    </div>
 
-    <!-- Occasion -->
-    <div class="filter-card">
-      <div class="filter-head"><div><h4>Occasion</h4><div style="font-family:var(--font-arabic);font-size:.72rem;color:var(--text-soft);">المناسبة</div></div><span>▾</span></div>
-      <div class="filter-body">
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="occasion" data-val="quotidien" onchange="toggleFilter('occasion','quotidien')" /> 🏠 Quotidien</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="occasion" data-val="fete" onchange="toggleFilter('occasion','fete')" /> 🎉 Fête / حفلة</label>
-        <label class="filter-option"><input type="checkbox" class="filter-cb" data-type="occasion" data-val="sortie" onchange="toggleFilter('occasion','sortie')" /> 🚶 Sortie</label>
-      </div>
-    </div>
-
-    <!-- Prix -->
-    <div class="filter-card">
-      <div class="filter-head"><div><h4>Prix maximum</h4><div style="font-family:var(--font-arabic);font-size:.72rem;color:var(--text-soft);">السعر الأقصى</div></div><span>▾</span></div>
-      <div class="filter-body">
-        <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--text-soft);margin-bottom:8px;">
-          <span>0 DA</span><strong id="price-max-display" style="color:var(--rose);">10 000 DA</strong>
-        </div>
-        <input type="range" id="price-max" min="500" max="10000" step="100" value="10000" style="width:100%;accent-color:var(--rose);" />
-      </div>
-    </div>
 
     <button onclick="resetFilters()" class="btn btn-cream btn-sm btn-full" style="margin-top:4px;">🔄 Réinitialiser les filtres</button>
   </aside>
@@ -188,13 +141,7 @@
 <script src="js/shop.js"></script>
 <script src="js/main.js"></script>
 <script src="js/marketing.js"></script>
-<script>
-function quickFilter(type, value) {
-  resetFilters();
-  const cb = document.querySelector(`input[data-type="${type}"][data-val="${value}"]`);
-  if (cb) { cb.checked = true; toggleFilter(type, value); }
-}
-</script>
+
 <script src="js/perf.js"></script>
 </body>
 </html>

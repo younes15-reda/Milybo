@@ -1,9 +1,9 @@
 // ============================================================
-// MILYBO DZ – Shop Filters v2
-// Filtres: ageGroup · category · saison · occasion · prix
+// MILYBO DZ – Shop Filters v3
+// Filtres: ageGroup · category (dynamique Firestore)
 // ============================================================
 
-let currentFilters = { ageGroup: [], category: [], saison: [], occasion: [], maxPrice: 10000 };
+let currentFilters = { ageGroup: [], category: [] };
 let currentSort = 'default';
 
 function initShop() {
@@ -14,23 +14,54 @@ function initShop() {
     currentSort = e.target.value;
     applyFilters();
   });
-  document.getElementById('price-max')?.addEventListener('input', e => {
-    currentFilters.maxPrice = parseInt(e.target.value) || 10000;
-    document.getElementById('price-max-display').textContent =
-      parseInt(e.target.value).toLocaleString('fr-DZ') + ' DA';
-    applyFilters();
-  });
-  // Handle URL params (age, category, etc.)
+  // Handle URL params (age, category)
   const params = new URLSearchParams(window.location.search);
   const age = params.get('age') || params.get('ageGroup');
   const cat = params.get('category');
-  const saison = params.get('saison');
-  const occasion = params.get('occasion');
-  if (age)     { setFilterFromParam('ageGroup', age); }
-  if (cat)     { setFilterFromParam('category', cat); }
-  if (saison)  { setFilterFromParam('saison', saison); }
-  if (occasion){ setFilterFromParam('occasion', occasion); }
+  if (age) { setFilterFromParam('ageGroup', age); }
+  if (cat) { setFilterFromParam('category', cat); }
 }
+
+// ── Charger les catégories depuis Firestore ──────────────────
+async function loadCategoriesFromFirestore() {
+  const container = document.getElementById('category-filter-body');
+  if (!container) return;
+
+  try {
+    let types = [];
+    if (window.db) {
+      types = await window.db.getTypes();
+    }
+
+    if (!types || types.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-soft);font-size:.8rem;">Aucune catégorie disponible.</p>';
+      return;
+    }
+
+    // Trier alphabétiquement par nom
+    types.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
+    container.innerHTML = types.map(t => {
+      const val = (t.slug || t.id || t.name || '').toLowerCase();
+      const label = t.name || t.id || val;
+      const emoji = t.emoji || '';
+      return `<label class="filter-option">
+        <input type="checkbox" class="filter-cb" data-type="category" data-val="${val}"
+          onchange="toggleFilter('category','${val}')" />
+        ${emoji} ${label}
+      </label>`;
+    }).join('');
+
+  } catch (e) {
+    console.error('Erreur chargement catégories:', e);
+    container.innerHTML = '<p style="color:var(--text-soft);font-size:.8rem;">Erreur chargement catégories.</p>';
+  }
+}
+
+// Écouter firebase-ready pour charger les catégories
+window.addEventListener('firebase-ready', loadCategoriesFromFirestore);
+// Aussi réessayer quand les produits sont chargés (double filet)
+window.addEventListener('products-loaded-from-firestore', loadCategoriesFromFirestore);
 
 function setFilterFromParam(type, value) {
   if (!currentFilters[type].includes(value)) {
@@ -52,12 +83,9 @@ function toggleFilter(type, value) {
 
 function applyFilters() {
   let results = PRODUCTS.filter(p => {
-    const ageOk     = currentFilters.ageGroup.length  === 0 || currentFilters.ageGroup.includes(p.ageGroup);
-    const catOk     = currentFilters.category.length  === 0 || currentFilters.category.includes(p.category);
-    const saisonOk  = currentFilters.saison.length    === 0 || currentFilters.saison.includes(p.saison);
-    const occasOk   = currentFilters.occasion.length  === 0 || currentFilters.occasion.includes(p.occasion);
-    const priceOk   = p.price <= currentFilters.maxPrice;
-    return ageOk && catOk && saisonOk && occasOk && priceOk;
+    const ageOk = currentFilters.ageGroup.length === 0 || currentFilters.ageGroup.includes(p.ageGroup);
+    const catOk = currentFilters.category.length === 0 || currentFilters.category.includes(p.category);
+    return ageOk && catOk;
   });
 
   if (currentSort === 'price-asc')  results.sort((a,b) => a.price - b.price);
@@ -94,14 +122,14 @@ function updateResultsCount(count) {
 
 const FILTER_LABELS = {
   ageGroup: { 'nouveau-ne': 'Nouveau-né', 'nourrisson': 'Nourrisson', 'tout-petit': 'Tout-petit' },
-  category: {}, saison: {}, occasion: {}
+  category: {}
 };
 
 function updateActiveFilters() {
   const container = document.getElementById('active-filters');
   if (!container) return;
   const chips = [];
-  ['ageGroup','category','saison','occasion'].forEach(type => {
+  ['ageGroup','category'].forEach(type => {
     currentFilters[type].forEach(v => {
       const label = FILTER_LABELS[type][v] || v;
       chips.push(`<div class="filter-chip">${label} <button onclick="removeFilter('${type}','${v}')">✕</button></div>`);
@@ -119,10 +147,8 @@ function removeFilter(type, value) {
 }
 
 function resetFilters() {
-  currentFilters = { ageGroup: [], category: [], saison: [], occasion: [], maxPrice: 10000 };
+  currentFilters = { ageGroup: [], category: [] };
   document.querySelectorAll('.filter-cb').forEach(cb => cb.checked = false);
-  const pi = document.getElementById('price-max');
-  if (pi) { pi.value = 10000; document.getElementById('price-max-display').textContent = '10 000 DA'; }
   applyFilters();
   updateActiveFilters();
 }
@@ -131,10 +157,10 @@ function searchProducts(query) {
   if (!query.trim()) { renderShopGrid(PRODUCTS); updateResultsCount(PRODUCTS.length); return; }
   const q = query.toLowerCase().trim();
   const results = PRODUCTS.filter(p =>
-    p.name.toLowerCase().includes(q) ||
-    p.nameAr.includes(q) ||
-    p.categoryLabel.toLowerCase().includes(q) ||
-    p.matiereLabel.toLowerCase().includes(q)
+    (p.name || '').toLowerCase().includes(q) ||
+    (p.nameAr || '').includes(q) ||
+    (p.categoryLabel || '').toLowerCase().includes(q) ||
+    (p.matiereLabel || '').toLowerCase().includes(q)
   );
   renderShopGrid(results);
   updateResultsCount(results.length);
