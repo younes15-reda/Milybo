@@ -520,10 +520,23 @@ select {
 .hero {
     position: relative;
     overflow: hidden;
-    min-height: 520px;
+    min-height: 580px;
     display: flex;
     align-items: center;
     background: #FEF0F3;
+}
+
+/* Centered container to align hero contents with the site width limits */
+.hero-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
 }
 
 /* Decorative blobs disabled to let the beautiful new background shine */
@@ -547,10 +560,16 @@ select {
 }
 
 .hero-content {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 40px 48px;
+    max-width: 520px;
     position: relative;
     z-index: 2;
-    padding: 64px 40px;
-    max-width: 640px;
 }
 
 .hero-badge {
@@ -615,14 +634,12 @@ select {
 
 /* Floating emoji decorations */
 .hero-deco {
-    position: absolute;
-    right: 80px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
     z-index: 2;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+    margin-left: 20px;
 }
 
 .hero-deco-card {
