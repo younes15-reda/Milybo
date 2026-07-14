@@ -572,33 +572,67 @@ async function deleteType(id) {
 // ============================================================
 // PRODUCTS
 // ============================================================
-let uploadedPhotoBase64 = null;
+let uploadedPhotosBase64 = []; // stockage séparé pour les photos base64
 
-function handleProductPhotoUpload(input) {
-  uploadedPhotoBase64 = null;
-  const previews = document.getElementById('product-photo-previews');
-  previews.innerHTML = '';
-  const files = Array.from(input.files).slice(0,5);
-  const base64List = [];
-  let loaded = 0;
-  files.forEach((file, idx) => {
-    if(file.size > 500*1024) { alert(`Image ${file.name} trop grande (max 500 Ko). Ignorée.`); loaded++; return; }
+// Compresse une image en base64 à une taille maximale
+function compressImageBase64(file, maxWidthPx, qualityJpeg) {
+  return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.onload = e => {
-      base64List[idx] = e.target.result;
-      loaded++;
-      // Preview img
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;';
-      previews.appendChild(img);
-      if(loaded === files.length) {
-        const valid = base64List.filter(Boolean);
-        if(valid.length) document.getElementById('product-photos').value = valid.join(', ');
-      }
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let w = img.width, h = img.height;
+        if (w > maxWidthPx) { h = Math.round(h * maxWidthPx / w); w = maxWidthPx; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', qualityJpeg));
+      };
+      img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
   });
+}
+
+async function handleProductPhotoUpload(input) {
+  uploadedPhotosBase64 = [];
+  const previews = document.getElementById('product-photo-previews');
+  previews.innerHTML = '';
+  // Vider le champ URL (les photos locales seront dans uploadedPhotosBase64)
+  document.getElementById('product-photos').value = '';
+
+  const files = Array.from(input.files).slice(0, 5);
+
+  for (const file of files) {
+    try {
+      // Comprimer l'image : max 800px de large, qualité 0.75
+      const compressed = await compressImageBase64(file, 800, 0.75);
+
+      // Vérifier taille après compression (~750KB max pour laisser de la marge Firestore)
+      const approxBytes = Math.round(compressed.length * 0.75);
+      if (approxBytes > 750 * 1024) {
+        alert(`⚠️ L'image "${file.name}" est encore trop grande après compression. Utilisez une image plus petite ou une URL externe.`);
+        continue;
+      }
+
+      uploadedPhotosBase64.push(compressed);
+
+      // Aperçu
+      const img = document.createElement('img');
+      img.src = compressed;
+      img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;';
+      previews.appendChild(img);
+
+    } catch (err) {
+      console.error('Erreur compression image:', err);
+      alert(`Erreur lors du traitement de "${file.name}"`);
+    }
+  }
+
+  // Afficher un indicateur dans le champ texte (lecture seule) pour montrer que des photos sont chargées
+  if (uploadedPhotosBase64.length > 0) {
+    document.getElementById('product-photos').placeholder = `✅ ${uploadedPhotosBase64.length} photo(s) chargée(s) depuis votre ordinateur`;
+  }
 }
 
 async function loadProducts() {
@@ -647,6 +681,7 @@ function closeProductModal() {
     const el = document.getElementById(id); if(el) el.value = '';
   });
   document.getElementById('product-stock').value = '10';
+  uploadedPhotosBase64 = []; // réinitialiser les photos uploadées
   document.getElementById('product-photo-previews').innerHTML = '';
   document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=false);
 }
@@ -698,12 +733,32 @@ async function submitProductForm() {
   const sizes = [];
   document.querySelectorAll('input[name="product-sizes"]:checked').forEach(cb => sizes.push(cb.value));
   const colors = colorsStr ? colorsStr.split(',').map(s=>s.trim()).filter(Boolean) : [];
-  const photos = photosStr ? photosStr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+
+  // ── Photos : priorité aux photos uploadées depuis l'ordinateur ──
+  let photos = [];
+  if (uploadedPhotosBase64.length > 0) {
+    // Photos uploadées localement (base64 compressé)
+    photos = [...uploadedPhotosBase64];
+  } else if (photosStr) {
+    // Champ texte : URLs HTTP uniquement (pas de base64 via virgule)
+    photos = photosStr.split(',').map(s => s.trim()).filter(s => s.startsWith('http') || s.length <= 2); // URLs ou émojis seulement
+    if (photos.length === 0 && photosStr.length > 0) {
+      // Le champ texte contenait peut-être une URL sans virgule
+      photos = [photosStr.trim()];
+    }
+  }
+
   const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
   try {
     await window.db.saveProduct(editId||id, { name, nameAr, category, ageGroup, price, oldPrice, stock, sizes, colors, photos, description });
     closeProductModal(); showToast('✅ Produit sauvegardé !', 'success'); loadProducts();
-  } catch(e) { alert('Erreur: '+e.message); }
+  } catch(e) {
+    if (e.message && e.message.includes('exceeds')) {
+      alert('❌ Les photos sont trop lourdes pour Firestore. Utilisez des images plus petites (< 200Ko) ou des URLs externes (https://…)');
+    } else {
+      alert('Erreur: ' + e.message);
+    }
+  }
 }
 
 async function deleteProduct(id) {
