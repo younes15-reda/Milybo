@@ -457,18 +457,47 @@ img[loading="lazy"].loaded {
         padding: 36px 16px 16px !important;
     }
 
-    /* Floating buttons */
-    .whatsapp-float {
-        bottom: 90px !important;
-        right: 14px !important;
-        width: 52px !important;
-        height: 52px !important;
-        font-size: 1.5rem !important;
+    /* Floating buttons & elements */
+    .wa-float-container {
+        bottom: 84px !important;
+        right: 16px !important;
+        gap: 0 !important;
+    }
+
+    .wa-icon-circle {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .wa-icon-circle svg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .wa-tooltip {
+        display: none !important; /* Masquer le tooltip sur mobile pour économiser de la place */
     }
 
     .admin-float {
-        bottom: 30px !important;
-        right: 14px !important;
+        bottom: 24px !important;
+        right: 16px !important;
+    }
+
+    /* À propos Teaser Mobile */
+    .about-teaser-container {
+        grid-template-columns: 1fr !important;
+        gap: 28px !important;
+        padding: 0 16px !important;
+        text-align: center !important;
+    }
+
+    .about-teaser-container p {
+        text-align: center !important;
+    }
+
+    .about-teaser-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
     }
 }
 
