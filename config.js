@@ -13,3 +13,24 @@ const firebaseConfig = {
 window.firebaseConfig = firebaseConfig;
 window.adminPassword = "admin2024bebechic";
 
+// ── URL de base du site ───────────────────────────────────────
+window.siteBaseUrl = "https://younes15-reda.github.io/Milybo";
+
+// ── Notifications WhatsApp automatiques (CallMeBot API) ───────
+// ÉTAPE D'ACTIVATION :
+// 1. Envoyez "I allow callmebot to send me messages" au +34 644 59 26 19 sur WhatsApp
+// 2. Vous recevrez une apikey (ex: 123456)
+// 3. Remplacez '' ci-dessous par votre apikey
+window.callmebotApiKey = ''; // <-- Mettez votre apikey ici (ex: '123456')
+window.callmebotPhone  = '213559449995'; // Votre numéro WhatsApp
+
+// ── Notifications Email automatiques (EmailJS) ────────────────
+// ÉTAPE D'ACTIVATION :
+// 1. Créez un compte gratuit sur https://www.emailjs.com/
+// 2. Connectez votre Gmail et créez un template d'email
+// 3. Remplissez les 3 champs ci-dessous
+window.emailjsServiceId  = ''; // <-- Ex: 'service_abc123'
+window.emailjsTemplateId = ''; // <-- Ex: 'template_xyz789'
+window.emailjsPublicKey  = ''; // <-- Ex: 'user_ABCDEFGHIJK'
+
+

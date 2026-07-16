@@ -16,9 +16,12 @@
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="stylesheet" href="css/mobile.css"/>
   <link rel="icon" type="image/png" href="images/logo2.png"/>
+  <!-- EmailJS SDK pour notifications email automatiques -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
+    /* ── Layout desktop ─────────────────────────────────────── */
     .product-detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:40px;max-width:1100px;margin:0 auto;align-items:start;}
-    .gallery-main{aspect-ratio:1;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:8rem;border:2px solid var(--cream);background:var(--off-white);margin-bottom:14px;transition:all .3s;}
+    .gallery-main{aspect-ratio:1;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:8rem;border:2px solid var(--cream);background:var(--off-white);margin-bottom:14px;transition:all .3s;overflow:hidden;position:relative;}
     .gallery-thumbs{display:flex;gap:10px;}
     .gallery-thumb{width:72px;height:72px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:2rem;border:2px solid var(--cream);cursor:pointer;transition:all .3s;background:white;}
     .gallery-thumb.active,.gallery-thumb:hover{border-color:var(--rose);background:var(--rose-pale);}
@@ -63,7 +66,273 @@
     .rating-bar-row{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--text-mid);margin-bottom:4px;}
     .rating-bar{height:6px;border-radius:3px;background:var(--cream-dark);flex:1;}
     .rating-bar-fill{height:100%;border-radius:3px;background:#F59E0B;}
-    @media(max-width:768px){.product-detail-layout{grid-template-columns:1fr;padding:20px;gap:24px;}.reviews-section{padding:0 20px 40px;}}
+
+    /* ══════════════════════════════════════════════════════
+       MOBILE REDESIGN — Inspiré du modèle client
+    ══════════════════════════════════════════════════════ */
+    @media(max-width:768px){
+
+      /* Layout principal : 1 colonne, sans padding */
+      .product-detail-layout{
+        grid-template-columns:1fr !important;
+        padding:0 !important;
+        gap:0 !important;
+      }
+
+      /* ── Galerie plein-écran ────────────────────────── */
+      .gallery-main{
+        aspect-ratio:4/3 !important;
+        border-radius:0 !important;
+        border:none !important;
+        border-bottom:1px solid #e5e7eb !important;
+        margin-bottom:0 !important;
+        background:#f9fafb !important;
+        position:relative !important;
+      }
+      .gallery-main img{
+        border-radius:0 !important;
+        object-fit:contain !important;
+      }
+
+      /* Flèches de navigation galerie */
+      .mob-gallery-nav{
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        width:36px;height:36px;
+        background:rgba(255,255,255,.9);
+        border:none;border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        font-size:1rem;cursor:pointer;
+        box-shadow:0 2px 8px rgba(0,0,0,.12);
+        z-index:10;
+        color:#374151;
+        font-weight:700;
+        transition:background .2s;
+      }
+      .mob-gallery-nav:hover{background:#fff;}
+      .mob-gallery-nav.prev{left:12px;}
+      .mob-gallery-nav.next{right:12px;}
+
+      /* Compteur galerie (1 / 2) */
+      .mob-gallery-counter{
+        position:absolute;
+        bottom:12px;
+        left:50%;
+        transform:translateX(-50%);
+        background:rgba(255,255,255,.85);
+        border-radius:20px;
+        padding:4px 14px;
+        font-size:.78rem;
+        font-weight:700;
+        color:#374151;
+        letter-spacing:.5px;
+        backdrop-filter:blur(4px);
+      }
+
+      /* Masquer les thumbnails sur mobile */
+      .gallery-thumbs{ display:none !important; }
+
+      /* ── Zone infos produit ─────────────────────────── */
+      .mob-product-info{
+        padding:20px 16px 12px;
+        background:#fff;
+      }
+
+      /* Titre */
+      .detail-name{
+        font-size:1.45rem !important;
+        line-height:1.25 !important;
+        margin-bottom:6px !important;
+      }
+      .detail-name-ar{
+        font-size:.95rem !important;
+        margin-bottom:10px !important;
+      }
+
+      /* Prix */
+      .detail-price{
+        font-size:1.6rem !important;
+        color:var(--rose) !important;
+        margin-bottom:2px !important;
+        font-weight:900 !important;
+      }
+
+      /* Meta chips : ligne simple */
+      .detail-meta{
+        grid-template-columns:1fr 1fr 1fr !important;
+        gap:8px !important;
+        margin-bottom:16px !important;
+      }
+      .meta-chip{
+        padding:8px 10px !important;
+        font-size:.72rem !important;
+      }
+
+      /* Tailles */
+      .size-grid{ gap:6px !important; margin-bottom:16px !important; }
+      .size-btn{
+        padding:7px 13px !important;
+        font-size:.78rem !important;
+        border-radius:10px !important;
+      }
+
+      /* Couleurs */
+      .color-chip{
+        width:26px !important;
+        height:26px !important;
+      }
+
+      /* Qty row */
+      .qty-row{ margin-bottom:14px !important; }
+
+      /* Stock badge */
+      .stock-badge{ margin-bottom:14px !important; font-size:.78rem !important; }
+
+      /* ── Formulaire mobile style inspiration ────────── */
+      .mob-order-form{
+        background:#fff;
+        padding:0 16px 24px;
+      }
+      .mob-order-form .form-section-title{
+        font-size:1rem;
+        font-weight:800;
+        color:var(--text-dark);
+        margin-bottom:16px;
+        padding-top:8px;
+        border-top:1px solid #f3f4f6;
+      }
+
+      /* Chaque champ avec icône à gauche */
+      .mob-field-wrap{
+        margin-bottom:14px;
+      }
+      .mob-field-label{
+        display:block;
+        font-size:.82rem;
+        font-weight:700;
+        color:var(--text-dark);
+        margin-bottom:6px;
+      }
+      .mob-field-label .req{color:var(--rose);}
+
+      .mob-input-icon-wrap{
+        display:flex;
+        align-items:stretch;
+        border:1.5px solid #d1d5db;
+        border-radius:12px;
+        overflow:hidden;
+        background:#fff;
+        transition:border-color .2s;
+      }
+      .mob-input-icon-wrap:focus-within{
+        border-color:var(--rose);
+        box-shadow:0 0 0 3px rgba(232,136,154,.12);
+      }
+      .mob-input-icon{
+        width:46px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:#f9fafb;
+        border-right:1.5px solid #e5e7eb;
+        font-size:1.05rem;
+        flex-shrink:0;
+        color:#6b7280;
+      }
+      .mob-input-icon-wrap input,
+      .mob-input-icon-wrap select,
+      .mob-input-icon-wrap textarea{
+        flex:1;
+        border:none !important;
+        outline:none !important;
+        padding:12px 14px !important;
+        font-size:.9rem !important;
+        font-family:var(--font-main) !important;
+        color:var(--text-dark);
+        background:transparent;
+        border-radius:0 !important;
+        box-shadow:none !important;
+        width:100%;
+      }
+      .mob-input-icon-wrap select{
+        appearance:none;
+        -webkit-appearance:none;
+        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+        background-repeat:no-repeat;
+        background-position:right 14px center;
+        padding-right:36px !important;
+      }
+
+      /* Mode livraison — boutons radio stylisés */
+      .mob-delivery-choice{
+        display:flex;
+        gap:10px;
+        margin-bottom:14px;
+      }
+      .mob-delivery-choice label{
+        flex:1;
+        display:flex;
+        align-items:center;
+        gap:8px;
+        padding:11px 14px;
+        border:1.5px solid #d1d5db;
+        border-radius:12px;
+        cursor:pointer;
+        font-size:.84rem;
+        font-weight:600;
+        color:var(--text-mid);
+        transition:all .2s;
+        background:#fff;
+      }
+      .mob-delivery-choice input[type=radio]{ display:none; }
+      .mob-delivery-choice label:has(input:checked){
+        border-color:var(--rose);
+        background:var(--rose-pale);
+        color:var(--rose);
+      }
+
+      /* Résumé shipping */
+      #order-shipping-info{
+        border-radius:10px !important;
+        margin-bottom:14px !important;
+      }
+
+      /* ── Bouton CTA fixe en bas (mobile seulement) ──── */
+      .mob-cta-bar{
+        position:sticky;
+        bottom:0;
+        left:0;right:0;
+        background:#fff;
+        padding:12px 16px;
+        box-shadow:0 -4px 20px rgba(0,0,0,.1);
+        z-index:200;
+      }
+      .mob-cta-btn{
+        display:block;
+        width:100%;
+        background:linear-gradient(135deg,#E8889A,#C96478);
+        color:white;
+        border:none;
+        padding:16px 20px;
+        border-radius:50px;
+        font-size:1rem;
+        font-weight:800;
+        font-family:var(--font-main);
+        cursor:pointer;
+        box-shadow:0 4px 16px rgba(232,136,154,.4);
+        transition:all .2s;
+        letter-spacing:.3px;
+      }
+      .mob-cta-btn:active{ transform:scale(.98); }
+
+      /* Masquer ancienne zone bouton dans le formulaire sur mobile */
+      .desktop-order-submit{ display:none !important; }
+
+      /* Reviews */
+      .reviews-section{ padding:0 16px 40px !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -304,118 +573,156 @@ function renderProductDetail(p) {
   document.getElementById('product-detail').innerHTML = `
     <!-- Gallery -->
     <div>
-      <div class="gallery-main" id="gallery-main" style="background:${p.color||'#fff'}25;overflow:hidden;position:relative;">${initialMediaHTML}</div>
+      <div class="gallery-main" id="gallery-main" style="background:${p.color||'#fff'}25;overflow:hidden;position:relative;">
+        ${initialMediaHTML}
+        <!-- Mobile: flèches nav + compteur -->
+        <button class="mob-gallery-nav prev" onclick="mobGalleryNav(-1)" aria-label="Photo précédente">&#8249;</button>
+        <button class="mob-gallery-nav next" onclick="mobGalleryNav(1)" aria-label="Photo suivante">&#8250;</button>
+        <div class="mob-gallery-counter" id="mob-gallery-counter">1 / ${(p.photos||[p.emoji||'👶']).length}</div>
+      </div>
       <div class="gallery-thumbs">${thumbsHTML}</div>
     </div>
     <!-- Info + Express Order Form -->
     <div>
-      ${badgeHTML}
-      <h1 class="detail-name">${p.name}</h1>
-      <div class="detail-name-ar">${p.nameAr || ''}</div>
-      <div class="rating-row">
-        <span class="stars">${'★'.repeat(Math.floor(p.rating||4))}${'☆'.repeat(5-Math.floor(p.rating||4))}</span>
-        <strong style="color:var(--text-dark);">${p.rating||4}</strong>
-        <span style="color:var(--text-soft);font-size:.82rem;">(${p.reviewCount||0} avis)</span>
-      </div>
-      <div class="detail-price">${p.price.toLocaleString('fr-DZ')} <span style="font-size:1.1rem;color:var(--text-soft);">DA</span></div>
-      ${oldHTML}
-      <div class="detail-meta">
-        <div class="meta-chip"><strong>📦 Catégorie</strong><span>${p.categoryLabel || p.category || '-'}</span></div>
-        <div class="meta-chip"><strong>👶 Âge</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né (0–3 mois)','nourrisson':'Nourrisson (3–12 mois)','tout-petit':'Tout-petit (12–36 mois)'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
-        <div class="meta-chip"><strong>🧶 Matière</strong><span>${p.matiere || p.matiereLabel || 'Coton doux'}</span></div>
+      <div class="mob-product-info">
+        ${badgeHTML}
+        <h1 class="detail-name">${p.name}</h1>
+        <div class="detail-name-ar">${p.nameAr || ''}</div>
+        <div class="rating-row">
+          <span class="stars">${'★'.repeat(Math.floor(p.rating||4))}${'☆'.repeat(5-Math.floor(p.rating||4))}</span>
+          <strong style="color:var(--text-dark);">${p.rating||4}</strong>
+          <span style="color:var(--text-soft);font-size:.82rem;">(${p.reviewCount||0} avis)</span>
+        </div>
+        <div class="detail-price">${p.price.toLocaleString('fr-DZ')} <span style="font-size:1.1rem;color:var(--text-soft);">DA</span></div>
+        ${oldHTML}
+        <div class="detail-meta">
+          <div class="meta-chip"><strong>📦 Catégorie</strong><span>${p.categoryLabel || p.category || '-'}</span></div>
+          <div class="meta-chip"><strong>👶 Âge</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né','nourrisson':'Nourrisson','tout-petit':'Tout-petit'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
+          <div class="meta-chip"><strong>🧶 Matière</strong><span>${p.matiere || p.matiereLabel || 'Coton doux'}</span></div>
+        </div>
       </div>
 
       <!-- Size Selector -->
-      <div style="margin-bottom:10px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
-        Taille <span style="font-family:var(--font-arabic);color:var(--text-soft);font-weight:500;font-size:.78rem;">· المقاس</span>
+      <div style="padding:0 16px;margin-bottom:4px;">
+        <div style="margin-bottom:8px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
+          Taille <span style="font-family:var(--font-arabic);color:var(--text-soft);font-weight:500;font-size:.78rem;">· المقاس</span>
+        </div>
+        <div class="size-grid">${sizesHTML}</div>
       </div>
-      <div class="size-grid">${sizesHTML}</div>
 
       <!-- Color Selector -->
-      <div style="margin-bottom:10px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
-        Couleur <span style="font-family:var(--font-arabic);color:var(--text-soft);font-weight:500;font-size:.78rem;">· اللون</span>
-        <span id="selected-color-name" style="font-weight:500;color:var(--text-soft);margin-right:6px;font-size:.78rem;"></span>
-      </div>
-      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">${colorsHTML}</div>
-      <script>selectColor(document.querySelector('.color-chip.active'), '${colors[0]}');<\/script>
-
-      <!-- Qty -->
-      <div class="qty-row">
-        <span style="font-size:.85rem;font-weight:700;color:var(--text-dark);">Quantité :</span>
-        <div class="qty-control">
-          <button class="qty-btn" onclick="changeQty(-1)">−</button>
-          <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
-          <button class="qty-btn" onclick="changeQty(1)">+</button>
+      <div style="padding:0 16px;margin-bottom:4px;">
+        <div style="margin-bottom:8px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
+          Couleur <span style="font-family:var(--font-arabic);color:var(--text-soft);font-weight:500;font-size:.78rem;">· اللون</span>
+          <span id="selected-color-name" style="font-weight:500;color:var(--text-soft);margin-right:6px;font-size:.78rem;"></span>
         </div>
+        <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">${colorsHTML}</div>
+        <script>selectColor(document.querySelector('.color-chip.active'), '${colors[0]}');<\/script>
       </div>
 
-      <div class="stock-badge ${stockCls}">${stockTxt}</div>
-
-      <!-- ⚡ EXPRESS ORDER FORM -->
-      <div style="background:linear-gradient(135deg,#f0fdf4,#f0f9ff);border:2px solid #bbf7d0;border-radius:var(--radius-lg);padding:24px;margin-top:18px;margin-bottom:16px;">
-        <h3 style="font-size:1.05rem;font-weight:800;color:#065f46;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
-          ⚡ Commande Rapide <span style="font-family:var(--font-arabic);font-weight:600;color:#6b7280;font-size:.82rem;">طلب سريع</span>
-        </h3>
-        <p style="font-size:.76rem;color:#6b7280;margin-bottom:18px;">Remplissez le formulaire et commandez directement !</p>
-
-        <div class="order-form-group">
-          <label class="order-form-label">👤 Nom Complet / الاسم الكامل *</label>
-          <input type="text" id="order-fullname" class="order-form-input" placeholder="Ex: Amira Benali" autocomplete="name"/>
+      <!-- Qty + Stock -->
+      <div style="padding:0 16px;">
+        <div class="qty-row">
+          <span style="font-size:.85rem;font-weight:700;color:var(--text-dark);">Quantité :</span>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
         </div>
+        <div class="stock-badge ${stockCls}">${stockTxt}</div>
+      </div>
 
-        <div class="order-form-group">
-          <label class="order-form-label">📞 Téléphone / الهاتف * <span style="font-weight:400;color:#9ca3af;">(05/06/07XXXXXXXX)</span></label>
-          <div style="display:flex;align-items:stretch;">
-            <span style="background:#e5e7eb;padding:11px 12px;border:2px solid var(--cream-dark);border-right:none;border-radius:var(--radius-md) 0 0 var(--radius-md);font-weight:700;font-size:.85rem;color:#374151;white-space:nowrap;">+213</span>
-            <input type="tel" id="order-phone" class="order-form-input" placeholder="0XXXXXXXXX" style="border-radius:0 var(--radius-md) var(--radius-md) 0;" maxlength="10" autocomplete="tel"/>
+      <!-- ⚡ FORMULAIRE DE COMMANDE — Mobile redesign -->
+      <div class="mob-order-form" style="padding:0 16px 80px;">
+        <p class="form-section-title" style="font-size:.9rem;font-weight:800;color:var(--text-dark);margin:16px 0 14px;padding-top:16px;border-top:1px solid #f3f4f6;">
+          ⚡ Informations de livraison <span style="font-family:var(--font-arabic);color:#9ca3af;font-weight:500;font-size:.78rem;">معلومات التوصيل</span>
+        </p>
+
+        <!-- Nom -->
+        <div class="mob-field-wrap">
+          <label class="mob-field-label">Prénom &amp; Nom <span class="req">*</span></label>
+          <div class="mob-input-icon-wrap">
+            <div class="mob-input-icon">👤</div>
+            <input type="text" id="order-fullname" placeholder="Ex: Amira Benali" autocomplete="name"/>
           </div>
         </div>
 
-        <div class="order-form-group">
-          <label class="order-form-label">📍 Wilaya / الولاية *</label>
-          <select id="order-wilaya" class="order-form-input">
-            <option value="">Sélectionnez votre wilaya… / اختاري ولايتك</option>
-          </select>
+        <!-- Téléphone -->
+        <div class="mob-field-wrap">
+          <label class="mob-field-label">Téléphone <span class="req">*</span></label>
+          <div class="mob-input-icon-wrap">
+            <div class="mob-input-icon" style="width:60px;font-size:.78rem;font-weight:700;color:#374151;">+213</div>
+            <input type="tel" id="order-phone" placeholder="0XXXXXXXXX" maxlength="10" autocomplete="tel"/>
+          </div>
         </div>
 
-        <div class="order-form-group">
-          <label class="order-form-label">🛵 Mode de livraison / طريقة التوصيل *</label>
-          <div style="display:flex;gap:12px;margin-top:6px;">
-            <label style="flex:1;display:flex;align-items:center;gap:8px;background:white;padding:12px;border:2px solid var(--cream-dark);border-radius:12px;cursor:pointer;font-weight:700;font-size:.82rem;">
+        <!-- Wilaya -->
+        <div class="mob-field-wrap">
+          <label class="mob-field-label">Wilaya الولاية <span class="req">*</span></label>
+          <div class="mob-input-icon-wrap">
+            <div class="mob-input-icon">📍</div>
+            <select id="order-wilaya">
+              <option value="">Sélectionnez votre wilaya…</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Mode de livraison -->
+        <div class="mob-field-wrap">
+          <label class="mob-field-label">Mode de livraison <span class="req">*</span></label>
+          <div class="mob-delivery-choice">
+            <label>
               <input type="radio" name="order-delivery-type" value="domicile" checked onchange="updateOrderSummary()"/>
-              🏠 A domicile
+              🏠 À domicile
             </label>
-            <label style="flex:1;display:flex;align-items:center;gap:8px;background:white;padding:12px;border:2px solid var(--cream-dark);border-radius:12px;cursor:pointer;font-weight:700;font-size:.82rem;">
+            <label>
               <input type="radio" name="order-delivery-type" value="stopdesk" onchange="updateOrderSummary()"/>
               📦 Point Relais
             </label>
           </div>
         </div>
 
-        <div class="order-form-group">
-          <label class="order-form-label" id="order-address-label">🏠 Adresse de livraison / عنوان التوصيل *</label>
-          <input type="text" id="order-address" class="order-form-input" placeholder="Rue, quartier, commune, code postal…" autocomplete="street-address"/>
+        <!-- Adresse -->
+        <div class="mob-field-wrap">
+          <label class="mob-field-label" id="order-address-label">Adresse <span class="req">*</span></label>
+          <div class="mob-input-icon-wrap">
+            <div class="mob-input-icon">🏠</div>
+            <input type="text" id="order-address" placeholder="Rue, quartier, commune…" autocomplete="street-address"/>
+          </div>
         </div>
 
-        <div class="order-form-group">
-          <label class="order-form-label">📝 Note pour le livreur <span style="font-weight:400;color:#9ca3af;">(optionnel)</span></label>
-          <textarea id="order-note" class="order-form-input" placeholder="Ex: Appeler avant de livrer / اتصل قبل التوصيل" style="min-height:64px;resize:none;"></textarea>
+        <!-- Note (optionnel) -->
+        <div class="mob-field-wrap">
+          <label class="mob-field-label">Note <span style="font-weight:400;color:#9ca3af;">(optionnel)</span></label>
+          <div class="mob-input-icon-wrap" style="align-items:flex-start;">
+            <div class="mob-input-icon" style="padding-top:12px;">📝</div>
+            <textarea id="order-note" placeholder="Ex: Appeler avant de livrer…" style="min-height:60px;resize:none;"></textarea>
+          </div>
         </div>
 
-        <!-- Shipping Cost Preview -->
+        <!-- Résumé livraison -->
         <div id="order-shipping-info" style="background:white;border:1.5px solid #bbf7d0;border-radius:10px;padding:12px 14px;margin-bottom:16px;display:none;line-height:1.8;font-size:.84rem;">
           <div>🚚 <strong>Livraison ZR Express :</strong> <span id="order-shipping-cost" style="font-weight:800;color:#0891b2;"></span></div>
           <div>💰 <strong style="color:var(--rose);">Total à payer : <span id="order-total-price"></span></strong></div>
           <div style="font-size:.74rem;color:#9ca3af;margin-top:2px;">💵 Paiement cash à la livraison</div>
         </div>
 
-        <button onclick="submitExpressOrder()" id="order-submit-btn"
-          style="width:100%;background:#25D366;color:white;border:none;padding:14px;font-size:.95rem;font-weight:800;border-radius:var(--radius-pill);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(37,211,102,.4);transition:all .2s;letter-spacing:.2px;">
-          <span style="font-size:1.2rem;">📱</span> Commander via WhatsApp
+        <!-- Bouton desktop uniquement -->
+        <button onclick="submitExpressOrder()" id="order-submit-btn" class="desktop-order-submit"
+          style="width:100%;background:#E8889A;color:white;border:none;padding:14px;font-size:.95rem;font-weight:800;border-radius:50px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(232,136,154,.4);transition:all .2s;">
+          ✅ Confirmer la commande
         </button>
       </div>
 
-      <div class="delivery-info">
+      <!-- Bouton CTA sticky mobile -->
+      <div class="mob-cta-bar">
+        <button onclick="submitExpressOrder()" class="mob-cta-btn" id="mob-cta-btn">
+          اطلبي الآن &nbsp;–&nbsp; ${p.price.toLocaleString('fr-DZ')} DA
+        </button>
+      </div>
+
+      <div class="delivery-info" style="margin:0 16px 20px;">
         <span style="font-size:1.4rem;">🚚</span>
         <div>
           <strong style="display:block;color:var(--text-dark);margin-bottom:2px;">Livraison ZR Express – 58 wilayas</strong>
@@ -426,13 +733,53 @@ function renderProductDetail(p) {
 }
 
 // ── Selectors ──────────────────────────────────────────────────
-function changePhoto(el, val) {
-  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
+
+// Mobile gallery navigation
+let _mobGalleryIdx = 0;
+function mobGalleryNav(dir) {
+  if (!currentProduct) return;
+  const photos = currentProduct.photos || [currentProduct.emoji || '👶'];
+  _mobGalleryIdx = (_mobGalleryIdx + dir + photos.length) % photos.length;
+  const val = photos[_mobGalleryIdx];
+  // Update counter
+  const counter = document.getElementById('mob-gallery-counter');
+  if (counter) counter.textContent = `${_mobGalleryIdx + 1} / ${photos.length}`;
+  // Update main image (keep nav buttons)
   const main = document.getElementById('gallery-main');
   if (!main) return;
   main.style.opacity = '0';
-  
+  let content = '';
+  if (val.startsWith('http') || val.startsWith('data:') || val.includes('/') || val.includes('.')) {
+    content = `<img src="${val}" alt="Produit" style="width:100%;height:100%;object-fit:contain;display:block;"/>`;
+  } else {
+    content = `<div style="display:flex;align-items:center;justify-content:center;height:100%;width:100%;"><span style="font-size:5rem;">${val||'🧸'}</span></div>`;
+  }
+  // Re-inject with nav buttons preserved
+  setTimeout(() => {
+    main.innerHTML = content +
+      `<button class="mob-gallery-nav prev" onclick="mobGalleryNav(-1)" aria-label="Précédent">&#8249;</button>` +
+      `<button class="mob-gallery-nav next" onclick="mobGalleryNav(1)" aria-label="Suivant">&#8250;</button>` +
+      `<div class="mob-gallery-counter" id="mob-gallery-counter">${_mobGalleryIdx + 1} / ${photos.length}</div>`;
+    main.style.opacity = '1';
+    // Sync thumbs
+    document.querySelectorAll('.gallery-thumb').forEach((t, i) =>
+      t.classList.toggle('active', i === _mobGalleryIdx));
+  }, 150);
+}
+
+function changePhoto(el, val) {
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  // Sync mobile index
+  const photos = currentProduct?.photos || [currentProduct?.emoji || '👶'];
+  const idx = photos.findIndex(p => p === val);
+  if (idx >= 0) _mobGalleryIdx = idx;
+  const counter = document.getElementById('mob-gallery-counter');
+  if (counter) counter.textContent = `${_mobGalleryIdx + 1} / ${photos.length}`;
+
+  const main = document.getElementById('gallery-main');
+  if (!main) return;
+  main.style.opacity = '0';
   let content = '';
   if (val.startsWith('http') || val.startsWith('data:') || val.includes('/') || val.includes('.')) {
     content = `<img src="${val}" alt="Produit" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--radius-lg);"/>`;
@@ -445,12 +792,15 @@ function changePhoto(el, val) {
         </svg>
       </div>`;
   }
-  
-  setTimeout(() => { 
-    main.innerHTML = content; 
-    main.style.opacity = '1'; 
+  setTimeout(() => {
+    main.innerHTML = content +
+      `<button class="mob-gallery-nav prev" onclick="mobGalleryNav(-1)" aria-label="Précédent">&#8249;</button>` +
+      `<button class="mob-gallery-nav next" onclick="mobGalleryNav(1)" aria-label="Suivant">&#8250;</button>` +
+      `<div class="mob-gallery-counter" id="mob-gallery-counter">${_mobGalleryIdx + 1} / ${photos.length}</div>`;
+    main.style.opacity = '1';
   }, 150);
 }
+
 
 function selectSize(el, size) {
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
@@ -485,24 +835,36 @@ function updateOrderSummary() {
   const addrInput = document.getElementById('order-address');
   if (addrLabel && addrInput) {
     if (deliveryType === 'stopdesk') {
-      addrLabel.innerHTML = '📦 Bureau Yalidine / Bureau de retrait *';
+      addrLabel.innerHTML = '📦 Bureau de retrait <span class="req">*</span>';
       addrInput.placeholder = 'Indiquez le bureau ou la commune du bureau de retrait...';
     } else {
-      addrLabel.innerHTML = '🏠 Adresse de livraison / عنوان التوصيل *';
+      addrLabel.innerHTML = 'Adresse <span class="req">*</span>';
       addrInput.placeholder = 'Rue, quartier, commune, code postal...';
     }
   }
 
   if (!info || !currentProduct) return;
-  if (!wilayaCode) { info.style.display = 'none'; return; }
+
+  const basePrice = currentProduct.price * selectedQty;
+
+  if (!wilayaCode) {
+    info.style.display = 'none';
+    // CTA sans livraison
+    const ctaBtn = document.getElementById('mob-cta-btn');
+    if (ctaBtn) ctaBtn.textContent = `اطلبي الآن – ${basePrice.toLocaleString('fr-DZ')} DA`;
+    return;
+  }
 
   const shipping = deliveryType === 'stopdesk' ? getZRStopDeskPrice(wilayaCode) : getZRDeliveryPrice(wilayaCode);
-  const subtotal = currentProduct.price * selectedQty;
-  const total = subtotal + shipping;
+  const total = basePrice + shipping;
 
-  document.getElementById('order-shipping-cost').textContent = `${shipping.toLocaleString('fr-DZ')} DA (${deliveryType === 'stopdesk' ? 'Point Relais' : 'A domicile'})`;
+  document.getElementById('order-shipping-cost').textContent = `${shipping.toLocaleString('fr-DZ')} DA (${deliveryType === 'stopdesk' ? 'Point Relais' : 'À domicile'})`;
   document.getElementById('order-total-price').textContent = `${total.toLocaleString('fr-DZ')} DA`;
   info.style.display = 'block';
+
+  // Mettre à jour le bouton CTA mobile avec le total
+  const ctaBtn = document.getElementById('mob-cta-btn');
+  if (ctaBtn) ctaBtn.textContent = `اطلبي الآن – ${total.toLocaleString('fr-DZ')} DA`;
 }
 
 // ── Validation ─────────────────────────────────────────────────
@@ -555,11 +917,11 @@ async function submitExpressOrder() {
     date:          new Date().toISOString()
   };
 
-  // Disable button
+  // Désactiver le bouton pendant le traitement
   const btn = document.getElementById('order-submit-btn');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Enregistrement...'; }
 
-  // Save to Firestore
+  // ── 1. Sauvegarder dans Firestore ────────────────────────────
   if (window.db) {
     try {
       await window.db.createOrder(orderData);
@@ -568,7 +930,7 @@ async function submitExpressOrder() {
     }
   }
 
-  // Show confirmation overlay
+  // ── 2. Afficher la confirmation au visiteur ───────────────────
   document.getElementById('order-confirm-details').innerHTML = `
     <div>📦 <strong>${currentProduct.name}</strong></div>
     <div>📏 Taille : <strong>${selectedSize}</strong> &nbsp;·&nbsp; 🔢 Qté : <strong>${selectedQty}</strong></div>
@@ -577,29 +939,56 @@ async function submitExpressOrder() {
     <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--cream);">💰 <strong style="color:var(--rose);font-size:1rem;">Total : ${total.toLocaleString('fr-DZ')} DA</strong></div>
     <div style="font-size:.74rem;color:#9ca3af;margin-top:4px;">Réf : ${tracking}</div>
   `;
-  const overlay = document.getElementById('order-confirm-overlay');
-  overlay.style.display = 'flex';
+  document.getElementById('order-confirm-overlay').style.display = 'flex';
 
-  // Open WhatsApp
-  const msg = encodeURIComponent(
-    `Bonjour Milybo DZ 👋\n` +
-    `🛍️ Nouvelle commande express !\n\n` +
-    `👤 Nom : ${fullname}\n` +
-    `📞 Tél : ${phone}\n` +
-    `📍 Wilaya : ${wilayaName}\n` +
-    `🛵 Mode : ${deliveryType === 'stopdesk' ? 'Point Relais (Retrait bureau)' : 'Livraison à domicile'}\n` +
-    `🏠 Adresse/Bureau : ${address}\n` +
-    (note ? `📝 Note : ${note}\n` : '') +
-    `\n🧸 Article : ${currentProduct.name}\n` +
-    `📏 Taille : ${selectedSize}\n` +
-    (selectedColor ? `🎨 Couleur : ${selectedColor}\n` : '') +
-    `🔢 Quantité : ${selectedQty}\n` +
-    `💵 Livraison : ${shipping.toLocaleString('fr-DZ')} DA\n` +
-    `💰 Total : ${total.toLocaleString('fr-DZ')} DA\n\n` +
-    `Réf commande : ${tracking}\n` +
-    `Merci de confirmer ! 🙏`
-  );
-  setTimeout(() => { window.open(`https://wa.me/213559449995?text=${msg}`, '_blank'); }, 700);
+  // ── Texte de notification commun ────────────────────────────
+  const notifText =
+    `🛍️ NOUVELLE COMMANDE – Milybo DZ\n` +
+    `Réf: ${tracking}\n\n` +
+    `👤 ${fullname}\n` +
+    `📞 ${phone}\n` +
+    `📍 ${wilayaName} – ${deliveryType === 'stopdesk' ? 'Point Relais' : 'Domicile'}\n` +
+    `🏠 ${address}\n` +
+    (note ? `📝 ${note}\n` : '') +
+    `\n🧸 ${currentProduct.name} | Taille: ${selectedSize}` +
+    (selectedColor ? ` | Couleur: ${selectedColor}` : '') +
+    `\n🔢 Qté: ${selectedQty} | Total: ${total.toLocaleString('fr-DZ')} DA`;
+
+  // ── 3. Notification WhatsApp automatique (CallMeBot) ─────────
+  const callmebotKey = window.callmebotApiKey;
+  if (callmebotKey) {
+    try {
+      const waUrl = `https://api.callmebot.com/whatsapp.php?phone=${window.callmebotPhone}&text=${encodeURIComponent(notifText)}&apikey=${callmebotKey}`;
+      fetch(waUrl, { mode: 'no-cors' }).catch(() => {});
+    } catch(e) { console.warn('CallMeBot error:', e); }
+  }
+
+  // ── 4. Notification Email automatique (EmailJS) ──────────────
+  const ejsService  = window.emailjsServiceId;
+  const ejsTemplate = window.emailjsTemplateId;
+  const ejsKey      = window.emailjsPublicKey;
+  if (ejsService && ejsTemplate && ejsKey) {
+    try {
+      if (typeof emailjs !== 'undefined') {
+        emailjs.init(ejsKey);
+        emailjs.send(ejsService, ejsTemplate, {
+          ref_commande:   tracking,
+          nom_client:     fullname,
+          telephone:      phone,
+          wilaya:         wilayaName,
+          adresse:        address,
+          mode_livraison: deliveryType === 'stopdesk' ? 'Point Relais' : 'Domicile',
+          produit:        currentProduct.name,
+          taille:         selectedSize,
+          couleur:        selectedColor || '—',
+          quantite:       String(selectedQty),
+          livraison:      shipping.toLocaleString('fr-DZ') + ' DA',
+          total:          total.toLocaleString('fr-DZ') + ' DA',
+          note:           note || '—'
+        }).catch(e => console.warn('EmailJS error:', e));
+      }
+    } catch(e) { console.warn('EmailJS error:', e); }
+  }
 }
 
 function closeConfirmOverlay() {
