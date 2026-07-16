@@ -17,7 +17,7 @@ const ZR_WILAYAS = [
   { code:'10', name:'Bouira',              domicile:800,  stopdesk:520,  retour:200 },
   { code:'11', name:'Tamanrasset',         domicile:1600, stopdesk:1120, retour:250 },
   { code:'12', name:'Tébessa',            domicile:900,  stopdesk:520,  retour:200 },
-  { code:'13', name:'Tlemcen',             domicile:700,  stopdesk:450,  retour:200 }, // Wilaya de départ
+  { code:'13', name:'Tlemcen',             domicile:500,  stopdesk:500,  retour:200 }, // Wilaya de départ modifiée à 500/500
   { code:'14', name:'Tiaret',              domicile:750,  stopdesk:520,  retour:200 },
   { code:'15', name:'Tizi Ouzou',          domicile:800,  stopdesk:520,  retour:200 },
   { code:'16', name:'Alger',               domicile:650,  stopdesk:470,  retour:200 },
