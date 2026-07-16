@@ -333,6 +333,119 @@
       .reviews-section{ padding:0 16px 40px !important; }
     }
 
+    /* ══════════════════════════════════════════════════════
+       DESKTOP CLEANUP & ENHANCEMENT (min-width: 769px)
+       Organise les colonnes proprement, sans toucher au mobile
+    ══════════════════════════════════════════════════════ */
+    @media(min-width: 769px) {
+      .product-detail-layout {
+        max-width: 1200px !important;
+        margin: 40px auto !important;
+        padding: 0 40px !important;
+        gap: 60px !important;
+        align-items: flex-start;
+      }
+      /* Colonne Galerie à gauche */
+      .desktop-gallery-column {
+        position: sticky;
+        top: 100px;
+      }
+      .gallery-main {
+        border-radius: 20px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+        border: 2px solid var(--cream-dark) !important;
+      }
+      .mob-gallery-nav, .mob-gallery-counter {
+        display: none !important; /* Pas de flèches/compteur mobiles sur desktop */
+      }
+      /* Colonne Info & Formulaire à droite */
+      .desktop-info-column {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 24px;
+        border: 1px solid var(--cream);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+      }
+      /* Conteneurs pour grouper proprement */
+      .selector-container-desktop {
+        background: var(--off-white);
+        border: 1.5px solid var(--cream);
+        padding: 20px;
+        border-radius: 16px;
+      }
+      .qty-stock-container-desktop {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .qty-row, .stock-badge {
+        margin: 0 !important;
+      }
+      /* Formulaire style épuré sur Desktop */
+      .form-container-desktop {
+        background: #fff !important;
+        border: 2px solid var(--cream-dark) !important;
+        padding: 24px !important;
+        border-radius: 20px !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.02) !important;
+      }
+      /* Champs de saisie */
+      .mob-field-wrap {
+        margin-bottom: 16px;
+      }
+      .mob-field-label {
+        font-size: .85rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+      }
+      .mob-input-icon-wrap {
+        border: 2px solid var(--cream-dark) !important;
+        border-radius: 12px !important;
+      }
+      .mob-input-icon-wrap:focus-within {
+        border-color: var(--rose) !important;
+        box-shadow: 0 0 0 4px rgba(232,136,154,.15) !important;
+      }
+      .mob-input-icon {
+        width: 48px;
+        font-size: 1.1rem;
+        background: var(--off-white);
+      }
+      /* Mode livraison */
+      .mob-delivery-choice label {
+        border: 2px solid var(--cream-dark) !important;
+        padding: 14px !important;
+        border-radius: 12px !important;
+        font-size: .88rem !important;
+        font-weight: 700 !important;
+      }
+      /* Masquer la barre d'achat mobile */
+      .mob-cta-bar {
+        display: none !important;
+      }
+      /* Bouton d'achat desktop */
+      .desktop-order-submit {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--rose), #c96478) !important;
+        border: none !important;
+        box-shadow: 0 8px 24px rgba(232,136,154,.45) !important;
+        padding: 16px !important;
+        font-size: 1.05rem !important;
+        transition: all 0.3s !important;
+      }
+      .desktop-order-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(232,136,154,.6) !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -572,7 +685,7 @@ function renderProductDetail(p) {
 
   document.getElementById('product-detail').innerHTML = `
     <!-- Gallery -->
-    <div>
+    <div class="desktop-gallery-column">
       <div class="gallery-main" id="gallery-main" style="background:${p.color||'#fff'}25;overflow:hidden;position:relative;">
         ${initialMediaHTML}
         <!-- Mobile: flèches nav + compteur -->
@@ -583,7 +696,7 @@ function renderProductDetail(p) {
       <div class="gallery-thumbs">${thumbsHTML}</div>
     </div>
     <!-- Info + Express Order Form -->
-    <div>
+    <div class="desktop-info-column">
       <div class="mob-product-info">
         ${badgeHTML}
         <h1 class="detail-name">${p.name}</h1>
@@ -596,24 +709,24 @@ function renderProductDetail(p) {
         <div class="detail-price">${p.price.toLocaleString('fr-DZ')} <span style="font-size:1.1rem;color:var(--text-soft);">DA</span></div>
         ${oldHTML}
         <div class="detail-meta">
-          <div class="meta-chip"><strong>📦 Catégorie</strong><span>${p.categoryLabel || p.category || '-'}</span></div>
-          <div class="meta-chip"><strong>👶 Âge</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né','nourrisson':'Nourrisson','tout-petit':'Tout-petit'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
-          <div class="meta-chip"><strong>🧶 Matière</strong><span>${p.matiere || p.matiereLabel || 'Coton doux'}</span></div>
+          <div class="meta-chip"><strong>📦 Catégorie / الصنف</strong><span>${p.categoryLabel || p.category || '-'}</span></div>
+          <div class="meta-chip"><strong>👶 Âge / العمر</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né','nourrisson':'Nourrisson','tout-petit':'Tout-petit'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
+          <div class="meta-chip"><strong>🧶 Matière / المادة</strong><span>${p.matiere || p.matiereLabel || 'Coton doux'}</span></div>
         </div>
       </div>
 
       <!-- Size Selector -->
-      <div style="padding:0 16px;margin-bottom:4px;">
+      <div class="selector-container-desktop">
         <div style="margin-bottom:8px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
-          Taille <span style="font-family:var(--font-arabic);color:var(--text-soft);font-weight:500;font-size:.78rem;">· المقاس</span>
+          Taille / المقاس <span class="req">*</span>
         </div>
         <div class="size-grid">${sizesHTML}</div>
       </div>
 
       <!-- Color Selector -->
-      <div style="padding:0 16px;margin-bottom:4px;">
+      <div class="selector-container-desktop">
         <div style="margin-bottom:8px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
-          Couleur <span style="font-family:var(--font-arabic);color:var(--text-soft);font-weight:500;font-size:.78rem;">· اللون</span>
+          Couleur / اللون
           <span id="selected-color-name" style="font-weight:500;color:var(--text-soft);margin-right:6px;font-size:.78rem;"></span>
         </div>
         <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">${colorsHTML}</div>
@@ -621,9 +734,9 @@ function renderProductDetail(p) {
       </div>
 
       <!-- Qty + Stock -->
-      <div style="padding:0 16px;">
+      <div class="selector-container-desktop qty-stock-container-desktop">
         <div class="qty-row">
-          <span style="font-size:.85rem;font-weight:700;color:var(--text-dark);">Quantité :</span>
+          <span style="font-size:.85rem;font-weight:700;color:var(--text-dark);">Quantité / الكمية :</span>
           <div class="qty-control">
             <button class="qty-btn" onclick="changeQty(-1)">−</button>
             <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
@@ -633,15 +746,15 @@ function renderProductDetail(p) {
         <div class="stock-badge ${stockCls}">${stockTxt}</div>
       </div>
 
-      <!-- ⚡ FORMULAIRE DE COMMANDE — Mobile redesign -->
-      <div class="mob-order-form" style="padding:0 16px 80px;">
-        <p class="form-section-title" style="font-size:.9rem;font-weight:800;color:var(--text-dark);margin:16px 0 14px;padding-top:16px;border-top:1px solid #f3f4f6;">
-          ⚡ Informations de livraison <span style="font-family:var(--font-arabic);color:#9ca3af;font-weight:500;font-size:.78rem;">معلومات التوصيل</span>
+      <!-- ⚡ FORMULAIRE DE COMMANDE — Mobile redesign & Desktop Clean layout -->
+      <div class="mob-order-form form-container-desktop">
+        <p class="form-section-title" style="font-size:.95rem;font-weight:800;color:var(--text-dark);margin:16px 0 14px;padding-top:16px;border-top:1px solid #f3f4f6;">
+          ⚡ Informations de livraison / معلومات التوصيل
         </p>
 
         <!-- Nom -->
         <div class="mob-field-wrap">
-          <label class="mob-field-label">Prénom &amp; Nom <span class="req">*</span></label>
+          <label class="mob-field-label">Nom &amp; Prénom / الاسم واللقب <span class="req">*</span></label>
           <div class="mob-input-icon-wrap">
             <div class="mob-input-icon">👤</div>
             <input type="text" id="order-fullname" placeholder="Ex: Amira Benali" autocomplete="name"/>
@@ -650,7 +763,7 @@ function renderProductDetail(p) {
 
         <!-- Téléphone -->
         <div class="mob-field-wrap">
-          <label class="mob-field-label">Téléphone <span class="req">*</span></label>
+          <label class="mob-field-label">Téléphone / الهاتف <span class="req">*</span></label>
           <div class="mob-input-icon-wrap">
             <div class="mob-input-icon" style="width:60px;font-size:.78rem;font-weight:700;color:#374151;">+213</div>
             <input type="tel" id="order-phone" placeholder="0XXXXXXXXX" maxlength="10" autocomplete="tel"/>
@@ -659,33 +772,33 @@ function renderProductDetail(p) {
 
         <!-- Wilaya -->
         <div class="mob-field-wrap">
-          <label class="mob-field-label">Wilaya الولاية <span class="req">*</span></label>
+          <label class="mob-field-label">Wilaya / الولاية <span class="req">*</span></label>
           <div class="mob-input-icon-wrap">
             <div class="mob-input-icon">📍</div>
             <select id="order-wilaya">
-              <option value="">Sélectionnez votre wilaya…</option>
+              <option value="">Sélectionnez votre wilaya / اختر ولايتك</option>
             </select>
           </div>
         </div>
 
         <!-- Mode de livraison -->
         <div class="mob-field-wrap">
-          <label class="mob-field-label">Mode de livraison <span class="req">*</span></label>
+          <label class="mob-field-label">Mode de livraison / طريقة التوصيل <span class="req">*</span></label>
           <div class="mob-delivery-choice">
             <label>
               <input type="radio" name="order-delivery-type" value="domicile" checked onchange="updateOrderSummary()"/>
-              🏠 À domicile
+              🏠 À domicile / للمنزل
             </label>
             <label>
               <input type="radio" name="order-delivery-type" value="stopdesk" onchange="updateOrderSummary()"/>
-              📦 Point Relais
+              📦 Point Relais / مكتب التوصيل
             </label>
           </div>
         </div>
 
         <!-- Adresse -->
         <div class="mob-field-wrap">
-          <label class="mob-field-label" id="order-address-label">Adresse <span class="req">*</span></label>
+          <label class="mob-field-label" id="order-address-label">Adresse / العنوان <span class="req">*</span></label>
           <div class="mob-input-icon-wrap">
             <div class="mob-input-icon">🏠</div>
             <input type="text" id="order-address" placeholder="Rue, quartier, commune…" autocomplete="street-address"/>
@@ -694,24 +807,24 @@ function renderProductDetail(p) {
 
         <!-- Note (optionnel) -->
         <div class="mob-field-wrap">
-          <label class="mob-field-label">Note <span style="font-weight:400;color:#9ca3af;">(optionnel)</span></label>
+          <label class="mob-field-label">Note / ملاحظة <span style="font-weight:400;color:#9ca3af;">(optionnel)</span></label>
           <div class="mob-input-icon-wrap" style="align-items:flex-start;">
             <div class="mob-input-icon" style="padding-top:12px;">📝</div>
-            <textarea id="order-note" placeholder="Ex: Appeler avant de livrer…" style="min-height:60px;resize:none;"></textarea>
+            <textarea id="order-note" placeholder="Ex: Appeler avant de livrer / اتصل قبل التوصيل" style="min-height:60px;resize:none;"></textarea>
           </div>
         </div>
 
         <!-- Résumé livraison -->
         <div id="order-shipping-info" style="background:white;border:1.5px solid #bbf7d0;border-radius:10px;padding:12px 14px;margin-bottom:16px;display:none;line-height:1.8;font-size:.84rem;">
-          <div>🚚 <strong>Livraison ZR Express :</strong> <span id="order-shipping-cost" style="font-weight:800;color:#0891b2;"></span></div>
-          <div>💰 <strong style="color:var(--rose);">Total à payer : <span id="order-total-price"></span></strong></div>
-          <div style="font-size:.74rem;color:#9ca3af;margin-top:2px;">💵 Paiement cash à la livraison</div>
+          <div>🚚 <strong>Livraison ZR Express / التوصيل :</strong> <span id="order-shipping-cost" style="font-weight:800;color:#0891b2;"></span></div>
+          <div>💰 <strong style="color:var(--rose);">Total à payer / المجموع الكلي : <span id="order-total-price"></span></strong></div>
+          <div style="font-size:.74rem;color:#9ca3af;margin-top:2px;">💵 Paiement cash à la livraison / الدفع عند الاستلام</div>
         </div>
 
         <!-- Bouton desktop uniquement -->
         <button onclick="submitExpressOrder()" id="order-submit-btn" class="desktop-order-submit"
           style="width:100%;background:#E8889A;color:white;border:none;padding:14px;font-size:.95rem;font-weight:800;border-radius:50px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(232,136,154,.4);transition:all .2s;">
-          ✅ Confirmer la commande
+          ✅ Confirmer la commande / تأكيد الطلب
         </button>
       </div>
 
@@ -726,7 +839,7 @@ function renderProductDetail(p) {
         <span style="font-size:1.4rem;">🚚</span>
         <div>
           <strong style="display:block;color:var(--text-dark);margin-bottom:2px;">Livraison ZR Express – 58 wilayas</strong>
-          <span>Cash à la livraison · الدفع عند الاستلام</span>
+          <span>Cash à la livraison / الدفع عند الاستلام</span>
         </div>
       </div>
     </div>`;
