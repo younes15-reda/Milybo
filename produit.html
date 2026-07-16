@@ -262,37 +262,40 @@
         background-repeat:no-repeat;
         background-position:right 14px center;
         padding-right:36px !important;
-      }
+    }
 
-      /* Mode livraison — boutons radio stylisés */
-      .mob-delivery-choice{
-        display:flex;
-        gap:10px;
-        margin-bottom:14px;
-      }
-      .mob-delivery-choice label{
-        flex:1;
-        display:flex;
-        align-items:center;
-        gap:8px;
-        padding:11px 14px;
-        border:1.5px solid #d1d5db;
-        border-radius:12px;
-        cursor:pointer;
-        font-size:.84rem;
-        font-weight:600;
-        color:var(--text-mid);
-        transition:all .2s;
-        background:#fff;
-      }
-      .mob-delivery-choice input[type=radio]{ display:none; }
-      .mob-delivery-choice label:has(input:checked){
-        border-color:var(--rose);
-        background:var(--rose-pale);
-        color:var(--rose);
-      }
+    /* Mode livraison — boutons radio stylisés appliqués partout (mobile et desktop) */
+    .mob-delivery-choice{
+      display:flex;
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .mob-delivery-choice label{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:11px 14px;
+      border:1.5px solid #d1d5db;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:.84rem;
+      font-weight:600;
+      color:var(--text-mid);
+      transition:all .2s;
+      background:#fff;
+    }
+    .mob-delivery-choice input[type=radio]{ display:none !important; }
+    .mob-delivery-choice label:has(input:checked){
+      border-color:var(--rose);
+      background:var(--rose-pale);
+      color:var(--rose);
+    }
 
-      /* Résumé shipping */
+    /* ══════════════════════════════════════════════════════
+       MOBILE REDESIGN — Inspiré du modèle client
+       ══════════════════════════════════════════════════════ */
+    @media(max-width:768px){
       #order-shipping-info{
         border-radius:10px !important;
         margin-bottom:14px !important;
