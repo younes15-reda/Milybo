@@ -1066,7 +1066,7 @@ async function submitExpressOrder() {
     id_commande:   tracking,
     produit_id:    currentProduct.id,
     produit_nom:   currentProduct.name,
-    taille:        selectedSize,
+    taille:        selectedSize || 'Standard',
     couleur:       selectedColor || '',
     quantite:      selectedQty,
     prix_unitaire: currentProduct.price,

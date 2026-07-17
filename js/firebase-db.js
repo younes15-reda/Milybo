@@ -200,6 +200,18 @@ window.db = {
     }
   },
 
+  // Supprimer une commande
+  deleteOrder: async (orderId) => {
+    try {
+      const docRef = doc(firestore, "commandes", orderId);
+      await deleteDoc(docRef);
+      return true;
+    } catch (e) {
+      console.error("Erreur lors de la suppression de la commande:", e);
+      throw e;
+    }
+  },
+
   // Récupérer le mot de passe admin personnalisé
   getAdminPassword: async () => {
     try {

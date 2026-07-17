@@ -190,19 +190,31 @@
       </div>
 
       <!-- Orders filter for display -->
-      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
-        <span style="font-size:.82rem;font-weight:700;color:var(--admin-text-light);">Afficher :</span>
-        <select id="orders-display-filter" onchange="applyOrdersFilter()" class="admin-form-input" style="width:180px;padding:6px 10px;font-size:.85rem;">
-          <option value="">Toutes les commandes</option>
-          <option value="en_attente">⏳ En attente</option>
-          <option value="confirmee">✅ Confirmée</option>
-          <option value="expediee">🚀 Expédiée</option>
-          <option value="livree">📦 Livrée</option>
-        </select>
-        <button class="btn-admin-action" onclick="loadOrders()">🔄 Rafraîchir</button>
-        <span id="orders-count" style="font-size:.82rem;color:var(--admin-text-light);"></span>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;justify-content:space-between;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:.82rem;font-weight:700;color:var(--admin-text-light);">Afficher :</span>
+          <select id="orders-display-filter" onchange="applyOrdersFilter()" class="admin-form-input" style="width:180px;padding:6px 10px;font-size:.85rem;">
+            <option value="">Toutes les commandes</option>
+            <option value="en_attente">⏳ En attente</option>
+            <option value="confirmee">✅ Confirmée</option>
+            <option value="expediee">🚀 Expédiée</option>
+            <option value="livree">📦 Livrée</option>
+          </select>
+          <button class="btn-admin-action" onclick="loadOrders()">🔄 Rafraîchir</button>
+          <span id="orders-count" style="font-size:.82rem;color:var(--admin-text-light);"></span>
+        </div>
+        
+        <!-- Boutons de suppression de masse -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-admin-action btn-admin-danger" style="font-size:.78rem;padding:6px 12px;" onclick="deleteOrdersByStatus('en_attente')">
+            🗑️ Supprimer les "En attente"
+          </button>
+          <button class="btn-admin-action btn-admin-danger" style="font-size:.78rem;padding:6px 12px;" onclick="deleteOrdersByStatus('confirmee')">
+            🗑️ Supprimer les "Confirmées"
+          </button>
+        </div>
       </div>
-
+ 
       <div class="admin-card">
         <div class="admin-table-wrap">
           <table class="admin-table">
@@ -210,10 +222,10 @@
               <tr>
                 <th>N° Commande</th><th>Date</th><th>Client</th><th>Téléphone</th>
                 <th>Wilaya</th><th>Produit</th><th>Taille</th><th>Couleur</th>
-                <th>Qté</th><th>Total</th><th>Statut</th>
+                <th>Qté</th><th>Total</th><th>Statut</th><th>Actions</th>
               </tr>
             </thead>
-            <tbody id="orders-table-body"><tr><td colspan="11" style="text-align:center;">Chargement…</td></tr></tbody>
+            <tbody id="orders-table-body"><tr><td colspan="12" style="text-align:center;padding:20px;">Chargement…</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -987,12 +999,12 @@ async function deleteProduct(id) {
 // ============================================================
 async function loadOrders() {
   const tbody = document.getElementById('orders-table-body');
-  tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:20px;">Chargement…</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:20px;">Chargement…</td></tr>';
   try {
     ordersList = await window.db.getOrders();
     applyOrdersFilter();
   } catch(e) {
-    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#ef4444;">Erreur de chargement.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;color:#ef4444;">Erreur de chargement.</td></tr>';
   }
 }
 
@@ -1002,11 +1014,15 @@ function applyOrdersFilter() {
   const list = filter ? ordersList.filter(o => (o.status||o.statut||'en_attente')===filter) : ordersList;
   document.getElementById('orders-count').textContent = `${list.length} commande(s)`;
   tbody.innerHTML = '';
-  if(!list.length) { tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:20px;">Aucune commande.</td></tr>'; return; }
+  if(!list.length) { tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:20px;">Aucune commande.</td></tr>'; return; }
   list.forEach(o => {
     const dateStr = o.createdAt ? new Date(o.createdAt.seconds*1000).toLocaleDateString('fr-DZ') : (o.date||'—');
     const status = o.status||o.statut||'en_attente';
     const colorDot = o.couleur ? `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${o.couleur};border:1px solid #ddd;vertical-align:middle;" title="${o.couleur}"></span>` : (o.couleur||'—');
+    
+    // Si la taille est 'standard', on l'affiche joliment en gras
+    const displayTaille = (o.taille === 'standard' || o.taille === 'Standard') ? '<strong>Standard (Taille unique)</strong>' : (o.taille || '—');
+
     tbody.innerHTML += `<tr>
       <td style="font-size:.78rem;"><strong>${(o.id_commande||o.tracking||o.id||'').slice(0,12)}</strong></td>
       <td style="font-size:.78rem;">${dateStr}</td>
@@ -1014,7 +1030,7 @@ function applyOrdersFilter() {
       <td style="font-size:.82rem;">${o.telephone||o.telephoneClient||'—'}</td>
       <td style="font-size:.82rem;">${o.wilaya||'—'}</td>
       <td style="font-size:.82rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${o.produit_nom||o.produit||'—'}</td>
-      <td>${o.taille||'—'}</td>
+      <td style="font-size:.82rem;">${displayTaille}</td>
       <td>${colorDot}</td>
       <td>${o.quantite||1}</td>
       <td style="font-size:.82rem;"><strong>${((o.prix_total||o.prixTotal||0)).toLocaleString('fr-DZ')} DA</strong></td>
@@ -1026,8 +1042,48 @@ function applyOrdersFilter() {
           <option value="livree" ${status==='livree'?'selected':''}>📦 Livrée</option>
         </select>
       </td>
+      <td>
+        <button class="btn-admin-action btn-admin-danger" onclick="deleteSingleOrder('${o.id}')" title="Supprimer définitivement">🗑️ Supprimer</button>
+      </td>
     </tr>`;
   });
+}
+
+async function deleteSingleOrder(orderId) {
+  if (!confirm('Voulez-vous vraiment supprimer cette commande définitivement ?')) return;
+  try {
+    await window.db.deleteOrder(orderId);
+    ordersList = ordersList.filter(o => o.id !== orderId);
+    applyOrdersFilter();
+    showToast('🗑️ Commande supprimée avec succès !', 'success');
+  } catch(e) {
+    alert('Erreur lors de la suppression de la commande: ' + e.message);
+  }
+}
+
+async function deleteOrdersByStatus(status) {
+  const statusLabel = status === 'en_attente' ? 'En attente (non confirmées)' : 'Confirmées';
+  const targetOrders = ordersList.filter(o => (o.status || o.statut || 'en_attente') === status);
+  if (!targetOrders.length) {
+    alert(`Aucune commande avec le statut "${statusLabel}" à supprimer.`);
+    return;
+  }
+  if (!confirm(`⚠️ Attention : Vous allez supprimer DEFINITIVEMENT les ${targetOrders.length} commandes "${statusLabel}". Cette action est irréversible. Voulez-vous continuer ?`)) {
+    return;
+  }
+
+  // Désactiver les boutons de suppression de masse temporairement
+  showToast('⏳ Suppression en cours...', 'default');
+  try {
+    for (const o of targetOrders) {
+      await window.db.deleteOrder(o.id);
+    }
+    // Recharger la liste des commandes après suppression en masse
+    await loadOrders();
+    showToast('🗑️ Commandes supprimées avec succès !', 'success');
+  } catch(e) {
+    alert('Erreur lors de la suppression en masse des commandes: ' + e.message);
+  }
 }
 
 async function changeOrderStatus(orderId, selectEl) {
