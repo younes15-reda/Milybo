@@ -1057,54 +1057,26 @@ async function submitExpressOrder() {
   `;
   document.getElementById('order-confirm-overlay').style.display = 'flex';
 
-  // ── Texte de notification commun ────────────────────────────
-  const notifText =
-    `🛍️ NOUVELLE COMMANDE – Milybo DZ\n` +
-    `Réf: ${tracking}\n\n` +
-    `👤 ${fullname}\n` +
-    `📞 ${phone}\n` +
-    `📍 ${wilayaName} – ${deliveryType === 'stopdesk' ? 'Point Relais' : 'Domicile'}\n` +
-    `🏠 ${address}\n` +
-    (note ? `📝 ${note}\n` : '') +
-    `\n🧸 ${currentProduct.name} | Taille: ${selectedSize}` +
-    (selectedColor ? ` | Couleur: ${selectedColor}` : '') +
-    `\n🔢 Qté: ${selectedQty} | Total: ${total.toLocaleString('fr-DZ')} DA`;
-
-  // ── 3. Notification WhatsApp automatique (CallMeBot) ─────────
-  const callmebotKey = window.callmebotApiKey;
-  if (callmebotKey) {
-    try {
-      const waUrl = `https://api.callmebot.com/whatsapp.php?phone=${window.callmebotPhone}&text=${encodeURIComponent(notifText)}&apikey=${callmebotKey}`;
-      fetch(waUrl, { mode: 'no-cors' }).catch(() => {});
-    } catch(e) { console.warn('CallMeBot error:', e); }
-  }
-
-  // ── 4. Notification Email automatique (EmailJS) ──────────────
-  const ejsService  = window.emailjsServiceId;
-  const ejsTemplate = window.emailjsTemplateId;
-  const ejsKey      = window.emailjsPublicKey;
-  if (ejsService && ejsTemplate && ejsKey) {
-    try {
-      if (typeof emailjs !== 'undefined') {
-        emailjs.init(ejsKey);
-        emailjs.send(ejsService, ejsTemplate, {
-          ref_commande:   tracking,
-          nom_client:     fullname,
-          telephone:      phone,
-          wilaya:         wilayaName,
-          adresse:        address,
-          mode_livraison: deliveryType === 'stopdesk' ? 'Point Relais' : 'Domicile',
-          produit:        currentProduct.name,
-          taille:         selectedSize,
-          couleur:        selectedColor || '—',
-          quantite:       String(selectedQty),
-          livraison:      shipping.toLocaleString('fr-DZ') + ' DA',
-          total:          total.toLocaleString('fr-DZ') + ' DA',
-          note:           note || '—'
-        }).catch(e => console.warn('EmailJS error:', e));
-      }
-    } catch(e) { console.warn('EmailJS error:', e); }
-  }
+  // ── 3. Redirection WhatsApp avec message pré-rempli ───────────
+  const msg = encodeURIComponent(
+    `Bonjour Milybo DZ 👋\n` +
+    `🛍️ Nouvelle commande express !\n\n` +
+    `👤 Nom : ${fullname}\n` +
+    `📞 Tél : ${phone}\n` +
+    `📍 Wilaya : ${wilayaName}\n` +
+    `🛵 Mode : ${deliveryType === 'stopdesk' ? 'Point Relais (Retrait bureau)' : 'Livraison à domicile'}\n` +
+    `🏠 Adresse/Bureau : ${address}\n` +
+    (note ? `📝 Note : ${note}\n` : '') +
+    `\n🧸 Article : ${currentProduct.name}\n` +
+    `📏 Taille : ${selectedSize}\n` +
+    (selectedColor ? `🎨 Couleur : ${selectedColor}\n` : '') +
+    `🔢 Quantité : ${selectedQty}\n` +
+    `💵 Livraison : ${shipping.toLocaleString('fr-DZ')} DA\n` +
+    `💰 Total : ${total.toLocaleString('fr-DZ')} DA\n\n` +
+    `Réf commande : ${tracking}\n` +
+    `Merci de confirmer ! 🙏`
+  );
+  setTimeout(() => { window.open(`https://wa.me/213559449995?text=${msg}`, '_blank'); }, 700);
 }
 
 function closeConfirmOverlay() {
