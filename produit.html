@@ -216,65 +216,65 @@
         border-top:1px solid #f3f4f6;
       }
 
-      /* Chaque champ avec icône à gauche */
-      .mob-field-wrap{
-        margin-bottom:14px;
-      }
-      .mob-field-label{
-        display:block;
-        font-size:.82rem;
-        font-weight:700;
-        color:var(--text-dark);
-        margin-bottom:6px;
-      }
-      .mob-field-label .req{color:var(--rose);}
+    /* ── Formulaire style avec icônes intégrées (global) ── */
+    .mob-field-wrap{
+      margin-bottom:14px;
+    }
+    .mob-field-label{
+      display:block;
+      font-size:.82rem;
+      font-weight:700;
+      color:var(--text-dark);
+      margin-bottom:6px;
+    }
+    .mob-field-label .req{color:var(--rose);}
 
-      .mob-input-icon-wrap{
-        display:flex;
-        align-items:stretch;
-        border:1.5px solid #d1d5db;
-        border-radius:12px;
-        overflow:hidden;
-        background:#fff;
-        transition:border-color .2s;
-      }
-      .mob-input-icon-wrap:focus-within{
-        border-color:var(--rose);
-        box-shadow:0 0 0 3px rgba(232,136,154,.12);
-      }
-      .mob-input-icon{
-        width:46px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        background:#f9fafb;
-        border-right:1.5px solid #e5e7eb;
-        font-size:1.05rem;
-        flex-shrink:0;
-        color:#6b7280;
-      }
-      .mob-input-icon-wrap input,
-      .mob-input-icon-wrap select,
-      .mob-input-icon-wrap textarea{
-        flex:1;
-        border:none !important;
-        outline:none !important;
-        padding:12px 14px !important;
-        font-size:.9rem !important;
-        font-family:var(--font-main) !important;
-        color:var(--text-dark);
-        background:transparent;
-        border-radius:0 !important;
-        box-shadow:none !important;
-        width:100%;
-      }
-      .mob-input-icon-wrap select{
-        appearance:none;
-        -webkit-appearance:none;
-        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-        background-repeat:no-repeat;
-        background-position:right 14px center;
-        padding-right:36px !important;
+    .mob-input-icon-wrap{
+      display:flex;
+      align-items:stretch;
+      border:1.5px solid #d1d5db;
+      border-radius:12px;
+      overflow:hidden;
+      background:#fff;
+      transition:border-color .2s;
+    }
+    .mob-input-icon-wrap:focus-within{
+      border-color:var(--rose);
+      box-shadow:0 0 0 3px rgba(232,136,154,.12);
+    }
+    .mob-input-icon{
+      width:46px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#f9fafb;
+      border-right:1.5px solid #e5e7eb;
+      font-size:1.05rem;
+      flex-shrink:0;
+      color:#6b7280;
+    }
+    .mob-input-icon-wrap input,
+    .mob-input-icon-wrap select,
+    .mob-input-icon-wrap textarea{
+      flex:1;
+      border:none !important;
+      outline:none !important;
+      padding:12px 14px !important;
+      font-size:.9rem !important;
+      font-family:var(--font-main) !important;
+      color:var(--text-dark);
+      background:transparent;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      width:100%;
+    }
+    .mob-input-icon-wrap select{
+      appearance:none;
+      -webkit-appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 14px center;
+      padding-right:36px !important;
     }
 
     /* Mode livraison — boutons radio stylisés appliqués partout (mobile et desktop) */
@@ -355,21 +355,25 @@
     ══════════════════════════════════════════════════════ */
     @media(min-width: 769px) {
       .product-detail-layout {
+        display: grid !important;
+        grid-template-columns: 1.1fr 0.9fr !important;
         max-width: 1200px !important;
         margin: 40px auto !important;
         padding: 0 40px !important;
-        gap: 60px !important;
+        gap: 50px !important;
         align-items: flex-start;
       }
       /* Colonne Galerie à gauche */
       .desktop-gallery-column {
         position: sticky;
         top: 100px;
+        display: block !important;
       }
       .gallery-main {
         border-radius: 20px !important;
         box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
         border: 2px solid var(--cream-dark) !important;
+        aspect-ratio: 1 !important; /* Carré parfait sur Desktop */
       }
       .mob-gallery-nav, .mob-gallery-counter {
         display: none !important; /* Pas de flèches/compteur mobiles sur desktop */
@@ -798,7 +802,7 @@ function renderProductDetail(p) {
           <label class="mob-field-label">Nom &amp; Prénom / الاسم واللقب <span class="req">*</span></label>
           <div class="mob-input-icon-wrap">
             <div class="mob-input-icon">👤</div>
-            <input type="text" id="order-fullname" placeholder="Ex: Amira Benali" autocomplete="name"/>
+            <input type="text" id="order-fullname" placeholder="Ex: Mr/Mme" autocomplete="name"/>
           </div>
         </div>
 
