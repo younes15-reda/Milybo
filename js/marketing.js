@@ -56,67 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.appendChild(btn);
 });
 
-// ── 3. Welcome Popup avec code promo ─────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
-  // N'afficher qu'une fois toutes les 48h
-  const lastShown = localStorage.getItem('milybo_popup_ts');
-  const now = Date.now();
-  if (lastShown && (now - parseInt(lastShown)) < 48 * 3600 * 1000) return;
-  // Délai 4s avant affichage
-  setTimeout(showWelcomePopup, 4000);
-});
-
-function showWelcomePopup() {
-  if (document.getElementById('welcome-popup')) return;
-
-  const popup = document.createElement('div');
-  popup.id = 'welcome-popup';
-  popup.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;`;
-  popup.innerHTML = `
-    <div style="background:white;border-radius:20px;padding:0;max-width:440px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:popup-in .4s ease;">
-      <div style="background:linear-gradient(135deg,var(--rose) 0%,#E91E8C 100%);padding:32px 28px;text-align:center;color:white;position:relative;">
-        <button onclick="closePopup()" style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,.2);border:none;width:28px;height:28px;border-radius:50%;color:white;font-size:1rem;cursor:pointer;font-weight:700;">✕</button>
-        <div style="font-size:3rem;margin-bottom:10px;">🎀</div>
-        <h2 style="font-size:1.4rem;font-weight:900;margin-bottom:6px;">Bienvenue chez Milybo DZ !</h2>
-        <div style="font-family:'Noto Sans Arabic',sans-serif;font-size:.9rem;opacity:.9;">مرحباً بك في متجر ميليبو دي زي</div>
-      </div>
-      <div style="padding:28px;text-align:center;">
-        <p style="color:#374151;font-size:.9rem;margin-bottom:16px;">🎉 En cadeau de bienvenue, bénéficiez de <strong style="color:var(--rose);">−10%</strong> sur votre première commande !</p>
-        <div style="font-family:'Noto Sans Arabic',sans-serif;font-size:.82rem;color:#6B7280;margin-bottom:20px;">هدية ترحيبية : خصم 10% على أول طلب لك</div>
-        <div style="background:linear-gradient(135deg,#FFF0F5,#F0F9FF);border:2px dashed var(--rose-light);border-radius:12px;padding:16px;margin-bottom:20px;">
-          <div style="font-size:.75rem;color:#6B7280;margin-bottom:4px;">Votre code promo · كود الخصم</div>
-          <div id="promo-code-display" style="font-size:1.5rem;font-weight:900;color:var(--rose);letter-spacing:3px;">BIENVENUE10</div>
-          <button onclick="copyPromo()" style="margin-top:8px;font-size:.74rem;color:var(--sky);background:none;border:none;cursor:pointer;font-weight:600;">📋 Copier le code</button>
-        </div>
-        <button onclick="closePopupShop()" style="width:100%;background:var(--rose);color:white;border:none;border-radius:50px;padding:14px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;">
-          🛍️ Profiter de l'offre maintenant
-        </button>
-        <div style="margin-top:10px;font-size:.72rem;color:#9CA3AF;">*Code valable 7 jours · Offre d'une seule utilisation</div>
-      </div>
-    </div>`;
-
-  const style = document.createElement('style');
-  style.textContent = `@keyframes popup-in{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}`;
-  document.head.appendChild(style);
-  document.body.appendChild(popup);
-  localStorage.setItem('milybo_popup_ts', Date.now().toString());
-
-  // Close on backdrop click
-  popup.addEventListener('click', e => { if (e.target === popup) closePopup(); });
-}
-
-function closePopup() {
-  const p = document.getElementById('welcome-popup');
-  if (p) { p.style.opacity = '0'; p.style.transition = 'opacity .3s'; setTimeout(() => p.remove(), 300); }
-}
-function closePopupShop() { closePopup(); window.location.href = 'boutique.html'; }
-function copyPromo() {
-  navigator.clipboard?.writeText('BIENVENUE10').then(() => {
-    if (typeof showToast === 'function') showToast('📋 Code copié : BIENVENUE10 !', 'success');
-    else alert('Code copié : BIENVENUE10');
-  });
-}
-
 // ── 4. Newsletter signup handler ──────────────────────────────
 function submitNewsletter(formEl) {
   const email = formEl.querySelector('#nl-email')?.value?.trim();
