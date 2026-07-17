@@ -713,17 +713,29 @@ function renderProductDetail(p) {
         ${oldHTML}
         <div class="detail-meta">
           <div class="meta-chip"><strong>📦 Catégorie / الصنف</strong><span>${p.categoryLabel || p.category || '-'}</span></div>
-          <div class="meta-chip"><strong>👶 Âge / العمر</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né','nourrisson':'Nourrisson','tout-petit':'Tout-petit'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
+          <div class="meta-chip"><strong>👶 Âge / العمر</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né','nourrisson':'Nourrisson','tout-petit':'Tout-petit','tous':'Tous les âges'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
           <div class="meta-chip"><strong>🧶 Matière / المادة</strong><span>${p.matiere || p.matiereLabel || 'Coton doux'}</span></div>
         </div>
       </div>
 
       <!-- Size Selector -->
-      <div class="selector-container-desktop">
+      <div class="selector-container-desktop" id="size-selector-container">
         <div style="margin-bottom:8px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
           Taille / المقاس <span class="req">*</span>
         </div>
         <div class="size-grid">${sizesHTML}</div>
+        <script>
+          // Si la seule taille disponible est 'standard' (ou si elle est dans la liste)
+          const sizesList = ${JSON.stringify(p.sizes || [])};
+          if (sizesList.length === 1 && sizesList[0].toLowerCase() === 'standard') {
+            selectedSize = 'standard';
+            // Cacher le sélecteur pour qu'il soit fixe
+            const container = document.getElementById('size-selector-container');
+            if (container) {
+              container.innerHTML = \`<div style="font-size:.85rem;color:var(--text-mid);">📏 Taille : <strong>Standard (Taille unique)</strong></div>\`;
+            }
+          }
+        <\/script>
       </div>
 
       <!-- Color Selector -->

@@ -321,6 +321,7 @@
           <option value="nouveau-ne">Nouveau-né (0–1 mois)</option>
           <option value="nourrisson">Nourrisson (1–12 mois)</option>
           <option value="tout-petit">Tout-petit (1–3 ans)</option>
+          <option value="tous">Tous les âges</option>
         </select>
       </div>
     </div>
@@ -342,6 +343,7 @@
     <div class="admin-form-group">
       <label class="admin-form-label">Tailles disponibles</label>
       <div class="admin-form-checkboxes">
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="standard"/> Standard</label>
         <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="NB"/> NB</label>
         <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="3M"/> 3M</label>
         <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="6M"/> 6M</label>
@@ -663,6 +665,7 @@ async function loadProducts() {
         <td style="font-size:.8rem;">${(p.sizes||[]).join(', ')||'—'}</td>
         <td style="font-size:.8rem;">${(p.colors||[]).slice(0,3).map(c=>`<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c};border:1px solid #ddd;vertical-align:middle;" title="${c}"></span>`).join(' ')||'—'}</td>
         <td>
+          <button class="btn-admin-action" title="Lien publicité" onclick="showProductLink('${p.id}', '${(p.name||'').replace(/'/g,"\\'")}')">🔗</button>
           <button class="btn-admin-action" onclick="editProduct('${p.id}')">✏️</button>
           <button class="btn-admin-action btn-admin-danger" onclick="deleteProduct('${p.id}')">🗑️</button>
         </td>
@@ -974,6 +977,39 @@ async function changeAdminPassword() {
   } catch(e) {
     alert('Erreur: '+e.message);
   }
+}
+// ============================================================
+// LIEN PRODUIT POUR PUBLICITES SOCIALES
+// ============================================================
+function showProductLink(productId, productName) {
+  const base = (window.siteBaseUrl || 'https://younes15-reda.github.io/Milybo').replace(/\/$/, '');
+  const directLink = `${base}/produit.html?id=${productId}`;
+  const facebookLink = `${directLink}&utm_source=facebook&utm_medium=cpc&utm_campaign=pub`;
+  const instagramLink = `${directLink}&utm_source=instagram&utm_medium=cpc&utm_campaign=pub`;
+  const tiktokLink = `${directLink}&utm_source=tiktok&utm_medium=video&utm_campaign=pub`;
+
+  document.getElementById('share-modal-title').textContent = `🔗 Lien – ${productName}`;
+  document.getElementById('share-link-direct').value = directLink;
+  document.getElementById('share-link-facebook').value = facebookLink;
+  document.getElementById('share-link-instagram').value = instagramLink;
+  document.getElementById('share-link-tiktok').value = tiktokLink;
+  document.getElementById('share-modal').style.display = 'flex';
+}
+
+function copyShareLink(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  navigator.clipboard.writeText(input.value)
+    .then(() => showToast('✅ Lien copié !', 'success'))
+    .catch(() => {
+      input.select();
+      document.execCommand('copy');
+      showToast('✅ Lien copié !', 'success');
+    });
+}
+
+function closeShareModal() {
+  document.getElementById('share-modal').style.display = 'none';
 }
 </script>
 </body>
