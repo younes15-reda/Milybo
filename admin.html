@@ -356,8 +356,14 @@
     </div>
 
     <div class="admin-form-group">
-      <label class="admin-form-label">Couleurs disponibles (codes hex ou noms, séparés par virgule)</label>
-      <input type="text" id="product-colors" class="admin-form-input" placeholder="#FFB5BA, #B5D5FF, rose"/>
+      <label class="admin-form-label">Couleurs disponibles / الألوان المتوفرة</label>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+        <input type="color" id="product-color-picker" style="width:40px;height:40px;border-radius:50%;border:2px solid var(--cream-dark);cursor:pointer;padding:0;background:none;" value="#ffb5ba"/>
+        <button type="button" class="btn btn-outline btn-sm" onclick="addSelectedColor()">➕ Ajouter couleur</button>
+      </div>
+      <div id="product-colors-list" style="display:flex;gap:8px;flex-wrap:wrap;min-height:34px;padding:6px;background:var(--off-white);border:1.5px solid var(--cream-dark);border-radius:8px;"></div>
+      <!-- Le champ caché pour l'enregistrement Firestore sans tout casser -->
+      <input type="hidden" id="product-colors" value=""/>
     </div>
 
     <div class="admin-form-group">
@@ -691,6 +697,7 @@ function closeProductModal() {
   document.getElementById('product-stock').value = '10';
   uploadedPhotosBase64 = []; // réinitialiser les photos uploadées
   document.getElementById('product-photo-previews').innerHTML = '';
+  document.getElementById('product-colors-list').innerHTML = ''; // vider visuel couleur
   document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=false);
 }
 
@@ -705,7 +712,21 @@ function editProduct(id) {
   document.getElementById('product-price').value = p.price||'';
   document.getElementById('product-oldprice').value = p.oldPrice||'';
   document.getElementById('product-stock').value = p.stock??10;
-  document.getElementById('product-colors').value = (p.colors||[]).join(', ');
+  
+  // Remplir le champ couleurs et le visuel
+  const colors = p.colors || [];
+  document.getElementById('product-colors').value = colors.join(', ');
+  const colorsListDiv = document.getElementById('product-colors-list');
+  colorsListDiv.innerHTML = '';
+  colors.forEach(c => {
+    colorsListDiv.innerHTML += `
+      <div class="color-chip-admin" style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #d1d5db;padding:4px 8px;border-radius:20px;font-size:.8rem;font-weight:700;" data-color="${c}">
+        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c};border:1px solid #aaa;"></span>
+        <span>${c}</span>
+        <button type="button" onclick="removeColorChip(this, '${c}')" style="background:none;border:none;color:#ef4444;font-weight:900;cursor:pointer;padding:0 2px;">×</button>
+      </div>`;
+  });
+
   document.getElementById('product-matiere').value = p.matiere || p.matiereLabel || '';
   document.getElementById('product-photos').value = (p.photos||[]).join(', ');
   document.getElementById('product-description').value = p.description||'';
@@ -724,6 +745,37 @@ function editProduct(id) {
   });
   openProductModal(true);
 }
+
+// ── Gestion visuelle des couleurs pour l'admin ──────────────────
+function addSelectedColor() {
+  const color = document.getElementById('product-color-picker').value;
+  const list = document.getElementById('product-colors-list');
+  
+  // Vérifier si déjà présent
+  const existing = Array.from(list.querySelectorAll('.color-chip-admin')).map(el => el.getAttribute('data-color'));
+  if (existing.includes(color)) return;
+
+  list.innerHTML += `
+    <div class="color-chip-admin" style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #d1d5db;padding:4px 8px;border-radius:20px;font-size:.8rem;font-weight:700;" data-color="${color}">
+      <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${color};border:1px solid #aaa;"></span>
+      <span>${color}</span>
+      <button type="button" onclick="removeColorChip(this, '${color}')" style="background:none;border:none;color:#ef4444;font-weight:900;cursor:pointer;padding:0 2px;">×</button>
+    </div>`;
+  
+  syncColorsInput();
+}
+
+function removeColorChip(btn, color) {
+  btn.closest('.color-chip-admin').remove();
+  syncColorsInput();
+}
+
+function syncColorsInput() {
+  const chips = Array.from(document.querySelectorAll('#product-colors-list .color-chip-admin'));
+  const colors = chips.map(c => c.getAttribute('data-color'));
+  document.getElementById('product-colors').value = colors.join(', ');
+}
+
 
 async function submitProductForm() {
   const editId = document.getElementById('product-edit-id').value;
