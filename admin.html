@@ -343,15 +343,15 @@
     <div class="admin-form-group">
       <label class="admin-form-label">Tailles disponibles</label>
       <div class="admin-form-checkboxes">
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="standard"/> Standard</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="NB"/> NB</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="3M"/> 3M</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="6M"/> 6M</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="9M"/> 9M</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="12M"/> 12M</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="18M"/> 18M</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="24M"/> 24M</label>
-        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="36M"/> 36M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="standard" onchange="handleSizeCheckboxChange(this)"/> Standard</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="NB" onchange="handleSizeCheckboxChange(this)"/> NB</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="3M" onchange="handleSizeCheckboxChange(this)"/> 3M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="6M" onchange="handleSizeCheckboxChange(this)"/> 6M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="9M" onchange="handleSizeCheckboxChange(this)"/> 9M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="12M" onchange="handleSizeCheckboxChange(this)"/> 12M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="18M" onchange="handleSizeCheckboxChange(this)"/> 18M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="24M" onchange="handleSizeCheckboxChange(this)"/> 24M</label>
+        <label class="admin-form-checkbox"><input type="checkbox" name="product-sizes" value="36M" onchange="handleSizeCheckboxChange(this)"/> 36M</label>
       </div>
     </div>
 
@@ -698,7 +698,10 @@ function closeProductModal() {
   uploadedPhotosBase64 = []; // réinitialiser les photos uploadées
   document.getElementById('product-photo-previews').innerHTML = '';
   document.getElementById('product-colors-list').innerHTML = ''; // vider visuel couleur
-  document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=false);
+  document.querySelectorAll('input[name="product-sizes"]').forEach(cb => {
+    cb.checked = false;
+    cb.disabled = false;
+  });
 }
 
 function editProduct(id) {
@@ -733,6 +736,8 @@ function editProduct(id) {
   // Sizes
   const sizes = p.sizes||[];
   document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=sizes.includes(cb.value));
+  syncInitialSizesState(); // Synchroniser l'état initial des cases (désactiver les autres si 'standard' est coché)
+  
   // Photo preview
   const previews = document.getElementById('product-photo-previews');
   previews.innerHTML = '';
@@ -774,6 +779,50 @@ function syncColorsInput() {
   const chips = Array.from(document.querySelectorAll('#product-colors-list .color-chip-admin'));
   const colors = chips.map(c => c.getAttribute('data-color'));
   document.getElementById('product-colors').value = colors.join(', ');
+}
+
+// Restriction mutuelle taille standard / autres tailles
+function handleSizeCheckboxChange(checkbox) {
+  const isStandard = checkbox.value === 'standard';
+  const checkboxes = document.querySelectorAll('input[name="product-sizes"]');
+
+  if (isStandard && checkbox.checked) {
+    // Si Standard est coché, décocher et désactiver toutes les autres tailles
+    checkboxes.forEach(cb => {
+      if (cb.value !== 'standard') {
+        cb.checked = false;
+        cb.disabled = true;
+      }
+    });
+  } else if (isStandard && !checkbox.checked) {
+    // Si Standard est décoché, réactiver toutes les autres tailles
+    checkboxes.forEach(cb => {
+      cb.disabled = false;
+    });
+  } else if (!isStandard && checkbox.checked) {
+    // Si une autre taille est cochée, s'assurer que Standard est décoché
+    const standardCb = Array.from(checkboxes).find(cb => cb.value === 'standard');
+    if (standardCb) {
+      standardCb.checked = false;
+    }
+  }
+}
+
+// Fonction pour synchroniser l'état initial des cases à cocher à l'ouverture (ex: modification)
+function syncInitialSizesState() {
+  const checkboxes = document.querySelectorAll('input[name="product-sizes"]');
+  const standardCb = Array.from(checkboxes).find(cb => cb.value === 'standard');
+  if (standardCb && standardCb.checked) {
+    checkboxes.forEach(cb => {
+      if (cb.value !== 'standard') {
+        cb.disabled = true;
+      }
+    });
+  } else {
+    checkboxes.forEach(cb => {
+      cb.disabled = false;
+    });
+  }
 }
 
 
