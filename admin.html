@@ -171,46 +171,31 @@
         <h2 style="font-size:1.2rem;font-weight:800;">Commandes clients</h2>
       </div>
 
-      <!-- CSV Export Bar -->
-      <div class="csv-export-bar">
-        <span>📥</span>
-        <label>Statut à exporter :</label>
-        <select id="csv-status-filter" class="admin-form-input" style="width:160px;padding:6px 10px;font-size:.85rem;">
-          <option value="confirmee">✅ Confirmée (défaut)</option>
-          <option value="en_attente">⏳ En attente</option>
-          <option value="expediee">🚀 Expédiée</option>
-          <option value="livree">📦 Livrée</option>
-          <option value="">Toutes</option>
-        </select>
-        <label>Depuis :</label>
-        <input type="date" id="csv-date-from" class="admin-form-input" style="width:150px;padding:6px 10px;font-size:.85rem;"/>
-        <label>Jusqu'au :</label>
-        <input type="date" id="csv-date-to" class="admin-form-input" style="width:150px;padding:6px 10px;font-size:.85rem;"/>
-        <button class="btn btn-primary btn-sm" onclick="exportZRExpressCSV()" style="white-space:nowrap;">📥 Exporter CSV ZR Express</button>
-      </div>
-
-      <!-- Orders filter for display -->
-      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;justify-content:space-between;">
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <span style="font-size:.82rem;font-weight:700;color:var(--admin-text-light);">Afficher :</span>
-          <select id="orders-display-filter" onchange="applyOrdersFilter()" class="admin-form-input" style="width:180px;padding:6px 10px;font-size:.85rem;">
+      <!-- Unified Filters & Export Bar -->
+      <div class="csv-export-bar" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <label style="font-weight:700;">Statut :</label>
+          <select id="orders-display-filter" onchange="applyOrdersFilter()" class="admin-form-input" style="width:160px;padding:6px 10px;font-size:.85rem;">
             <option value="">Toutes les commandes</option>
             <option value="en_attente">⏳ En attente</option>
             <option value="confirmee">✅ Confirmée</option>
             <option value="expediee">🚀 Expédiée</option>
             <option value="livree">📦 Livrée</option>
           </select>
-          <button class="btn-admin-action" onclick="loadOrders()">🔄 Rafraîchir</button>
-          <span id="orders-count" style="font-size:.82rem;color:var(--admin-text-light);"></span>
+          
+          <label style="font-weight:700;">Depuis :</label>
+          <input type="date" id="filter-date-from" onchange="applyOrdersFilter()" class="admin-form-input" style="width:145px;padding:6px 10px;font-size:.85rem;"/>
+          
+          <label style="font-weight:700;">Jusqu'au :</label>
+          <input type="date" id="filter-date-to" onchange="applyOrdersFilter()" class="admin-form-input" style="width:145px;padding:6px 10px;font-size:.85rem;"/>
+          
+          <button class="btn-admin-action" onclick="loadOrders()" style="padding:6px 12px;font-size:.82rem;">🔄 Rafraîchir</button>
+          <span id="orders-count" style="font-size:.82rem;color:var(--admin-text-light);font-weight:700;margin-left:4px;"></span>
         </div>
         
-        <!-- Boutons de suppression de masse -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn-admin-action btn-admin-danger" style="font-size:.78rem;padding:6px 12px;" onclick="deleteOrdersByStatus('en_attente')">
-            🗑️ Supprimer les "En attente"
-          </button>
-          <button class="btn-admin-action btn-admin-danger" style="font-size:.78rem;padding:6px 12px;" onclick="deleteOrdersByStatus('confirmee')">
-            🗑️ Supprimer les "Confirmées"
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn btn-primary btn-sm" onclick="exportZRExpressCSV()" style="white-space:nowrap;padding:8px 14px;font-size:.82rem;">
+            📥 Exporter la sélection (CSV)
           </button>
         </div>
       </div>
@@ -220,12 +205,13 @@
           <table class="admin-table">
             <thead>
               <tr>
+                <th style="width:40px;text-align:center;"><input type="checkbox" id="select-all-orders" onchange="toggleSelectAllOrders(this)"/></th>
                 <th>N° Commande</th><th>Date</th><th>Client</th><th>Téléphone</th>
                 <th>Wilaya</th><th>Produit</th><th>Taille</th><th>Couleur</th>
                 <th>Qté</th><th>Total</th><th>Statut</th><th>Actions</th>
               </tr>
             </thead>
-            <tbody id="orders-table-body"><tr><td colspan="12" style="text-align:center;padding:20px;">Chargement…</td></tr></tbody>
+            <tbody id="orders-table-body"><tr><td colspan="13" style="text-align:center;padding:20px;">Chargement…</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -999,31 +985,64 @@ async function deleteProduct(id) {
 // ============================================================
 async function loadOrders() {
   const tbody = document.getElementById('orders-table-body');
-  tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:20px;">Chargement…</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;">Chargement…</td></tr>';
   try {
     ordersList = await window.db.getOrders();
     applyOrdersFilter();
   } catch(e) {
-    tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;color:#ef4444;">Erreur de chargement.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;color:#ef4444;">Erreur de chargement.</td></tr>';
   }
 }
 
 function applyOrdersFilter() {
   const filter = document.getElementById('orders-display-filter')?.value || '';
+  const dateFromVal = document.getElementById('filter-date-from')?.value;
+  const dateToVal = document.getElementById('filter-date-to')?.value;
   const tbody = document.getElementById('orders-table-body');
-  const list = filter ? ordersList.filter(o => (o.status||o.statut||'en_attente')===filter) : ordersList;
+
+  // Filtrer la liste locale
+  let list = [...ordersList];
+
+  // 1. Filtre par statut
+  if (filter) {
+    list = list.filter(o => (o.status || o.statut || 'en_attente') === filter);
+  }
+
+  // 2. Filtre par date "Depuis"
+  if (dateFromVal) {
+    const fromTime = new Date(dateFromVal).setHours(0, 0, 0, 0);
+    list = list.filter(o => {
+      const t = o.createdAt?.seconds ? o.createdAt.seconds * 1000 : (o.date ? new Date(o.date).getTime() : 0);
+      return t >= fromTime;
+    });
+  }
+
+  // 3. Filtre par date "Jusqu'au"
+  if (dateToVal) {
+    const toTime = new Date(dateToVal).setHours(23, 59, 59, 999);
+    list = list.filter(o => {
+      const t = o.createdAt?.seconds ? o.createdAt.seconds * 1000 : (o.date ? new Date(o.date).getTime() : Infinity);
+      return t <= toTime;
+    });
+  }
+
   document.getElementById('orders-count').textContent = `${list.length} commande(s)`;
+  
+  // Réinitialiser la case "Tout sélectionner" de l'en-tête
+  const headerCheckbox = document.getElementById('select-all-orders');
+  if (headerCheckbox) headerCheckbox.checked = false;
+
   tbody.innerHTML = '';
-  if(!list.length) { tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:20px;">Aucune commande.</td></tr>'; return; }
+  if(!list.length) { tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;">Aucune commande trouvée.</td></tr>'; return; }
+
   list.forEach(o => {
     const dateStr = o.createdAt ? new Date(o.createdAt.seconds*1000).toLocaleDateString('fr-DZ') : (o.date||'—');
     const status = o.status||o.statut||'en_attente';
     const colorDot = o.couleur ? `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${o.couleur};border:1px solid #ddd;vertical-align:middle;" title="${o.couleur}"></span>` : (o.couleur||'—');
-    
-    // Si la taille est 'standard', on l'affiche joliment en gras
     const displayTaille = (o.taille === 'standard' || o.taille === 'Standard') ? '<strong>Standard (Taille unique)</strong>' : (o.taille || '—');
 
     tbody.innerHTML += `<tr>
+      <td style="text-align:center;"><input type="checkbox" class="order-select-checkbox" data-id="${o.id}"/></td>
       <td style="font-size:.78rem;"><strong>${(o.id_commande||o.tracking||o.id||'').slice(0,12)}</strong></td>
       <td style="font-size:.78rem;">${dateStr}</td>
       <td>${o.nom||o.nomClient||'—'}</td>
@@ -1049,6 +1068,11 @@ function applyOrdersFilter() {
   });
 }
 
+function toggleSelectAllOrders(headerCheckbox) {
+  const checkboxes = document.querySelectorAll('.order-select-checkbox');
+  checkboxes.forEach(cb => cb.checked = headerCheckbox.checked);
+}
+
 async function deleteSingleOrder(orderId) {
   if (!confirm('Voulez-vous vraiment supprimer cette commande définitivement ?')) return;
   try {
@@ -1058,31 +1082,6 @@ async function deleteSingleOrder(orderId) {
     showToast('🗑️ Commande supprimée avec succès !', 'success');
   } catch(e) {
     alert('Erreur lors de la suppression de la commande: ' + e.message);
-  }
-}
-
-async function deleteOrdersByStatus(status) {
-  const statusLabel = status === 'en_attente' ? 'En attente (non confirmées)' : 'Confirmées';
-  const targetOrders = ordersList.filter(o => (o.status || o.statut || 'en_attente') === status);
-  if (!targetOrders.length) {
-    alert(`Aucune commande avec le statut "${statusLabel}" à supprimer.`);
-    return;
-  }
-  if (!confirm(`⚠️ Attention : Vous allez supprimer DEFINITIVEMENT les ${targetOrders.length} commandes "${statusLabel}". Cette action est irréversible. Voulez-vous continuer ?`)) {
-    return;
-  }
-
-  // Désactiver les boutons de suppression de masse temporairement
-  showToast('⏳ Suppression en cours...', 'default');
-  try {
-    for (const o of targetOrders) {
-      await window.db.deleteOrder(o.id);
-    }
-    // Recharger la liste des commandes après suppression en masse
-    await loadOrders();
-    showToast('🗑️ Commandes supprimées avec succès !', 'success');
-  } catch(e) {
-    alert('Erreur lors de la suppression en masse des commandes: ' + e.message);
   }
 }
 
@@ -1101,40 +1100,50 @@ async function changeOrderStatus(orderId, selectEl) {
 }
 
 // ============================================================
-// CSV EXPORT ZR EXPRESS (ÉTAPE 5)
+// CSV EXPORT CIBLÉ / FILTRÉ (ÉTAPE 5)
 // ============================================================
 async function exportZRExpressCSV() {
-  const statusFilter = document.getElementById('csv-status-filter').value;
-  const dateFrom = document.getElementById('csv-date-from').value;
-  const dateTo = document.getElementById('csv-date-to').value;
+  // Récupérer les identifiants des commandes cochées à l'écran
+  const checkedBoxes = document.querySelectorAll('.order-select-checkbox:checked');
+  let toExport = [];
 
-  // Filter orders
-  let toExport = [...ordersList];
-  if (statusFilter) {
-    toExport = toExport.filter(o => (o.status||o.statut||'en_attente') === statusFilter);
-  }
-  if (dateFrom) {
-    const from = new Date(dateFrom).getTime();
-    toExport = toExport.filter(o => {
-      const t = o.createdAt?.seconds ? o.createdAt.seconds*1000 : (o.date ? new Date(o.date).getTime() : 0);
-      return t >= from;
-    });
-  }
-  if (dateTo) {
-    const to = new Date(dateTo).getTime() + 86400000; // include full day
-    toExport = toExport.filter(o => {
-      const t = o.createdAt?.seconds ? o.createdAt.seconds*1000 : (o.date ? new Date(o.date).getTime() : Infinity);
-      return t <= to;
-    });
+  if (checkedBoxes.length > 0) {
+    // Cas 1 : Exportation des commandes sélectionnées manuellement
+    const selectedIds = Array.from(checkedBoxes).map(cb => cb.getAttribute('data-id'));
+    toExport = ordersList.filter(o => selectedIds.includes(o.id));
+  } else {
+    // Cas 2 : Si aucune commande n'est cochée, on exporte toutes les commandes
+    // actuellement visibles selon les filtres appliqués à l'écran.
+    const filter = document.getElementById('orders-display-filter')?.value || '';
+    const dateFromVal = document.getElementById('filter-date-from')?.value;
+    const dateToVal = document.getElementById('filter-date-to')?.value;
+
+    toExport = [...ordersList];
+    if (filter) {
+      toExport = toExport.filter(o => (o.status || o.statut || 'en_attente') === filter);
+    }
+    if (dateFromVal) {
+      const fromTime = new Date(dateFromVal).setHours(0, 0, 0, 0);
+      toExport = toExport.filter(o => {
+        const t = o.createdAt?.seconds ? o.createdAt.seconds * 1000 : (o.date ? new Date(o.date).getTime() : 0);
+        return t >= fromTime;
+      });
+    }
+    if (dateToVal) {
+      const toTime = new Date(dateToVal).setHours(23, 59, 59, 999);
+      toExport = toExport.filter(o => {
+        const t = o.createdAt?.seconds ? o.createdAt.seconds * 1000 : (o.date ? new Date(o.date).getTime() : Infinity);
+        return t <= toTime;
+      });
+    }
   }
 
   if (!toExport.length) {
-    alert(`Aucune commande "${statusFilter||'toutes'}" à exporter pour cette période !`);
+    alert(`Aucune commande à exporter !`);
     return;
   }
 
   // Build CSV – Format ZR Express exact
-  // Colonnes: Nom,Téléphone,Wilaya,Adresse,Produit,Taille,Couleur,Quantité,Prix,Note
   let csv = '\uFEFF'; // UTF-8 BOM
   csv += 'Nom,Téléphone,Wilaya,Adresse,Produit,Taille,Couleur,Quantité,Prix,Note\n';
 
@@ -1142,7 +1151,7 @@ async function exportZRExpressCSV() {
     const esc = s => `"${String(s||'').replace(/"/g, '""').replace(/\n/g, ' ')}"`;
     const nom = o.nom || o.nomClient || '';
     const tel = o.telephone || o.telephoneClient || '';
-    const wilaya = o.wilaya || '';  // toujours en toutes lettres depuis Firestore
+    const wilaya = o.wilaya || '';
     const adresse = o.adresse || '';
     const produit = o.produit_nom || o.produit || '';
     const taille = o.taille || '';
@@ -1153,7 +1162,6 @@ async function exportZRExpressCSV() {
     csv += `${esc(nom)},${esc(tel)},${esc(wilaya)},${esc(adresse)},${esc(produit)},${esc(taille)},${esc(couleur)},${esc(qte)},${esc(prix)},${esc(note)}\n`;
   });
 
-  // Trigger download
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -1167,7 +1175,8 @@ async function exportZRExpressCSV() {
 
   showToast(`✅ ${toExport.length} commande(s) exportée(s) !`, 'success');
 
-  // Propose marking as "expediee"
+  // Proposer de marquer comme expédiées si confirmées
+  const statusFilter = document.getElementById('orders-display-filter')?.value || '';
   if (statusFilter === 'confirmee' || statusFilter === '') {
     const confirmed = confirm(`📦 Marquer ces ${toExport.length} commande(s) comme "Expédiée" maintenant ?`);
     if (confirmed) {
