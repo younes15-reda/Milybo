@@ -448,6 +448,50 @@
   </div>
 </div>
 
+<!-- ====== SHARE MODAL (GÉNÉRATEUR DE LIEN DE PUBLICITÉ) ====== -->
+<div id="share-modal" class="admin-modal">
+  <div class="admin-modal-content" style="max-width:550px;">
+    <h3 style="font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:6px;" id="share-modal-title">🔗 Lien Produit</h3>
+    <p style="font-size:.78rem;color:var(--admin-text-light);margin-bottom:16px;">Copiez le lien adapté à vos campagnes publicitaires.</p>
+    
+    <div class="admin-form-group">
+      <label class="admin-form-label">Lien direct (Boutique) / الرابط المباشر</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="share-link-direct" class="admin-form-input" readonly/>
+        <button class="btn btn-primary btn-sm" onclick="copyShareLink('share-link-direct')">📋</button>
+      </div>
+    </div>
+    
+    <div class="admin-form-group">
+      <label class="admin-form-label">Lien publicitaire Facebook / فيسبوك</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="share-link-facebook" class="admin-form-input" readonly/>
+        <button class="btn btn-primary btn-sm" onclick="copyShareLink('share-link-facebook')">📋</button>
+      </div>
+    </div>
+    
+    <div class="admin-form-group">
+      <label class="admin-form-label">Lien publicitaire Instagram / انستغرام</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="share-link-instagram" class="admin-form-input" readonly/>
+        <button class="btn btn-primary btn-sm" onclick="copyShareLink('share-link-instagram')">📋</button>
+      </div>
+    </div>
+    
+    <div class="admin-form-group">
+      <label class="admin-form-label">Lien publicitaire TikTok / تيك توك</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="share-link-tiktok" class="admin-form-input" readonly/>
+        <button class="btn btn-primary btn-sm" onclick="copyShareLink('share-link-tiktok')">📋</button>
+      </div>
+    </div>
+    
+    <div style="display:flex;justify-content:flex-end;margin-top:20px;">
+      <button class="btn btn-outline btn-sm" onclick="closeShareModal()">Fermer / إغلاق</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast-container" class="toast-container"></div>
 
 <!-- SCRIPTS -->
