@@ -747,14 +747,15 @@ function closeProductModal() {
     const el = document.getElementById(id); if(el) el.value = '';
   });
   document.getElementById('product-stock').value = '10';
-  uploadedPhotosBase64 = []; // réinitialiser les photos uploadées
+  uploadedPhotosBase64 = [];
   document.getElementById('product-photo-previews').innerHTML = '';
-  document.getElementById('product-colors-list').innerHTML = ''; // vider visuel couleur
+  document.getElementById('product-photos').value = '';
+  document.getElementById('product-photos').placeholder = 'https://…/photo.jpg, 🐻';
+  document.getElementById('product-colors-list').innerHTML = '';
   document.querySelectorAll('input[name="product-sizes"]').forEach(cb => {
     cb.checked = false;
     cb.disabled = false;
   });
-  // Reset visibility toggles to ON by default
   ['vis-oldprice','vis-sizes','vis-colors','vis-qty','vis-stock','vis-meta','vis-delivery','vis-reviews']
     .forEach(id => { const el=document.getElementById(id); if(el) el.checked=true; });
 }
@@ -786,7 +787,6 @@ function editProduct(id) {
   });
 
   document.getElementById('product-matiere').value = p.matiere || p.matiereLabel || '';
-  document.getElementById('product-photos').value = (p.photos||[]).join(', ');
   document.getElementById('product-description').value = p.description||'';
   // Visibility toggles
   const vf = p.visibleFields || {};
@@ -795,18 +795,49 @@ function editProduct(id) {
   // Sizes
   const sizes = p.sizes||[];
   document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=sizes.includes(cb.value));
-  syncInitialSizesState(); // Synchroniser l'état initial des cases (désactiver les autres si 'standard' est coché)
+  syncInitialSizesState();
   
-  // Photo preview
+  // ── Photo preview : séparation base64 vs URL HTTP ──
+  uploadedPhotosBase64 = []; // Réinitialiser
   const previews = document.getElementById('product-photo-previews');
   previews.innerHTML = '';
-  (p.photos||[]).slice(0,3).forEach(ph => {
-    if(ph.startsWith('data:')||ph.startsWith('http')) {
+  const httpPhotos = []; // URLs HTTP seulement pour le champ texte
+
+  (p.photos||[]).forEach(ph => {
+    if (ph.startsWith('data:')) {
+      // Restaurer les base64 dans uploadedPhotosBase64 pour les préserver à la sauvegarde
+      uploadedPhotosBase64.push(ph);
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'position:relative;display:inline-block;';
       const img = document.createElement('img');
-      img.src=ph; img.style.cssText='width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;';
-      previews.appendChild(img);
+      img.style.cssText = 'width:60px;height:60px;object-fit:cover;border-radius:6px;border:2px solid #a7f3d0;';
+      img.title = 'Photo enregistrée (autre appareil)';
+      // Gestion erreur si base64 invalide/tronqué
+      img.onerror = () => {
+        wrapper.innerHTML = '<div style="width:60px;height:60px;border-radius:6px;background:#fef2f2;border:2px dashed #fca5a5;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#ef4444;text-align:center;">Photo<br/>invalide</div>';
+      };
+      img.src = ph;
+      wrapper.appendChild(img);
+      previews.appendChild(wrapper);
+    } else if (ph.startsWith('http') || ph.length <= 2) {
+      httpPhotos.push(ph);
+      if (ph.startsWith('http')) {
+        const img = document.createElement('img');
+        img.src = ph;
+        img.style.cssText = 'width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;';
+        previews.appendChild(img);
+      }
     }
   });
+
+  // Champ texte : uniquement les URLs HTTP
+  document.getElementById('product-photos').value = httpPhotos.join(', ');
+  if (uploadedPhotosBase64.length > 0) {
+    // Avertir l'admin que des photos base64 sont déjà chargées
+    document.getElementById('product-photos').placeholder =
+      `✅ ${uploadedPhotosBase64.length} photo(s) existante(s) conservée(s) automatiquement`;
+  }
+
   openProductModal(true);
 }
 
@@ -908,16 +939,26 @@ async function submitProductForm() {
   ['oldprice','sizes','colors','qty','stock','meta','delivery','reviews']
     .forEach(key => { const el=document.getElementById('vis-'+key); if(el) visibleFields[key]=el.checked; });
 
-  // ── Photos : priorité aux photos uploadées depuis l'ordinateur ──
+  // ── Photos : priorité aux photos uploadées/restaurées (base64) ──
   let photos = [];
   if (uploadedPhotosBase64.length > 0) {
-    // Photos uploadées localement (base64 compressé)
+    // Photos base64 (nouvelles uploadées OU restaurées depuis Firestore via editProduct)
     photos = [...uploadedPhotosBase64];
   } else if (photosStr) {
-    // Champ texte : URLs HTTP uniquement (pas de base64 via virgule)
-    photos = photosStr.split(',').map(s => s.trim()).filter(s => s.startsWith('http') || s.length <= 2); // URLs ou émojis seulement
-    if (photos.length === 0 && photosStr.length > 0) {
-      // Le champ texte contenait peut-être une URL sans virgule
+    // Champ texte : ATTENTION – ne jamais splitter data: URLs avec split(',')
+    // car data:image/jpeg;base64, contient une virgule dans sa structure !
+    // On n'accepte ici que les URLs HTTP ou émojis courts
+    if (photosStr.startsWith('http')) {
+      // Une ou plusieurs URLs HTTP séparées par ', '
+      photos = photosStr.split(/,\s*/).map(s => s.trim()).filter(s => s.startsWith('http'));
+    } else if (photosStr.startsWith('data:')) {
+      // Data URL saisie directement dans le champ (rare mais possible)
+      photos = [photosStr]; // garder tel quel sans splitter
+    } else {
+      // Émoji ou texte court
+      photos = photosStr.split(',').map(s => s.trim()).filter(s => s.length <= 4 && s.length > 0);
+    }
+    if (photos.length === 0 && photosStr.length > 0 && !photosStr.startsWith('data:')) {
       photos = [photosStr.trim()];
     }
   }
