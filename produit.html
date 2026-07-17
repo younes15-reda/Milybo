@@ -189,6 +189,19 @@
       /* Stock badge */
       .stock-badge{ margin-bottom:14px !important; font-size:.78rem !important; }
 
+      /* Fix alignement des sections sélecteurs sur mobile */
+      .selector-container-desktop {
+        background:transparent !important;
+        border:none !important;
+        padding:12px 16px !important;
+        border-radius:0 !important;
+        border-bottom:1px solid #f3f4f6 !important;
+      }
+      .qty-stock-container-desktop {
+        padding:12px 16px !important;
+        border-bottom:1px solid #f3f4f6 !important;
+      }
+
       /* ── Formulaire mobile style inspiration ────────── */
       .mob-order-form{
         background:#fff;
@@ -646,6 +659,8 @@ function renderProductDetail(p) {
   const oldHTML   = p.oldPrice ? `<div class="detail-old-price">${p.oldPrice.toLocaleString('fr-DZ')} DA</div>` : '';
   const stockCls  = p.stock <= 5 ? 'stock-low' : 'stock-ok';
   const stockTxt  = p.stock <= 5 ? `⚠️ Plus que ${p.stock} en stock` : `✅ En stock`;
+  // Visibilité des sections (défini par l'admin, true = visible par défaut)
+  const vf = p.visibleFields || {};
   
   const sizesHTML = (p.sizes || ['NB','3M','6M','9M','12M','18M','24M','36M']).map(s =>
     `<button class="size-btn" onclick="selectSize(this,'${s}')">${s}</button>`
@@ -704,21 +719,29 @@ function renderProductDetail(p) {
         ${badgeHTML}
         <h1 class="detail-name">${p.name}</h1>
         <div class="detail-name-ar">${p.nameAr || ''}</div>
+        ${p.description ? `
+        <div class="product-desc-text" style="font-size:.88rem;color:var(--text-mid);line-height:1.65;margin-bottom:14px;padding:10px 14px;background:#f9fafb;border-left:3px solid var(--rose-light);border-radius:0 8px 8px 0;">${p.description}</div>` : ''}
+        <!-- Bouton scroll-to-order -->
+        <a href="#order-form-anchor" onclick="document.getElementById('order-form-anchor').scrollIntoView({behavior:'smooth'});return false;"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--rose),#c96478);color:white;border:none;border-radius:50px;padding:12px 20px;font-size:.88rem;font-weight:800;text-decoration:none;margin-bottom:14px;box-shadow:0 4px 14px rgba(232,136,154,.4);cursor:pointer;font-family:var(--font-arabic);direction:rtl;letter-spacing:.3px;transition:transform .2s;" onmouseenter="this.style.transform='translateY(-1px)'" onmouseleave="this.style.transform='translateY(0)'">
+          &#8595; لطلب المنتج إملأ المعلومات في الاسفل
+        </a>
         <div class="rating-row">
           <span class="stars">${'★'.repeat(Math.floor(p.rating||4))}${'☆'.repeat(5-Math.floor(p.rating||4))}</span>
           <strong style="color:var(--text-dark);">${p.rating||4}</strong>
           <span style="color:var(--text-soft);font-size:.82rem;">(${p.reviewCount||0} avis)</span>
         </div>
         <div class="detail-price">${p.price.toLocaleString('fr-DZ')} <span style="font-size:1.1rem;color:var(--text-soft);">DA</span></div>
-        ${oldHTML}
-        <div class="detail-meta">
+        ${(vf.oldprice !== false) ? oldHTML : ''}
+        ${(vf.meta !== false) ? `<div class="detail-meta">
           <div class="meta-chip"><strong>📦 Catégorie / الصنف</strong><span>${p.categoryLabel || p.category || '-'}</span></div>
           <div class="meta-chip"><strong>👶 Âge / العمر</strong><span>${p.ageGroupLabel || ({'nouveau-ne':'Nouveau-né','nourrisson':'Nourrisson','tout-petit':'Tout-petit','tous':'Tous les âges'}[p.ageGroup]) || p.ageGroup || '-'}</span></div>
           <div class="meta-chip"><strong>🧶 Matière / المادة</strong><span>${p.matiere || p.matiereLabel || 'Coton doux'}</span></div>
-        </div>
+        </div>` : ''}
       </div>
 
       <!-- Size Selector -->
+      ${(vf.sizes !== false) ? `
       <div class="selector-container-desktop" id="size-selector-container">
         <div style="margin-bottom:8px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
           Taille / المقاس <span class="req">*</span>
@@ -736,9 +759,10 @@ function renderProductDetail(p) {
             }
           }
         <\/script>
-      </div>
+      </div>` : ''}
 
       <!-- Color Selector -->
+      ${(vf.colors !== false) ? `
       <div class="selector-container-desktop">
         <div style="margin-bottom:8px;font-size:.85rem;font-weight:700;color:var(--text-dark);">
           Couleur / اللون
@@ -746,10 +770,12 @@ function renderProductDetail(p) {
         </div>
         <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">${colorsHTML}</div>
         <script>selectColor(document.querySelector('.color-chip.active'), '${colors[0]}');<\/script>
-      </div>
+      </div>` : ''}
 
       <!-- Qty + Stock -->
+      ${(vf.qty !== false || vf.stock !== false) ? `
       <div class="selector-container-desktop qty-stock-container-desktop">
+        ${(vf.qty !== false) ? `
         <div class="qty-row">
           <span style="font-size:.85rem;font-weight:700;color:var(--text-dark);">Quantité / الكمية :</span>
           <div class="qty-control">
@@ -757,12 +783,12 @@ function renderProductDetail(p) {
             <input class="qty-val" id="qty-val" type="number" value="1" min="1" max="10" readonly/>
             <button class="qty-btn" onclick="changeQty(1)">+</button>
           </div>
-        </div>
-        <div class="stock-badge ${stockCls}">${stockTxt}</div>
-      </div>
+        </div>` : ''}
+        ${(vf.stock !== false) ? `<div class="stock-badge ${stockCls}">${stockTxt}</div>` : ''}
+      </div>` : ''}
 
       <!-- ⚡ FORMULAIRE DE COMMANDE — Mobile redesign & Desktop Clean layout -->
-      <div class="mob-order-form form-container-desktop">
+      <div class="mob-order-form form-container-desktop" id="order-form-anchor">
         <p class="form-section-title" style="font-size:.95rem;font-weight:800;color:var(--text-dark);margin:16px 0 14px;padding-top:16px;border-top:1px solid #f3f4f6;">
           ⚡ Informations de livraison / معلومات التوصيل
         </p>
@@ -830,11 +856,12 @@ function renderProductDetail(p) {
         </div>
 
         <!-- Résumé livraison -->
+        ${(vf.delivery !== false) ? `
         <div id="order-shipping-info" style="background:white;border:1.5px solid #bbf7d0;border-radius:10px;padding:12px 14px;margin-bottom:16px;display:none;line-height:1.8;font-size:.84rem;">
           <div>🚚 <strong>Livraison ZR Express / التوصيل :</strong> <span id="order-shipping-cost" style="font-weight:800;color:#0891b2;"></span></div>
           <div>💰 <strong style="color:var(--rose);">Total à payer / المجموع الكلي : <span id="order-total-price"></span></strong></div>
           <div style="font-size:.74rem;color:#9ca3af;margin-top:2px;">💵 Paiement cash à la livraison / الدفع عند الاستلام</div>
-        </div>
+        </div>` : ''}
 
         <!-- Bouton desktop uniquement -->
         <button onclick="submitExpressOrder()" id="order-submit-btn" class="desktop-order-submit"
@@ -1011,7 +1038,9 @@ async function submitExpressOrder() {
   const note     = document.getElementById('order-note')?.value.trim() || '';
   const deliveryType = document.querySelector('input[name="order-delivery-type"]:checked')?.value || 'domicile';
 
-  if (!selectedSize)   { showToast('⚠️ Choisissez une taille !', 'error'); return; }
+  // Ne pas exiger une taille si le sélecteur est caché (vis-sizes = false)
+  const sizesVisible = currentProduct?.visibleFields?.sizes !== false;
+  if (sizesVisible && !selectedSize) { showToast('⚠️ Choisissez une taille !', 'error'); return; }
   if (!fullname)        { showToast('⚠️ Entrez votre nom complet !', 'error'); return; }
   if (!validateAlgerianPhone(phone)) { showToast('⚠️ Numéro invalide (05/06/07XXXXXXXX) !', 'error'); return; }
   if (!wilayaCode)      { showToast('⚠️ Sélectionnez votre wilaya !', 'error'); return; }
@@ -1097,7 +1126,20 @@ function closeConfirmOverlay() {
 
 // ── Reviews ───────────────────────────────────────────────────
 function renderReviews(p) {
-  document.getElementById('reviews-section').style.display = 'block';
+  const section = document.getElementById('reviews-section');
+  if (!section) return;
+  // Masquer si l'admin a désactivé la section avis
+  if (p.visibleFields && p.visibleFields.reviews === false) {
+    section.style.display = 'none';
+    return;
+  }
+  // Masquer si pas d'avis (pas de hardcoding)
+  const all = [...(p.reviews || [])];
+  if (!all.length && !(p.rating)) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
   const avg = p.rating || 4;
   document.getElementById('rating-summary').innerHTML = `
     <div style="text-align:center;flex-shrink:0;">
@@ -1113,7 +1155,6 @@ function renderReviews(p) {
           <span>${pct}%</span></div>`;
       }).join('')}
     </div>`;
-  const all = [...(p.reviews || [])];
   document.getElementById('reviews-list').innerHTML = all.map(r => `
     <div class="review-card">
       <div class="review-header">

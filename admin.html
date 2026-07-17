@@ -73,6 +73,18 @@
     /* Settings section */
     .settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
     @media(max-width:640px) { .settings-grid { grid-template-columns:1fr; } }
+
+    /* Toggle switch for visibility */
+    .visibility-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:10px 0; }
+    .vis-toggle-row { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#f8fafc; border:1px solid var(--admin-border); border-radius:10px; }
+    .vis-toggle-label { font-size:.82rem; font-weight:600; color:var(--admin-text-dark); }
+    .vis-toggle { position:relative; display:inline-block; width:40px; height:22px; flex-shrink:0; }
+    .vis-toggle input { opacity:0; width:0; height:0; }
+    .vis-slider { position:absolute; cursor:pointer; inset:0; background:#d1d5db; border-radius:22px; transition:.3s; }
+    .vis-slider:before { position:absolute; content:""; height:16px; width:16px; left:3px; bottom:3px; background:white; border-radius:50%; transition:.3s; }
+    .vis-toggle input:checked + .vis-slider { background:#ec4899; }
+    .vis-toggle input:checked + .vis-slider:before { transform:translateX(18px); }
+    .vis-section-title { font-size:.8rem; font-weight:800; color:var(--admin-text-light); text-transform:uppercase; letter-spacing:.5px; margin:10px 0 6px; }
   </style>
 </head>
 <body class="admin-body">
@@ -391,6 +403,46 @@
       <textarea id="product-description" class="admin-form-input" placeholder="Coton biologique très doux…" style="min-height:70px;"></textarea>
     </div>
 
+    <!-- ═══ VISIBILITÉ DES SECTIONS ═══ -->
+    <div class="admin-form-group" style="background:#fff0f6;border:1.5px solid #fbb6ce;border-radius:14px;padding:14px 16px;margin-top:4px;">
+      <div style="font-weight:800;font-size:.9rem;color:#be185d;margin-bottom:10px;">👁️ Visibilité des sections (page produit)</div>
+      <p style="font-size:.76rem;color:#9f1239;margin:0 0 10px;">Activez / désactivez chaque section pour la page visiteur.</p>
+      <div class="visibility-grid">
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">💰 Prix barré / Promo</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-oldprice" checked/><span class="vis-slider"></span></label>
+        </div>
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">📏 Taille</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-sizes" checked/><span class="vis-slider"></span></label>
+        </div>
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">🎨 Couleur</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-colors" checked/><span class="vis-slider"></span></label>
+        </div>
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">🔢 Quantité</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-qty" checked/><span class="vis-slider"></span></label>
+        </div>
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">📦 Stock disponible</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-stock" checked/><span class="vis-slider"></span></label>
+        </div>
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">👶 Âge / 🧶 Matière</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-meta" checked/><span class="vis-slider"></span></label>
+        </div>
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">🚚 Infos livraison</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-delivery" checked/><span class="vis-slider"></span></label>
+        </div>
+        <div class="vis-toggle-row">
+          <span class="vis-toggle-label">⭐ Avis / Notes</span>
+          <label class="vis-toggle"><input type="checkbox" id="vis-reviews" checked/><span class="vis-slider"></span></label>
+        </div>
+      </div>
+    </div>
+
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px;">
       <button class="btn btn-outline btn-sm" onclick="closeProductModal()">Annuler</button>
       <button class="btn btn-primary btn-sm" onclick="submitProductForm()">💾 Enregistrer</button>
@@ -702,6 +754,9 @@ function closeProductModal() {
     cb.checked = false;
     cb.disabled = false;
   });
+  // Reset visibility toggles to ON by default
+  ['vis-oldprice','vis-sizes','vis-colors','vis-qty','vis-stock','vis-meta','vis-delivery','vis-reviews']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.checked=true; });
 }
 
 function editProduct(id) {
@@ -733,6 +788,10 @@ function editProduct(id) {
   document.getElementById('product-matiere').value = p.matiere || p.matiereLabel || '';
   document.getElementById('product-photos').value = (p.photos||[]).join(', ');
   document.getElementById('product-description').value = p.description||'';
+  // Visibility toggles
+  const vf = p.visibleFields || {};
+  ['oldprice','sizes','colors','qty','stock','meta','delivery','reviews']
+    .forEach(key => { const el=document.getElementById('vis-'+key); if(el) el.checked = vf[key]!==false; });
   // Sizes
   const sizes = p.sizes||[];
   document.querySelectorAll('input[name="product-sizes"]').forEach(cb => cb.checked=sizes.includes(cb.value));
@@ -844,6 +903,10 @@ async function submitProductForm() {
   const sizes = [];
   document.querySelectorAll('input[name="product-sizes"]:checked').forEach(cb => sizes.push(cb.value));
   const colors = colorsStr ? colorsStr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+  // Read visibility toggles
+  const visibleFields = {};
+  ['oldprice','sizes','colors','qty','stock','meta','delivery','reviews']
+    .forEach(key => { const el=document.getElementById('vis-'+key); if(el) visibleFields[key]=el.checked; });
 
   // ── Photos : priorité aux photos uploadées depuis l'ordinateur ──
   let photos = [];
@@ -861,7 +924,7 @@ async function submitProductForm() {
 
   const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
   try {
-    await window.db.saveProduct(editId||id, { name, nameAr, category, ageGroup, price, oldPrice, stock, sizes, colors, photos, matiere, description });
+    await window.db.saveProduct(editId||id, { name, nameAr, category, ageGroup, price, oldPrice, stock, sizes, colors, photos, matiere, description, visibleFields });
     closeProductModal(); showToast('✅ Produit sauvegardé !', 'success'); loadProducts();
   } catch(e) {
     if (e.message && e.message.includes('exceeds')) {
