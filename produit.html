@@ -1038,9 +1038,19 @@ async function submitExpressOrder() {
   const note     = document.getElementById('order-note')?.value.trim() || '';
   const deliveryType = document.querySelector('input[name="order-delivery-type"]:checked')?.value || 'domicile';
 
-  // Ne pas exiger une taille si le sélecteur est caché (vis-sizes = false)
+  // Validation de la taille : obligatoire si visible (sauf si c'est 'standard' qui est auto-sélectionné)
   const sizesVisible = currentProduct?.visibleFields?.sizes !== false;
-  if (sizesVisible && !selectedSize) { showToast('⚠️ Choisissez une taille !', 'error'); return; }
+  if (sizesVisible && !selectedSize) { 
+    showToast('⚠️ Veuillez choisir une taille ! / الرجاء اختيار المقاس', 'error'); 
+    return; 
+  }
+
+  // Validation de la couleur : obligatoire si visible
+  const colorsVisible = currentProduct?.visibleFields?.colors !== false;
+  if (colorsVisible && !selectedColor) {
+    showToast('⚠️ Veuillez choisir une couleur ! / الرجاء اختيار اللون', 'error');
+    return;
+  }
   if (!fullname)        { showToast('⚠️ Entrez votre nom complet !', 'error'); return; }
   if (!validateAlgerianPhone(phone)) { showToast('⚠️ Numéro invalide (05/06/07XXXXXXXX) !', 'error'); return; }
   if (!wilayaCode)      { showToast('⚠️ Sélectionnez votre wilaya !', 'error'); return; }
