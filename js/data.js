@@ -24,13 +24,6 @@ function renderProductCard(product) {
   const badgeHTML = product.badge
     ? `<div class="product-badge ${product.badge}">${product.badgeLabel}</div>`
     : '';
-  const sizesHTML = (product.sizes || []).slice(0, 4).map(s =>
-    `<span class="size-tag">${s}</span>`
-  ).join('');
-  const stockClass = product.stock <= 5 ? 'color:var(--rose);' : 'color:var(--mint);';
-  const stockLabel = product.stock <= 5
-    ? `⚠️ Plus que ${product.stock} en stock`
-    : `✅ En stock (${product.stock})`;
 
   const photo = product.photos?.[0] || '';
   let mediaHTML = '';
@@ -59,19 +52,11 @@ function renderProductCard(product) {
       </a>
       <button class="product-wislist-btn" onclick="toggleWishlist(this,${product.id})" style="position:absolute;top:10px;right:10px;">🤍</button>
       <div class="product-info">
-        <div class="product-category">${product.categoryLabel || 'Collection'} · ${product.saisonLabel || 'Toutes saisons'}</div>
         <a href="produit.html?id=${product.id}" style="text-decoration:none;">
           <div class="product-name">${product.name}</div>
-          <div class="product-name-ar">${product.nameAr || ''}</div>
+          ${product.nameAr ? `<div class="product-name-ar">${product.nameAr}</div>` : ''}
         </a>
-        <div style="font-size:.75rem;margin-bottom:6px;">
-          <span style="color:#F59E0B;">★</span>
-          <strong>${product.rating || 4.5}</strong>
-          <span style="color:var(--text-soft);">(${product.reviewCount || 0} avis)</span>
-        </div>
-        <div class="product-sizes">${sizesHTML}</div>
-        <div style="font-size:.7rem;${stockClass}margin-bottom:10px;">${stockLabel}</div>
-        <div class="product-footer">
+        <div class="product-footer" style="margin-top:10px;">
           <div class="product-price">
             ${oldPriceHTML}
             <span class="current">${product.price.toLocaleString('fr-DZ')} <span class="currency">DA</span></span>
@@ -82,3 +67,4 @@ function renderProductCard(product) {
     </div>
   `;
 }
+
