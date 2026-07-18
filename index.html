@@ -10,10 +10,6 @@
   <link rel="stylesheet" href="css/mobile.css"/>
   <link rel="icon" type="image/png" href="images/logo2.png"/>
   <style>
-    /* ── Nouveautés / Meilleures ventes tabs ── */
-    .home-tabs{display:flex;gap:0;border-bottom:2px solid var(--cream-dark);margin-bottom:32px;}
-    .home-tab{padding:12px 28px;font-weight:700;font-size:.9rem;cursor:pointer;border:none;background:none;font-family:var(--font-main);color:var(--text-soft);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
-    .home-tab.active{color:var(--rose);border-bottom-color:var(--rose);}
     /* ── Garanties ── */
     .garanties-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:0 40px 60px;}
     .garantie-card{background:white;border:1.5px solid var(--cream);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;transition:transform .3s,box-shadow .3s;}
@@ -71,30 +67,8 @@
   </nav>
 </header>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-container">
-    <div class="hero-content">
-      <div class="hero-badge">✨ Nouvelle Collection Printemps–Été 2025</div>
-      <h1>Habille ton<br/><span class="accent-rose">petit</span> <span class="accent-sky">chéri</span> <span class="accent-mint">💕</span></h1>
-      <div class="hero-ar">البسي بيبيك بأحلى الألبسة<br/>جودة راقية من الجزائر 🇩🇿</div>
-      <p class="hero-desc">Vêtements doux, confortables et de qualité premium pour bébés de 0 à 36 mois. Livraison partout en Algérie.</p>
-      <div class="hero-actions">
-        <a href="boutique.html" class="btn btn-primary">🛍️ Voir la collection</a>
-        <a href="contact.html" class="btn btn-cream">Nous contacter ↓</a>
-      </div>
-    </div>
-    <div class="hero-deco">
-      <div class="hero-deco-card rose">🍼<span>Nouveau-né</span></div>
-      <div class="hero-deco-card blue">🌟<span>Nourrisson</span></div>
-      <div class="hero-deco-card cream">👣<span>Premiers pas</span></div>
-      <div class="hero-deco-card mint">🎈<span>Tout-petit</span></div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ STATS ═══ -->
-<div class="stats-bar">
+<div class="stats-bar" style="margin-top: 10px;">
   <div class="stat-item"><span class="stat-num">2 500+</span><div class="stat-lbl">Mamans satisfaites · أمهات سعيدات</div></div>
   <div class="stat-item"><span class="stat-num">58</span><div class="stat-lbl">Wilayas livrées · ولاية</div></div>
   <div class="stat-item"><span class="stat-num">16</span><div class="stat-lbl">Articles disponibles · منتج</div></div>
@@ -119,46 +93,14 @@
   <div class="feature-item"><div class="feature-icon-wrap fi-cream">🔄</div><div><h4>Échange gratuit</h4><p>استبدال مجاني · 7 jours</p></div></div>
 </div>
 
-<!-- ═══ CATEGORIES ═══ -->
-<section class="section" id="categories">
-  <div class="section-header">
-    <div class="section-tag">📦 Par tranche d'âge</div>
-    <h2>Trouvez la taille parfaite</h2>
-    <p>Sélectionnez la tranche d'âge de votre bébé · اختاري عمر بيبيك</p>
-  </div>
-  <div class="categories-grid">
-    <div class="category-card" onclick="location.href='boutique.html?ageGroup=nouveau-ne'">
-      <div class="cat-bg cat-bg-rose"></div><div class="cat-emoji">🍼</div>
-      <div class="cat-info"><h3>Nouveau-né</h3><div class="age">0–3 mois</div><span class="ar-label">من 0 إلى 3 أشهر</span></div>
-    </div>
-    <div class="category-card" onclick="location.href='boutique.html?ageGroup=nourrisson'">
-      <div class="cat-bg cat-bg-sky"></div><div class="cat-emoji">🌟</div>
-      <div class="cat-info"><h3>Nourrisson</h3><div class="age">3–12 mois</div><span class="ar-label">من 3 إلى 12 شهرا</span></div>
-    </div>
-    <div class="category-card" onclick="location.href='boutique.html?ageGroup=tout-petit'">
-      <div class="cat-bg cat-bg-cream"></div><div class="cat-emoji">👣</div>
-      <div class="cat-info"><h3>Tout-petit</h3><div class="age">12–36 mois</div><span class="ar-label">من 12 إلى 36 شهرا</span></div>
-    </div>
-    <div class="category-card" onclick="location.href='boutique.html?occasion=fete'">
-      <div class="cat-bg cat-bg-mint"></div><div class="cat-emoji">🎉</div>
-      <div class="cat-info"><h3>Fête & Cérémonie</h3><div class="age">0–36 mois</div><span class="ar-label">ملابس المناسبات</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ NOUVEAUTÉS + MEILLEURES VENTES ═══ -->
+<!-- ═══ PRODUITS ALÉATOIRES ═══ -->
 <section class="section section-rose" id="products-home">
-  <div class="section-header">
-    <div class="home-tabs">
-      <button class="home-tab active" id="tab-new" onclick="switchTab('new')">🆕 Nouveautés</button>
-      <button class="home-tab" id="tab-best" onclick="switchTab('best')">🏆 Meilleures ventes</button>
-      <button class="home-tab" id="tab-promo" onclick="switchTab('promo')">🔥 Promotions</button>
-    </div>
+  <div class="section-header" style="text-align: center; margin-bottom: 30px;">
+    <div class="section-tag" style="margin: 0 auto 10px;">✨ Notre sélection</div>
+    <h2>Découvrez nos produits</h2>
+    <p>Découvrez une sélection de vêtements doux et de qualité premium pour votre bébé</p>
   </div>
   <div class="products-grid" id="home-products-grid"></div>
-  <div style="text-align:center;margin-top:40px;">
-    <a href="boutique.html" class="btn btn-primary">Voir tout le catalogue →</a>
-  </div>
 </section>
 
 <!-- ═══ NOS GARANTIES ═══ -->
@@ -212,8 +154,7 @@
 <div class="promo-banner">
   <h2>Collection Milybo 🎀</h2>
   <div class="promo-ar">ملابس أطفال بجودة عالية لكل ولايات الجزائر 🇩🇿</div>
-  <p>Commandez maintenant – Paiement cash uniquement à la livraison ·  الدفع نقداً عند الوصول</p>
-  <a href="boutique.html" class="btn btn-sky" style="display:inline-flex;">🛍️ Commander maintenant</a>
+  <p>Paiement cash uniquement à la livraison · الدفع نقداً عند الوصول</p>
 </div>
 
 <!-- ═══ À PROPOS TEASER ═══ -->
@@ -304,24 +245,15 @@
 <script src="js/main.js"></script>
 <script src="js/marketing.js"></script>
 <script>
-let currentTab = 'new';
 let loadedProducts = [];
 
-function switchTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.home-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  
+function showRandomProducts() {
   const sourceList = loadedProducts.length ? loadedProducts : (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
-  let list = [];
-  if (tab === 'new')   list = sourceList.filter(p => p.badge === 'new').slice(0,8);
-  if (tab === 'best')  list = [...sourceList].sort((a,b) => b.rating - a.rating).slice(0,8);
-  if (tab === 'promo') list = sourceList.filter(p => p.oldPrice).slice(0,8);
-  if (!list.length)    list = sourceList.slice(0,8);
-  
+  // Shuffle randomly and pick up to 8
+  const shuffled = [...sourceList].sort(() => Math.random() - 0.5).slice(0, 8);
   const grid = document.getElementById('home-products-grid');
   if (grid) {
-    grid.innerHTML = list.map(p => renderProductCard(p)).join('');
+    grid.innerHTML = shuffled.map(p => renderProductCard(p)).join('');
   }
   setTimeout(() => initAnimations(), 50);
 }
@@ -330,25 +262,23 @@ async function loadFirebaseData() {
   if (window.db) {
     try {
       const firestoreProducts = await window.db.getProducts();
-      if (firestoreProducts) { // Accept empty array too!
+      if (firestoreProducts) {
         loadedProducts = firestoreProducts;
-        PRODUCTS = firestoreProducts; // keep global in sync too
+        PRODUCTS = firestoreProducts;
         window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
       }
     } catch(e) {
       console.warn('Home Firebase load failed, using local data:', e);
       loadedProducts = typeof PRODUCTS !== 'undefined' ? PRODUCTS : [];
     }
-    switchTab(currentTab);
+    showRandomProducts();
   }
 }
 
 window.addEventListener("firebase-ready", loadFirebaseData);
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Show local data immediately for fast render
-  switchTab('new');
-  // Then override with Firestore data once available
+  showRandomProducts();
   if (window.db) {
     loadFirebaseData();
   } else {
