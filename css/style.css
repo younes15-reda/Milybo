@@ -937,8 +937,9 @@ select {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .6px;
-    margin-bottom: 5px;
+    margin-bottom: 0;
     color: var(--sky);
+    display: none; /* élément supprimé du template */
 }
 
 .product-name {
@@ -954,14 +955,11 @@ select {
     font-size: .78rem;
     color: var(--text-soft);
     direction: rtl;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 }
 
 .product-sizes {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
+    display: none; /* élément supprimé du template */
 }
 
 .size-tag {
