@@ -23,11 +23,60 @@
     .trust-item{display:flex;align-items:center;gap:10px;font-size:.84rem;font-weight:600;color:var(--text-dark);}
     .trust-item span{font-size:1.4rem;}
     /* ── Stats ── */
-    .stats-bar{background:var(--rose);padding:28px 40px;display:flex;justify-content:center;gap:60px;flex-wrap:wrap;}
-    .stat-item{text-align:center;color:white;}
-    .stat-num{font-size:2rem;font-weight:900;display:block;line-height:1;}
-    .stat-lbl{font-size:.78rem;opacity:.85;margin-top:4px;}
-    @media(max-width:768px){.garanties-grid{padding:0 16px 40px;}.trust-bar{padding:16px;gap:16px;}.stats-bar{gap:24px;padding:20px;}}
+    .stats-bar{
+      background: linear-gradient(135deg, #e8607a 0%, #d94f6a 40%, #c73d58 100%);
+      padding: 36px 40px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .stats-bar::before{
+      content:'';
+      position:absolute;inset:0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/%3E%3C/svg%3E") repeat;
+      pointer-events:none;
+    }
+    .stat-item{
+      text-align:center;
+      color:white;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 20px 32px;
+      min-width: 140px;
+      flex: 1;
+      max-width: 200px;
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+      z-index: 1;
+    }
+    .stat-item:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .stat-icon{font-size:1.4rem;margin-bottom:6px;display:block;}
+    .stat-num{
+      font-size:2.1rem;
+      font-weight:900;
+      display:block;
+      line-height:1;
+      letter-spacing:-0.5px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .stat-lbl{font-size:.72rem;opacity:.9;margin-top:6px;line-height:1.4;font-weight:500;}
+    .stat-lbl .ar{display:block;font-family:var(--font-arabic);font-size:.68rem;opacity:.75;margin-top:2px;direction:rtl;}
+    @media(max-width:768px){
+      .garanties-grid{padding:0 16px 40px;}
+      .trust-bar{padding:16px;gap:16px;}
+      .stats-bar{gap:10px;padding:20px 12px;}
+      .stat-item{padding:14px 16px;min-width:calc(50% - 10px);max-width:calc(50% - 10px);border-radius:12px;}
+      .stat-num{font-size:1.7rem;}
+    }
   </style>
 </head>
 <body>
@@ -69,10 +118,26 @@
 
 <!-- ═══ STATS ═══ -->
 <div class="stats-bar" style="margin-top: 10px;">
-  <div class="stat-item"><span class="stat-num">2 500+</span><div class="stat-lbl">Mamans satisfaites · أمهات سعيدات</div></div>
-  <div class="stat-item"><span class="stat-num">58</span><div class="stat-lbl">Wilayas livrées · ولاية</div></div>
-  <div class="stat-item"><span class="stat-num">16</span><div class="stat-lbl">Articles disponibles · منتج</div></div>
-  <div class="stat-item"><span class="stat-num">4.8★</span><div class="stat-lbl">Note moyenne · تقييم</div></div>
+  <div class="stat-item">
+    <span class="stat-icon">🛍️</span>
+    <span class="stat-num">2 500+</span>
+    <div class="stat-lbl">Mamans satisfaites<span class="ar">أمهات سعيدات</span></div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-icon">🚚</span>
+    <span class="stat-num">58</span>
+    <div class="stat-lbl">Wilayas livrées<span class="ar">ولاية مغطاة</span></div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-icon">👗</span>
+    <span class="stat-num" id="stat-products-count">…</span>
+    <div class="stat-lbl">Articles disponibles<span class="ar">منتج متوفر</span></div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-icon">⭐</span>
+    <span class="stat-num">4.8★</span>
+    <div class="stat-lbl">Note moyenne<span class="ar">تقييم العملاء</span></div>
+  </div>
 </div>
 
 <!-- ═══ TRUST BAR ═══ -->
@@ -247,6 +312,27 @@
 <script>
 let loadedProducts = [];
 
+// ── Animation de comptage ──
+function animateCount(el, target, suffix) {
+  if (!el) return;
+  const duration = 1000;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    el.textContent = Math.round(eased * target) + (suffix || '');
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── Mise à jour du compteur d'articles depuis Firestore ──
+function updateProductsCount(count) {
+  const el = document.getElementById('stat-products-count');
+  if (!el) return;
+  animateCount(el, count, '');
+}
+
 function showRandomProducts() {
   const sourceList = loadedProducts.length ? loadedProducts : (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
   // Shuffle randomly and pick up to 8
@@ -266,10 +352,15 @@ async function loadFirebaseData() {
         loadedProducts = firestoreProducts;
         PRODUCTS = firestoreProducts;
         window.dispatchEvent(new CustomEvent("products-loaded-from-firestore"));
+        // Mettre à jour le compteur dynamiquement
+        updateProductsCount(firestoreProducts.length);
       }
     } catch(e) {
       console.warn('Home Firebase load failed, using local data:', e);
       loadedProducts = typeof PRODUCTS !== 'undefined' ? PRODUCTS : [];
+      // Fallback : données locales
+      const fallbackCount = (typeof PRODUCTS !== 'undefined' ? PRODUCTS.length : 0);
+      if (fallbackCount > 0) updateProductsCount(fallbackCount);
     }
     showRandomProducts();
   }
@@ -278,6 +369,9 @@ async function loadFirebaseData() {
 window.addEventListener("firebase-ready", loadFirebaseData);
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Afficher d'abord les données locales
+  const localList = typeof PRODUCTS !== 'undefined' ? PRODUCTS : [];
+  if (localList.length > 0) updateProductsCount(localList.length);
   showRandomProducts();
   if (window.db) {
     loadFirebaseData();
