@@ -19,10 +19,18 @@ import {
   orderBy,
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  updatePassword
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
 // Initialisation Firebase
 const app = initializeApp(window.firebaseConfig);
 const firestore = getFirestore(app);
+const auth = getAuth(app);
 
 // Activer le cache persistant natif de Firestore
 enableIndexedDbPersistence(firestore).catch((err) => {
@@ -35,6 +43,46 @@ enableIndexedDbPersistence(firestore).catch((err) => {
 
 // Exposer l'objet db globalement
 window.db = {
+  // ── Authentication ──
+  loginAdmin: async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (e) {
+      console.error("Erreur lors de la connexion admin:", e);
+      throw e;
+    }
+  },
+
+  logoutAdmin: async () => {
+    try {
+      await signOut(auth);
+      return true;
+    } catch (e) {
+      console.error("Erreur lors de la déconnexion:", e);
+      throw e;
+    }
+  },
+
+  changePassword: async (newPassword) => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        await updatePassword(user, newPassword);
+        return true;
+      }
+      throw new Error("Aucun administrateur connecté !");
+    } catch (e) {
+      console.error("Erreur de mise à jour du mot de passe:", e);
+      throw e;
+    }
+  },
+
+
+  onAuthChange: (callback) => {
+    return onAuthStateChanged(auth, callback);
+  },
+
   // Récupérer tous les produits
   getProducts: async () => {
     try {
@@ -210,36 +258,10 @@ window.db = {
       console.error("Erreur lors de la suppression de la commande:", e);
       throw e;
     }
-  },
-
-  // Récupérer le mot de passe admin personnalisé
-  getAdminPassword: async () => {
-    try {
-      const docRef = doc(firestore, "settings", "admin");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists() && docSnap.data().password) {
-        return docSnap.data().password;
-      }
-      return window.adminPassword;
-    } catch (e) {
-      console.warn("Erreur récupération mot de passe Firestore, fallback config:", e);
-      return window.adminPassword;
-    }
-  },
-
-  // Sauvegarder le mot de passe admin personnalisé
-  saveAdminPassword: async (newPassword) => {
-    try {
-      const docRef = doc(firestore, "settings", "admin");
-      await setDoc(docRef, { password: newPassword }, { merge: true });
-      return true;
-    } catch (e) {
-      console.error("Erreur sauvegarde mot de passe Firestore:", e);
-      throw e;
-    }
   }
 };
 
 // Dispatch un event custom pour signaler que Firebase est prêt
 window.dispatchEvent(new CustomEvent("firebase-ready"));
+
 

@@ -94,8 +94,11 @@
   <div class="login-container">
     <img src="images/milybo.jpg" alt="Logo" class="login-logo"/>
     <h2 style="font-weight:900;margin-bottom:6px;">Administration</h2>
-    <p style="color:var(--admin-text-light);font-size:.85rem;margin-bottom:22px;">Entrez votre code d'accès administrateur</p>
-    <div id="login-error" style="color:#ef4444;font-size:.85rem;margin-bottom:12px;display:none;">❌ Mot de passe incorrect !</div>
+    <p style="color:var(--admin-text-light);font-size:.85rem;margin-bottom:22px;">Authentification Administrateur sécurisée</p>
+    <div id="login-error" style="color:#ef4444;font-size:.85rem;margin-bottom:12px;display:none;">❌ Email ou mot de passe incorrect !</div>
+    <div class="admin-form-group" style="margin-bottom: 12px;">
+      <input type="email" id="admin-email-input" class="admin-form-input" placeholder="Email (ex: admin@milybo.dz)..." value="admin@milybo.dz" onkeydown="if(event.key==='Enter') verifyPassword()"/>
+    </div>
     <div class="admin-form-group">
       <input type="password" id="admin-pass-input" class="admin-form-input" placeholder="Mot de passe..." onkeydown="if(event.key==='Enter') verifyPassword()"/>
     </div>
@@ -225,9 +228,8 @@
         <!-- Change Password Card -->
         <div class="admin-card">
           <h3 style="font-size:1rem;font-weight:800;margin-bottom:16px;">🔐 Changer le mot de passe admin</h3>
-          <div class="admin-form-group">
-            <label class="admin-form-label">Mot de passe actuel *</label>
-            <input type="password" id="settings-old-pass" class="admin-form-input" placeholder="Mot de passe actuel…"/>
+          <div class="admin-form-group" style="display:none;">
+            <input type="password" id="settings-old-pass" class="admin-form-input" value="ignored"/>
           </div>
           <div class="admin-form-group">
             <label class="admin-form-label">Nouveau mot de passe *</label>
@@ -504,62 +506,68 @@
 // MILYBO ADMIN – Logic
 // ============================================================
 
-let adminPassword = null; // chargé depuis Firestore ou config.js
-
 // ── AUTH ──────────────────────────────────────────────────────
-async function loadEffectivePassword() {
-  if (window.db && window.db.getAdminPassword) {
-    adminPassword = await window.db.getAdminPassword();
-  } else {
-    adminPassword = window.adminPassword;
-  }
-}
-
-function isLogged() {
-  return sessionStorage.getItem('admin_session_v2') === (adminPassword || window.adminPassword);
-}
+let isInitialized = false;
 
 async function verifyPassword() {
+  const email = document.getElementById('admin-email-input').value.trim();
   const val = document.getElementById('admin-pass-input').value;
-  if (!adminPassword) await loadEffectivePassword();
-  if (val === adminPassword) {
-    sessionStorage.setItem('admin_session_v2', val);
-    document.getElementById('login-section').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
+  
+  if (!email || !val) {
+    alert("Veuillez saisir votre email et votre mot de passe.");
+    return;
+  }
+  
+  try {
+    await window.db.loginAdmin(email, val);
+    // Le listener onAuthChange va s'occuper d'afficher le panel
     document.getElementById('login-error').style.display = 'none';
-    initAdminPanel();
-  } else {
+  } catch (e) {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('admin-pass-input').value = '';
   }
 }
 
-function logoutAdmin() {
-  sessionStorage.removeItem('admin_session_v2');
-  window.location.href = 'index.html';
+async function logoutAdmin() {
+  try {
+    await window.db.logoutAdmin();
+    window.location.href = 'index.html';
+  } catch(e) {
+    console.error(e);
+  }
 }
 
-// On Load
-window.addEventListener('firebase-ready', async () => {
-  await loadEffectivePassword();
-  if (isLogged()) {
-    document.getElementById('login-section').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-    initAdminPanel();
+// Écouter l'état d'authentification Firebase
+function setupAuthListener() {
+  if (window.db && window.db.onAuthChange) {
+    window.db.onAuthChange((user) => {
+      if (user) {
+        // Connecté
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        if (!isInitialized) {
+          initAdminPanel();
+          isInitialized = true;
+        }
+      } else {
+        // Déconnecté
+        document.getElementById('login-section').style.display = 'block';
+        document.getElementById('admin-panel').style.display = 'none';
+      }
+    });
+  }
+}
+
+window.addEventListener('firebase-ready', () => {
+  setupAuthListener();
+});
+
+window.addEventListener('load', () => {
+  if (window.db) {
+    setupAuthListener();
   }
 });
 
-window.addEventListener('load', async () => {
-  if (!window.db) {
-    // Firebase pas encore chargé, attendre l'event
-    adminPassword = window.adminPassword;
-    if (isLogged()) {
-      document.getElementById('login-section').style.display = 'none';
-      document.getElementById('admin-panel').style.display = 'block';
-      initAdminPanel();
-    }
-  }
-});
 
 // ── TAB SWITCHER ──────────────────────────────────────────────
 function switchTab(name) {
@@ -1271,25 +1279,24 @@ async function loadSettings() {
 }
 
 async function changeAdminPassword() {
-  const oldPass = document.getElementById('settings-old-pass').value;
   const newPass = document.getElementById('settings-new-pass').value;
   const confirmPass = document.getElementById('settings-confirm-pass').value;
 
-  const currentPwd = adminPassword || window.adminPassword;
-  if (oldPass !== currentPwd) { showToast('❌ Mot de passe actuel incorrect !', 'error'); return; }
   if (!newPass || newPass.length < 8) { showToast('⚠️ Nouveau mot de passe trop court (min 8 caractères) !', 'error'); return; }
   if (newPass !== confirmPass) { showToast('⚠️ Les deux mots de passe ne correspondent pas !', 'error'); return; }
 
   try {
-    await window.db.saveAdminPassword(newPass);
-    adminPassword = newPass;
-    sessionStorage.setItem('admin_session_v2', newPass);
+    await window.db.changePassword(newPass);
     document.getElementById('settings-old-pass').value = '';
     document.getElementById('settings-new-pass').value = '';
     document.getElementById('settings-confirm-pass').value = '';
-    showToast('✅ Mot de passe changé avec succès ! Sauvegardé dans Firebase.', 'success');
+    showToast('✅ Mot de passe changé avec succès dans Firebase Auth !', 'success');
   } catch(e) {
-    alert('Erreur: '+e.message);
+    if (e.code === 'auth/requires-recent-login') {
+      alert("⚠️ Par sécurité, veuillez vous déconnecter et vous reconnecter avant de changer votre mot de passe.");
+    } else {
+      alert('Erreur lors du changement de mot de passe: ' + e.message);
+    }
   }
 }
 // ============================================================
